@@ -1,2 +1,6 @@
-/src/main/webapp/WEB-INF/classes/
-/src/main/webapp/WEB-INF/lib/
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
