@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app id="cipeciop" version="2.5">
+
+<!-- /BeanShellServlet configuration -->
+    <context-param>
+        <description>Prefix for controllers</description>
+        <param-name>controllers-prefix</param-name>
+        <param-value>controllers</param-value>
+    </context-param>
+    <context-param>
+        <description>Prefix for views</description>
+        <param-name>views-prefix</param-name>
+        <param-value>views</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>BeanShellServlet</servlet-name>
+        <servlet-class>ste.web.beanshell.BeanShellServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BeanShellServlet</servlet-name>
+        <url-pattern>*.bsh</url-pattern>
+    </servlet-mapping>
+<!-- BeanShellServlet configuration/ -->
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>

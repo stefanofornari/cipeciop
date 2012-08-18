@@ -1,0 +1,5 @@
+print("-->" + request.getParameter("cip"));
+print("context: " + request.contextPath);
+print("servlet: " + request.servletPath);
+print("url: " + request.requestURL);
+print("uri: " + request.requestURI);
