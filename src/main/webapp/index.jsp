@@ -22,25 +22,27 @@
  */
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome to Cip&AMP;Ciop</title>  
-        <style>
-            body, html { overflow: hidden; margin: 0; padding: 0; }
-            .greenBorder {border: 1px solid green;} 
-        </style>
-    </head>
-    <body>
+<!DOCTYPE html>   
+<html lang="en">   
+    <head>   
+        <title>Cip&AMP;Ciop</title>     
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>  
+    <body>  
 
-        <div style="display: table; height: 800px; width: 300px; margin: auto;">
+        <div style="display: table; height: 400px; width: 300px; margin: auto;">
             <div style="display: table-cell; vertical-align: middle;">
-                <div id="main" style=""></div>
+                <div id="main" style="">
+                    <form class="well form-inline" action="cip.bsh">
+                        <div class="controls"><div class="input-append">
+                        <input type="text" class="span3" placeholder="Type your cip..."><span class="add-on"><i class="icon-user"></i></span>
+                        </div></div>
+                        <button type="submit" class="btn btn-primary btn-small">Cip</button>
+                        <button type="submit" class="btn btn-success btn-small">Ciop</button> 
+                    </form>
+                </div>
             </div>
         </div>
-
-        <script src='lib/uki.js'></script>
-        <script src='views/main.js'></script>
-    </body>
-</html>
+    </body>  
+</html> 
