@@ -22,8 +22,9 @@
 
 import ste.cipeciop.Cip;
 
+ccm = getCipCiopManager();
 if (!empty(cip)) {
-    getCipCiopManager().addCip(new Cip(cip));
+    ccm.addCip(new Cip(cip));
 }
 
 view = "cipeciop.jsp";
