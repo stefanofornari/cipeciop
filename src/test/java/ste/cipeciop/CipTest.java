@@ -82,6 +82,15 @@ public class CipTest {
             // This is ok!
             //
         }
+    }
+    
+    @Test
+    public void testToString() {
+        Cip cip = new Cip();
         
+        assertEquals("", cip.toString());
+        
+        cip = new Cip(TEST_NEW_CHIP_TXT);
+        assertEquals(TEST_NEW_CHIP_TXT, cip.toString());
     }
 }
