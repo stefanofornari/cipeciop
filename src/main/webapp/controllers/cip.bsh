@@ -20,8 +20,10 @@
  * MA 02110-1301 USA.
  */
 
-print("-->" + request.getParameter("cip"));
-print("context: " + request.contextPath);
-print("servlet: " + request.servletPath);
-print("url: " + request.requestURL);
-print("uri: " + request.requestURI);
+import ste.cipeciop.Cip;
+
+if (!empty(cip)) {
+    getCipCiopManager().addCip(new Cip(cip));
+}
+
+view = "cipeciop.jsp";
