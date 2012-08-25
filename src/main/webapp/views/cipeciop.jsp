@@ -1,4 +1,4 @@
-<%-- 
+<%--
 /*
  * Cip&Ciop
  * Copyright (C) 2012 Stefano Fornari
@@ -21,15 +21,41 @@
  * MA 02110-1301 USA.
  */
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Cip&amp;Ciop</title>
-    </head>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!DOCTYPE html>   
+<html lang="en">   
+    <head>   
+        <title>Cip&AMP;Ciop</title>     
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="autosize/jquery.autosize.js"W></script>
+    </head>  
     <body>
-        OK
+        <div style="display: table; height: 400px; width: 300px; margin: auto;">
+            <div style="display: table-cell; vertical-align: middle;">
+                <div id="main" style="">
+                    <form class="well form-inline" action="cip.bsh">
+                        <div class="controls"><div class="input-append">
+                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea><span class="add-on"><i class="icon-user"></i></span>
+                        </div></div>
+                        <button type="submit" class="btn btn-primary btn-small">Cip</button>
+                        <button type="submit" class="btn btn-success btn-small">Ciop</button> 
+                    </form>
+                </div>
+                <c:forEach items="${ccm.cips}" var="cip">
+                <div class="well">
+                    <c:out value="${cip}"/>
+                </div>
+                </c:forEach>
+            </div>
+        </div>
     </body>
-</html>
+    <script lang="JavaScript">
+        $(document).ready(function(){
+            $('textarea').autosize();  
+        });
+    </script>
+</html> 
