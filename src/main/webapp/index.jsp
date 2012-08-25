@@ -29,8 +29,7 @@
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>  
-    <body>  
-
+    <body>
         <div style="display: table; height: 400px; width: 300px; margin: auto;">
             <div style="display: table-cell; vertical-align: middle;">
                 <div id="main" style="">
