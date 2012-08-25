@@ -83,4 +83,14 @@ public class Cip {
         this.text = text;
     }
     
+    /**
+     * Returns a text representation of the Cip (currently the cip's text)
+     * 
+     * @return a text representation of the Cip
+     */
+    @Override
+    public String toString() {
+        return getText();
+    }
+    
 }
