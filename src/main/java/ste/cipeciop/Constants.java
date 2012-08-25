@@ -29,6 +29,6 @@ public interface Constants {
     
     public final static String PARAM_CIP_TEXT = "cip";
     
-    public final static String ATTRIBUTE_CIPCIOP_MANAGER = "cipciop.manager";
+    public final static String ATTRIBUTE_CIPCIOP_MANAGER = "ccm";
     
 }
