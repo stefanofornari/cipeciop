@@ -36,7 +36,7 @@
                 <div id="main" style="">
                     <form class="well form-inline" action="cip.bsh">
                         <div class="controls"><div class="input-append">
-                        <input type="text" class="span3" placeholder="Type your cip..."><span class="add-on"><i class="icon-user"></i></span>
+                        <input name="cip" type="text" class="span3" placeholder="Type your cip..."><span class="add-on"><i class="icon-user"></i></span>
                         </div></div>
                         <button type="submit" class="btn btn-primary btn-small">Cip</button>
                         <button type="submit" class="btn btn-success btn-small">Ciop</button> 
