@@ -1,0 +1,3 @@
+getCipCiopManager() {
+  return request.servletContext.getAttribute(ste.cipeciop.Constants.ATTRIBUTE_CIPCIOP_MANAGER);
+}
