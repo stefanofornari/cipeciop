@@ -1,0 +1,7 @@
+empty(s) {
+  if ((s == void) || (s == null) || !(s instanceof String)) {
+    return true;
+  }
+
+  return (s.length() == 0);
+}
