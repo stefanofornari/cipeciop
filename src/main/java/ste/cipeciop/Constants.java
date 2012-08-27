@@ -31,4 +31,6 @@ public interface Constants {
     
     public final static String ATTRIBUTE_CIPCIOP_MANAGER = "ccm";
     
+    public final static String ATTRIBUTE_OPEN_ID = "openid";
+    
 }

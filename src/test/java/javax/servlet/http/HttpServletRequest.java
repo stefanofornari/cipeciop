@@ -9,4 +9,5 @@ import javax.servlet.ServletRequest;
  */
 public interface HttpServletRequest extends ServletRequest {
     public String getRequestURI();
+    public HttpSession getSession();
 }

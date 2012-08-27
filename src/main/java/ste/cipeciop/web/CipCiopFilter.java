@@ -27,10 +27,12 @@ import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import ste.cipeciop.CipCiopManager;
 import ste.cipeciop.Constants;
 
@@ -51,11 +53,14 @@ public final class CipCiopFilter implements Filter, Constants {
     }
 
     @Override
-    public void doFilter(ServletRequest  request , 
-                         ServletResponse response, 
-                         FilterChain     next    ) throws IOException, ServletException {
+    public void doFilter(ServletRequest  req , 
+                         ServletResponse res , 
+                         FilterChain     next) throws IOException, ServletException {
+        HttpServletRequest  request  = (HttpServletRequest)req;
+        HttpServletResponse response = (HttpServletResponse)res;
+        
         if (log.isLoggable(Level.FINEST)) {
-            log.finest("----This is the Cip&Ciop filter!!! " + ((HttpServletRequest)request).getRequestURI());
+            log.finest("----This is the Cip&Ciop filter!!! " + request.getRequestURI());
         }
         
         synchronized (this) {
@@ -66,6 +71,13 @@ public final class CipCiopFilter implements Filter, Constants {
                 ccm = new CipCiopManager();
                 request.getServletContext().setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
             } 
+        }
+        
+        String openId = 
+           (String)request.getSession().getAttribute(ATTRIBUTE_OPEN_ID);
+        
+        if (openId == null) {
+            request.getRequestDispatcher("/index.bsh").forward(request, response);
         }
 
         next.doFilter(request, response);

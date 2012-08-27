@@ -1,7 +1,11 @@
 package ste.campanile.web.mock;
 
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -10,13 +14,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class HttpServletRequestMock implements HttpServletRequest {
     
-    public ServletContextMock context;
+    public ServletContextMock     context   ;
+    public SessionMock            session   ;
+    public RequestDispatcherMock  dispatcher;
     
-    public Object attribyeValue;
+    public Map attributes;
     
     public HttpServletRequestMock(ServletContextMock context) {
-        this.context = context;
-        attribyeValue = null;
+        this.context    = context;
+        this.attributes = new HashMap();
+        this.session    = new SessionMock();
+        this.dispatcher = null;
     }
     
     @Override
@@ -29,14 +37,26 @@ public class HttpServletRequestMock implements HttpServletRequest {
         return context;
     }
 
+    // TO DO to be removed
     @Override
     public Object getAttribute(String name) {
-        return attribyeValue;
+        return attributes.get(name);
     }
 
+    // TO DO to be removed
     @Override
     public void setAttribute(String name, Object value) {
-        attribyeValue = value;
+        attributes.put(name, value);
+    }
+        
+    @Override
+    public HttpSession getSession() {
+        return session;
+    }
+    
+    @Override
+    public RequestDispatcher getRequestDispatcher(String url) {
+        return (dispatcher = new RequestDispatcherMock(url));
     }
 
 }

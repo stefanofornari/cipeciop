@@ -22,6 +22,7 @@
 package ste.cipeciop.web;
 
 
+import ste.cipeciop.Constants;
 import ste.cipeciop.CipCiopManager;
 import ste.campanile.web.mock.ServletContextMock;
 import ste.campanile.web.mock.FilterChainMock;
@@ -38,6 +39,8 @@ import static org.junit.Assert.*;
  * @author ste
  */
 public class CipCiopFilterTest {
+    
+    public static final String TEST_AUTH_URL = "/index.bsh"; 
     
     private CipCiopFilter filter;
     private ServletContextMock servletContext;
@@ -82,6 +85,15 @@ public class CipCiopFilterTest {
         ccm = (CipCiopManager)servletContext.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
         
         assertNotNull(ccm);
+    }
+    
+    @Test
+    public void testForceLogin() throws Exception {
+        HttpServletRequestMock q = new HttpServletRequestMock(servletContext);
+        
+        filter.doFilter(q, null, new FilterChainMock());
+        
+        assertEquals(TEST_AUTH_URL, q.dispatcher.forwardedPath);
     }
 
     /**

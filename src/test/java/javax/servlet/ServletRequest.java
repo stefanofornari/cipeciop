@@ -11,4 +11,6 @@ public interface ServletRequest {
     public Object getAttribute(String name);
 
     public void setAttribute(String name, Object value);
+    
+    public RequestDispatcher getRequestDispatcher(String path);
 }
