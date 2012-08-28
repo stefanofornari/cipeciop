@@ -59,8 +59,8 @@ public final class CipCiopFilter implements Filter, Constants {
         HttpServletRequest  request  = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
         
-        if (log.isLoggable(Level.FINEST)) {
-            log.finest("----This is the Cip&Ciop filter!!! " + request.getRequestURI());
+        if (log.isLoggable(Level.INFO)) {
+            log.info("----This is the Cip&Ciop filter!!! " + request.getRequestURI());
         }
         
         synchronized (this) {
