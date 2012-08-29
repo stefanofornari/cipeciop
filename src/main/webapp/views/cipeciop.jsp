@@ -27,7 +27,7 @@
 <!DOCTYPE html>   
 <html lang="en">   
     <head>   
-        <title>Cip&AMP;Ciop</title>     
+        <title>Cip&AMP;Ciop</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
