@@ -32,6 +32,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.openid4java.association.AssociationSessionType;
+import org.openid4java.consumer.ConsumerManager;
+import org.openid4java.consumer.InMemoryConsumerAssociationStore;
+import org.openid4java.consumer.InMemoryNonceVerifier;
 import ste.cipeciop.CipCiopManager;
 import ste.cipeciop.Constants;
 
@@ -45,10 +50,16 @@ import ste.cipeciop.Constants;
 public final class CipCiopFilter implements Filter, Constants {
     
     private static final Logger log = Logger.getLogger("ste.cipeciop.web");
+    
 
     @Override
-    public void init(FilterConfig fc) throws ServletException {
-        
+    public void init(FilterConfig config) throws ServletException {
+        CipCiopManager ccm = (CipCiopManager)config.getServletContext().getAttribute(ATTRIBUTE_CIPCIOP_MANAGER);
+
+        if (ccm == null) {
+            ccm = new CipCiopManager();
+            config.getServletContext().setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
+        }
     }
 
     @Override
@@ -60,16 +71,6 @@ public final class CipCiopFilter implements Filter, Constants {
         
         if (log.isLoggable(Level.INFO)) {
             log.info("----This is the Cip&Ciop filter!!! " + request.getRequestURI());
-        }
-        
-        synchronized (this) {
-            CipCiopManager ccm = (CipCiopManager)request.getServletContext().getAttribute(ATTRIBUTE_CIPCIOP_MANAGER);
-
-            if (ccm == null) {
-                System.out.println("--> creating a new manager");
-                ccm = new CipCiopManager();
-                request.getServletContext().setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
-            } 
         }
         
         String openId = 

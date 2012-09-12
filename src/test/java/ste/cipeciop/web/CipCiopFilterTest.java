@@ -22,7 +22,8 @@
 package ste.cipeciop.web;
 
 
-import ste.cipeciop.Constants;
+import java.lang.reflect.Field;
+import ste.campanile.web.mock.FilterConfigMock;
 import ste.cipeciop.CipCiopManager;
 import ste.campanile.web.mock.ServletContextMock;
 import ste.campanile.web.mock.FilterChainMock;
@@ -68,22 +69,16 @@ public class CipCiopFilterTest {
     public void tearDown() {
     }
     
-    /**
-     * Test of doFilter method, of class CayenneFilter.
-     */
     @Test
-    public void testDoFilter() throws Exception {
+    public void testInit() throws Exception {
         CipCiopManager ccm = 
             (CipCiopManager)servletContext.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
         
-        assertNull(ccm);
+        assertNull(ccm); 
         
-        HttpServletRequestMock q = new HttpServletRequestMock(servletContext);
-        
-        filter.doFilter(q, null, new FilterChainMock());
+        filter.init(new FilterConfigMock(servletContext));
         
         ccm = (CipCiopManager)servletContext.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
-        
         assertNotNull(ccm);
     }
     
@@ -106,5 +101,15 @@ public class CipCiopFilterTest {
         instance.destroy();
         // TODO review the generated test code and remove the default call to fail.
         // fail("The test case is a prototype.");
+    }
+    
+    // --------------------------------------------------------- Private methods
+    
+    private Object getPrivateField(Object o, String name) throws Exception {
+        if (o == null) {
+            return null;
+        }
+        Field f = o.getClass().getDeclaredField(name); f.setAccessible(true);
+        return f.get(o);
     }
 }
