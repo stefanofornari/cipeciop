@@ -29,7 +29,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>  
     <body>
-        <form class="well form-inline" method="POST" action="auth.bsh">
+        <form class="well form-inline" method="POST" action="auth">
             <input type="text" name="openid" size="20" placeholder="Google account"/><br>
             <button type="submit" class="btn btn-primary btn-small">Sign In</button>
         </form>

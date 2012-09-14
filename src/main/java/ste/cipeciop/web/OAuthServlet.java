@@ -22,16 +22,32 @@
 package ste.cipeciop.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.openid4java.OpenIDException;
 import org.openid4java.association.AssociationSessionType;
 import org.openid4java.consumer.ConsumerManager;
 import org.openid4java.consumer.InMemoryConsumerAssociationStore;
 import org.openid4java.consumer.InMemoryNonceVerifier;
+import org.openid4java.consumer.VerificationResult;
+import org.openid4java.discovery.DiscoveryInformation;
+import org.openid4java.discovery.Identifier;
+import org.openid4java.message.AuthRequest;
+import org.openid4java.message.AuthSuccess;
+import org.openid4java.message.MessageException;
+import org.openid4java.message.MessageExtension;
+import org.openid4java.message.ParameterList;
+import org.openid4java.message.sreg.SRegMessage;
+import org.openid4java.message.sreg.SRegRequest;
+import org.openid4java.message.sreg.SRegResponse;
+import org.openid4java.server.RealmVerifier;
 
 /**
  *
@@ -39,14 +55,21 @@ import org.openid4java.consumer.InMemoryNonceVerifier;
  */
 public class OAuthServlet extends HttpServlet {
     
-    private ConsumerManager consumerManager;
+    private static final Logger log = Logger.getLogger("ste.cipeciop.web");
     
+    private static final String OPTIONAL_VALUE = "0";
+    private static final String REQUIRED_VALUE = "1";
+    private ConsumerManager consumerManager;
+
     public OAuthServlet() {
         consumerManager = null;
     }
-    
+
     @Override
     public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+
+        log.info("OAuthServlet initialization...");
         //
         // OAuth 2.0 manager
         //
@@ -55,6 +78,9 @@ public class OAuthServlet extends HttpServlet {
             consumerManager.setAssociations(new InMemoryConsumerAssociationStore());
             consumerManager.setNonceVerifier(new InMemoryNonceVerifier(5000));
             consumerManager.setMinAssocSessEnc(AssociationSessionType.DH_SHA256);
+            RealmVerifier verifier = new RealmVerifier();
+            verifier.setEnforceRpId(false);
+            consumerManager.setRealmVerifier(verifier);
         } catch (Exception e) {
             throw new ServletException("CipCiopFilter initialization failed: " + e.getMessage(), e);
         }
@@ -94,9 +120,8 @@ public class OAuthServlet extends HttpServlet {
     public String getServletInfo() {
         return "Cip&Ciop authentication servlet";
     }
-    
+
     // ------------------------------------------------------- Protected methods
-    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -107,20 +132,171 @@ public class OAuthServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        if ("true".equals(request.getParameter("is_return"))) {
+            processReturn(request, response);
+        } else {
+            String identifier = request.getParameter("openid");
+            if (identifier != null) {
+                authRequest(identifier, request, response);
+            } else {
+                throw new ServletException("At this point openid cannot be null!");
+            }
+
+        }
+    }
+
+    // --------------------------------------------------------- Private methods
+    private void processReturn(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Identifier identifier = verifyResponse(request);
+        if (identifier == null) {
+            getServletContext().getRequestDispatcher("/index.bsh").forward(request, response);
+        } else {
+            request.setAttribute("identifier", identifier.getIdentifier());
+            getServletContext().getRequestDispatcher("/cipeciop.bsh").forward(request, response);
+        }
+    }
+
+    private String authRequest(String userSuppliedString,
+            HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet OAuthServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet OAuthServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
-        } finally {            
-            out.close();
+            // configure the return_to URL where your application will receive
+            // the authentication responses from the OpenID provider
+            // String returnToUrl = "http://example.com/openid";
+            String returnToUrl = request.getRequestURL().toString()
+                    + "?is_return=true";
+
+            // perform discovery on the user-supplied identifier
+            List discoveries = consumerManager.discover(userSuppliedString);
+
+            // attempt to associate with the OpenID provider
+            // and retrieve one service endpoint for authentication
+            DiscoveryInformation discovered = consumerManager.associate(discoveries);
+
+            // store the discovery information in the user's session
+            request.getSession().setAttribute("openid-disc", discovered);
+
+            // obtain a AuthRequest message to be sent to the OpenID provider
+            AuthRequest authReq = consumerManager.authenticate(discovered, returnToUrl);
+
+            // Simple registration example
+            addSimpleRegistrationToAuthRequest(request, authReq);
+
+            if (!discovered.isVersion2()) {
+                log.info(">>>1111");
+                // Option 1: GET HTTP-redirect to the OpenID Provider endpoint
+                // The only method supported in OpenID 1.x
+                // redirect-URL usually limited ~2048 bytes
+                response.sendRedirect(authReq.getDestinationUrl(true));
+            } else {
+                log.info(">>>2222");
+                // Option 2: HTML FORM Redirection (Allows payloads >2048 bytes)
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/formredirection.jsp");
+                request.setAttribute("prameterMap", request.getParameterMap());
+                request.setAttribute("message", authReq);
+                // httpReq.setAttribute("destinationUrl", httpResp
+                // .getDestinationUrl(false));
+                dispatcher.forward(request, response);
+            }
+        } catch (OpenIDException e) {
+            // present error to the user
+            throw new ServletException(e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Simple Registration Extension example.
+     * 
+     * @param httpReq
+     * @param authReq
+     * @throws MessageException
+     * @see <a href="http://code.google.com/p/openid4java/wiki/SRegHowTo">Simple Registration HowTo</a>
+     * @see <a href="http://openid.net/specs/openid-simple-registration-extension-1_0.html">OpenID Simple Registration Extension 1.0</a>
+     */
+    private void addSimpleRegistrationToAuthRequest(HttpServletRequest httpReq,
+            AuthRequest authReq) throws MessageException {
+        // Attribute Exchange example: fetching the 'email' attribute
+        // FetchRequest fetch = FetchRequest.createFetchRequest();
+        SRegRequest sregReq = SRegRequest.createFetchRequest();
+
+        String[] attributes = {"nickname", "email", "fullname", "dob",
+            "gender", "postcode", "country", "language", "timezone"};
+        for (int i = 0, l = attributes.length; i < l; i++) {
+            String attribute = attributes[i];
+            String value = httpReq.getParameter(attribute);
+            if (OPTIONAL_VALUE.equals(value)) {
+                sregReq.addAttribute(attribute, false);
+            } else if (REQUIRED_VALUE.equals(value)) {
+                sregReq.addAttribute(attribute, true);
+            }
+        }
+
+        // attach the extension to the authentication request
+        if (!sregReq.getAttributes().isEmpty()) {
+            authReq.addExtension(sregReq);
+        }
+    }
+
+    // --- processing the authentication response ---
+    private Identifier verifyResponse(HttpServletRequest request)
+            throws ServletException {
+        try {
+            // extract the parameters from the authentication response
+            // (which comes in as a HTTP request from the OpenID provider)
+            ParameterList response = new ParameterList(request.getParameterMap());
+
+            // retrieve the previously stored discovery information
+            DiscoveryInformation discovered = (DiscoveryInformation) request.getSession().getAttribute("openid-disc");
+
+            // extract the receiving URL from the HTTP request
+            StringBuffer receivingURL = request.getRequestURL();
+            String queryString = request.getQueryString();
+            if (queryString != null && queryString.length() > 0) {
+                receivingURL.append("?").append(request.getQueryString());
+            }
+
+            // verify the response; ConsumerManager needs to be the same
+            // (static) instance used to place the authentication request
+            VerificationResult verification = consumerManager.verify(receivingURL.toString(), response, discovered);
+
+            // examine the verification result and extract the verified
+            // identifier
+            Identifier verified = verification.getVerifiedId();
+            if (verified != null) {
+                AuthSuccess authSuccess = (AuthSuccess) verification.getAuthResponse();
+
+                receiveSimpleRegistration(request, authSuccess);
+
+                return verified; // success
+            }
+        } catch (OpenIDException e) {
+            // present error to the user
+            throw new ServletException(e);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param request
+     * @param success
+     * @throws MessageException 
+     */
+    private void receiveSimpleRegistration(HttpServletRequest request,
+            AuthSuccess success) throws MessageException {
+        if (success.hasExtension(SRegMessage.OPENID_NS_SREG)) {
+            MessageExtension ext = success.getExtension(SRegMessage.OPENID_NS_SREG);
+            if (ext instanceof SRegResponse) {
+                SRegResponse sregResp = (SRegResponse) ext;
+                for (Iterator iter = sregResp.getAttributeNames().iterator(); iter.hasNext();) {
+                    String name = (String) iter.next();
+                    String value = sregResp.getParameterValue(name);
+                    request.setAttribute(name, value);
+                }
+            }
         }
     }
 }
