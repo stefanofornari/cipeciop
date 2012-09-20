@@ -23,7 +23,10 @@ package ste.cipeciop.web;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -31,6 +34,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.openid4java.OpenIDException;
 import org.openid4java.association.AssociationSessionType;
 import org.openid4java.consumer.ConsumerManager;
@@ -42,23 +46,19 @@ import org.openid4java.discovery.Identifier;
 import org.openid4java.message.AuthRequest;
 import org.openid4java.message.AuthSuccess;
 import org.openid4java.message.MessageException;
-import org.openid4java.message.MessageExtension;
 import org.openid4java.message.ParameterList;
-import org.openid4java.message.sreg.SRegMessage;
-import org.openid4java.message.sreg.SRegRequest;
-import org.openid4java.message.sreg.SRegResponse;
-import org.openid4java.server.RealmVerifier;
+import org.openid4java.message.ax.AxMessage;
+import org.openid4java.message.ax.FetchRequest;
+import org.openid4java.message.ax.FetchResponse;
+import ste.cipeciop.Constants;
 
 /**
  *
  * @author ste
  */
-public class OAuthServlet extends HttpServlet {
-    
+public class OAuthServlet extends HttpServlet implements Constants {
+
     private static final Logger log = Logger.getLogger("ste.cipeciop.web");
-    
-    private static final String OPTIONAL_VALUE = "0";
-    private static final String REQUIRED_VALUE = "1";
     private ConsumerManager consumerManager;
 
     public OAuthServlet() {
@@ -69,7 +69,10 @@ public class OAuthServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        log.info("OAuthServlet initialization...");
+        if (log.isLoggable(Level.INFO)) {
+            log.info("OAuthServlet initialization...");
+        }
+
         //
         // OAuth 2.0 manager
         //
@@ -78,11 +81,8 @@ public class OAuthServlet extends HttpServlet {
             consumerManager.setAssociations(new InMemoryConsumerAssociationStore());
             consumerManager.setNonceVerifier(new InMemoryNonceVerifier(5000));
             consumerManager.setMinAssocSessEnc(AssociationSessionType.DH_SHA256);
-            RealmVerifier verifier = new RealmVerifier();
-            verifier.setEnforceRpId(false);
-            consumerManager.setRealmVerifier(verifier);
         } catch (Exception e) {
-            throw new ServletException("CipCiopFilter initialization failed: " + e.getMessage(), e);
+            throw new ServletException("OAuthServlet initialization failed: " + e.getMessage(), e);
         }
     }
 
@@ -135,6 +135,7 @@ public class OAuthServlet extends HttpServlet {
         if ("true".equals(request.getParameter("is_return"))) {
             processReturn(request, response);
         } else {
+            //String identifier = AUTHENTICATION_SERVER_URL + '/' + request.getParameter("openid");
             String identifier = request.getParameter("openid");
             if (identifier != null) {
                 authRequest(identifier, request, response);
@@ -150,10 +151,10 @@ public class OAuthServlet extends HttpServlet {
             throws ServletException, IOException {
         Identifier identifier = verifyResponse(request);
         if (identifier == null) {
+            request.getSession().setAttribute(ATTRIBUTE_IDENTIFIER, null);
             getServletContext().getRequestDispatcher("/index.bsh").forward(request, response);
         } else {
-            request.setAttribute("identifier", identifier.getIdentifier());
-            getServletContext().getRequestDispatcher("/cipeciop.bsh").forward(request, response);
+            getServletContext().getRequestDispatcher("/cip.bsh").forward(request, response);
         }
     }
 
@@ -184,13 +185,11 @@ public class OAuthServlet extends HttpServlet {
             addSimpleRegistrationToAuthRequest(request, authReq);
 
             if (!discovered.isVersion2()) {
-                log.info(">>>1111");
                 // Option 1: GET HTTP-redirect to the OpenID Provider endpoint
                 // The only method supported in OpenID 1.x
                 // redirect-URL usually limited ~2048 bytes
                 response.sendRedirect(authReq.getDestinationUrl(true));
             } else {
-                log.info(">>>2222");
                 // Option 2: HTML FORM Redirection (Allows payloads >2048 bytes)
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/formredirection.jsp");
                 request.setAttribute("prameterMap", request.getParameterMap());
@@ -218,26 +217,35 @@ public class OAuthServlet extends HttpServlet {
      */
     private void addSimpleRegistrationToAuthRequest(HttpServletRequest httpReq,
             AuthRequest authReq) throws MessageException {
+        /*
         // Attribute Exchange example: fetching the 'email' attribute
         // FetchRequest fetch = FetchRequest.createFetchRequest();
         SRegRequest sregReq = SRegRequest.createFetchRequest();
-
+        
         String[] attributes = {"nickname", "email", "fullname", "dob",
-            "gender", "postcode", "country", "language", "timezone"};
+        "gender", "postcode", "country", "language", "timezone"};
         for (int i = 0, l = attributes.length; i < l; i++) {
-            String attribute = attributes[i];
-            String value = httpReq.getParameter(attribute);
-            if (OPTIONAL_VALUE.equals(value)) {
-                sregReq.addAttribute(attribute, false);
-            } else if (REQUIRED_VALUE.equals(value)) {
-                sregReq.addAttribute(attribute, true);
-            }
+        String attribute = attributes[i];
+        String value = httpReq.getParameter(attribute);
+        if (OPTIONAL_VALUE.equals(value)) {
+        sregReq.addAttribute(attribute, false);
+        } else if (REQUIRED_VALUE.equals(value)) {
+        sregReq.addAttribute(attribute, true);
         }
-
+        sregReq.addAttribute(attribute, true);
+        }
+        
         // attach the extension to the authentication request
         if (!sregReq.getAttributes().isEmpty()) {
-            authReq.addExtension(sregReq);
+        authReq.addExtension(sregReq);
         }
+         */
+        FetchRequest fetch = FetchRequest.createFetchRequest();
+        fetch.addAttribute("email", "http://axschema.org/contact/email", true);
+        fetch.addAttribute("fullname", "http://axschema.org/namePerson", true);
+
+        // attach the extension to the authentication request
+        authReq.addExtension(fetch);
     }
 
     // --- processing the authentication response ---
@@ -268,7 +276,7 @@ public class OAuthServlet extends HttpServlet {
             if (verified != null) {
                 AuthSuccess authSuccess = (AuthSuccess) verification.getAuthResponse();
 
-                receiveSimpleRegistration(request, authSuccess);
+                receiveAttributeExchange(request, authSuccess);
 
                 return verified; // success
             }
@@ -281,22 +289,30 @@ public class OAuthServlet extends HttpServlet {
     }
 
     /**
-     * @param request
-     * @param success
+     * @param httpReq
+     * @param authSuccess 
      * @throws MessageException 
      */
-    private void receiveSimpleRegistration(HttpServletRequest request,
-            AuthSuccess success) throws MessageException {
-        if (success.hasExtension(SRegMessage.OPENID_NS_SREG)) {
-            MessageExtension ext = success.getExtension(SRegMessage.OPENID_NS_SREG);
-            if (ext instanceof SRegResponse) {
-                SRegResponse sregResp = (SRegResponse) ext;
-                for (Iterator iter = sregResp.getAttributeNames().iterator(); iter.hasNext();) {
-                    String name = (String) iter.next();
-                    String value = sregResp.getParameterValue(name);
-                    request.setAttribute(name, value);
+    private void receiveAttributeExchange(HttpServletRequest httpReq,
+            AuthSuccess authSuccess) throws MessageException {
+
+        if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX)) {
+            FetchResponse fetchResp = (FetchResponse) authSuccess.getExtension(AxMessage.OPENID_NS_AX);
+
+            List aliases = fetchResp.getAttributeAliases();
+            Map attributes = new LinkedHashMap();
+            for (Iterator iter = aliases.iterator(); iter.hasNext();) {
+                String alias = (String) iter.next();
+                List values = fetchResp.getAttributeValues(alias);
+                if (values.size() > 0) {
+                    String[] arr = new String[values.size()];
+                    values.toArray(arr);
+                    attributes.put(alias, StringUtils.join(arr));
                 }
             }
+
+            httpReq.getSession().setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
         }
+
     }
 }

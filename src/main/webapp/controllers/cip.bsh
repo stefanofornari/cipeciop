@@ -23,7 +23,7 @@
 import ste.cipeciop.Cip;
 
 ccm = getCipCiopManager();
-if (!empty(cip)) {
+if ((cip != void) && !empty(cip)) {
     ccm.addCip(new Cip(cip));
 }
 

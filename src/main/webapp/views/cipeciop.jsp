@@ -34,6 +34,8 @@
         <script src="autosize/jquery.autosize-min.js"W></script>
     </head>  
     <body>
+        <c:out value="${openid_user['fullname']}"/>
+        
         <div style="display: table; height: 400px; width: 300px; margin: auto;">
             <div style="display: table-cell; vertical-align: middle;">
                 <div id="main" style="">

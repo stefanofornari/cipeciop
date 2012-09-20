@@ -41,7 +41,7 @@ import static org.junit.Assert.*;
  */
 public class CipCiopFilterTest {
     
-    public static final String TEST_AUTH_URL = "/index.bsh"; 
+    public static final String TEST_AUTH_URL = "auth?openid=https%3A%2F%2Fme.yahoo.com"; 
     
     private CipCiopFilter filter;
     private ServletContextMock servletContext;
@@ -84,11 +84,23 @@ public class CipCiopFilterTest {
     
     @Test
     public void testForceLogin() throws Exception {
-        HttpServletRequestMock q = new HttpServletRequestMock(servletContext);
+        HttpServletRequestMock r = new HttpServletRequestMock(servletContext);
         
-        filter.doFilter(q, null, new FilterChainMock());
+        filter.doFilter(r, null, new FilterChainMock());
+        assertEquals(TEST_AUTH_URL, r.dispatcher.forwardedPath);
+    }
+    
+    @Test
+    public void testAuthPassThrough() throws Exception {
+        HttpServletRequestMock r = new HttpServletRequestMock(servletContext);
         
-        assertEquals(TEST_AUTH_URL, q.dispatcher.forwardedPath);
+        r.servletPath = "/auth";
+        filter.doFilter(r, null, new FilterChainMock());
+        assertNull(r.dispatcher);
+        
+        r.servletPath = "/authorize";
+        filter.doFilter(r, null, new FilterChainMock());
+        assertEquals(TEST_AUTH_URL, r.dispatcher.forwardedPath);
     }
 
     /**

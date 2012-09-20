@@ -19,12 +19,16 @@ public class HttpServletRequestMock implements HttpServletRequest {
     public RequestDispatcherMock  dispatcher;
     
     public Map attributes;
+    public String pathInfo;
+    public String servletPath;
     
     public HttpServletRequestMock(ServletContextMock context) {
-        this.context    = context;
-        this.attributes = new HashMap();
-        this.session    = new SessionMock();
-        this.dispatcher = null;
+        this.context     = context;
+        this.attributes  = new HashMap();
+        this.session     = new SessionMock();
+        this.dispatcher  = null;
+        this.pathInfo    = "";
+        this.servletPath = "";
     }
     
     @Override
@@ -57,6 +61,16 @@ public class HttpServletRequestMock implements HttpServletRequest {
     @Override
     public RequestDispatcher getRequestDispatcher(String url) {
         return (dispatcher = new RequestDispatcherMock(url));
+    }
+    
+    @Override
+    public String getPathInfo() {
+        return pathInfo;
+    }
+    
+    @Override
+    public String getServletPath() {
+        return servletPath;
     }
 
 }

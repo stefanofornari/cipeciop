@@ -9,5 +9,8 @@ import javax.servlet.ServletRequest;
  */
 public interface HttpServletRequest extends ServletRequest {
     public String getRequestURI();
+    public String getPathInfo();
+    public String getServletPath();
     public HttpSession getSession();
+    
 }

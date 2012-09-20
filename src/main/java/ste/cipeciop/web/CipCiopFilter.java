@@ -22,7 +22,7 @@
 package ste.cipeciop.web;
 
 import java.io.IOException;
-import java.util.logging.Level;
+import java.net.URLEncoder;
 import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -65,15 +65,14 @@ public final class CipCiopFilter implements Filter, Constants {
         HttpServletRequest  request  = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
         
-        if (log.isLoggable(Level.INFO)) {
-            log.info("----This is the Cip&Ciop filter!!! " + request.getRequestURI());
-        }
-        
-        String openId = 
-           (String)request.getSession().getAttribute(ATTRIBUTE_OPEN_ID);
-        
-        if (openId == null) {
-            request.getRequestDispatcher("/index.bsh").forward(request, response);
+        if (!request.getServletPath().equals("/auth")) {
+            Object openId = request.getSession().getAttribute(ATTRIBUTE_IDENTIFIER);
+
+            if (openId == null) {
+                String url = "auth?openid="
+                           + URLEncoder.encode("https://me.yahoo.com", "UTF-8");
+                request.getRequestDispatcher(url).forward(request, response);
+            }
         }
 
         next.doFilter(request, response);
