@@ -1,6 +1,8 @@
 package ste.campanile.web.mock;
 
 import java.util.HashMap;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 
 /**
@@ -18,5 +20,10 @@ public class ServletContextMock extends HashMap implements ServletContext  {
     @Override
     public void setAttribute(String name, Object value) {
         put(name, value);
+    }
+    
+    @Override
+    public RequestDispatcher getRequestDispatcher(String url) {
+        return new RequestDispatcherMock(url);
     }
 }

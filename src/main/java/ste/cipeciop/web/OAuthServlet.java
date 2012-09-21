@@ -57,6 +57,9 @@ import ste.cipeciop.Constants;
  * @author ste
  */
 public class OAuthServlet extends HttpServlet implements Constants {
+    
+    public static final String PARAM_IS_RETURN = "is_return";
+    public static final String PARAM_LOGOUT    = "logout";
 
     private static final Logger log = Logger.getLogger("ste.cipeciop.web");
     private ConsumerManager consumerManager;
@@ -132,8 +135,11 @@ public class OAuthServlet extends HttpServlet implements Constants {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if ("true".equals(request.getParameter("is_return"))) {
+        if ("true".equals(request.getParameter(PARAM_IS_RETURN))) {
             processReturn(request, response);
+        } else if (request.getParameter(PARAM_LOGOUT) != null) {
+            request.getSession().invalidate();
+            getServletContext().getRequestDispatcher("/cip.bsh").forward(request, response);
         } else {
             //String identifier = AUTHENTICATION_SERVER_URL + '/' + request.getParameter("openid");
             String identifier = request.getParameter("openid");
@@ -217,29 +223,6 @@ public class OAuthServlet extends HttpServlet implements Constants {
      */
     private void addSimpleRegistrationToAuthRequest(HttpServletRequest httpReq,
             AuthRequest authReq) throws MessageException {
-        /*
-        // Attribute Exchange example: fetching the 'email' attribute
-        // FetchRequest fetch = FetchRequest.createFetchRequest();
-        SRegRequest sregReq = SRegRequest.createFetchRequest();
-        
-        String[] attributes = {"nickname", "email", "fullname", "dob",
-        "gender", "postcode", "country", "language", "timezone"};
-        for (int i = 0, l = attributes.length; i < l; i++) {
-        String attribute = attributes[i];
-        String value = httpReq.getParameter(attribute);
-        if (OPTIONAL_VALUE.equals(value)) {
-        sregReq.addAttribute(attribute, false);
-        } else if (REQUIRED_VALUE.equals(value)) {
-        sregReq.addAttribute(attribute, true);
-        }
-        sregReq.addAttribute(attribute, true);
-        }
-        
-        // attach the extension to the authentication request
-        if (!sregReq.getAttributes().isEmpty()) {
-        authReq.addExtension(sregReq);
-        }
-         */
         FetchRequest fetch = FetchRequest.createFetchRequest();
         fetch.addAttribute("email", "http://axschema.org/contact/email", true);
         fetch.addAttribute("fullname", "http://axschema.org/namePerson", true);

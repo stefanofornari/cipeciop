@@ -12,5 +12,6 @@ public interface HttpServletRequest extends ServletRequest {
     public String getPathInfo();
     public String getServletPath();
     public HttpSession getSession();
+    public String getParameter(String name);
     
 }

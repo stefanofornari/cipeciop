@@ -19,12 +19,14 @@ public class HttpServletRequestMock implements HttpServletRequest {
     public RequestDispatcherMock  dispatcher;
     
     public Map attributes;
+    public Map<String, String> parameters;
     public String pathInfo;
     public String servletPath;
     
     public HttpServletRequestMock(ServletContextMock context) {
         this.context     = context;
         this.attributes  = new HashMap();
+        this.parameters  = new HashMap<String, String>();
         this.session     = new SessionMock();
         this.dispatcher  = null;
         this.pathInfo    = "";
@@ -41,13 +43,11 @@ public class HttpServletRequestMock implements HttpServletRequest {
         return context;
     }
 
-    // TO DO to be removed
     @Override
     public Object getAttribute(String name) {
         return attributes.get(name);
     }
 
-    // TO DO to be removed
     @Override
     public void setAttribute(String name, Object value) {
         attributes.put(name, value);
@@ -71,6 +71,15 @@ public class HttpServletRequestMock implements HttpServletRequest {
     @Override
     public String getServletPath() {
         return servletPath;
+    }
+    
+    public void setParameter(String name, String value) {
+        parameters.put(name, value);
+    }
+    
+    @Override
+    public String getParameter(String name) {
+        return parameters.get(name);
     }
 
 }
