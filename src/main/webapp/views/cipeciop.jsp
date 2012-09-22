@@ -40,7 +40,7 @@
             <div style="display: table-cell; vertical-align: middle;">
                 <div id="main" class="pagination-right">
                     <c:if test="${empty openid_user}"><a href="auth?openid=https%3A%2F%2Fme.yahoo.com">login</a></c:if>
-                    <c:if test="${not empty openid_user}"><a href="auth?logout">logout</a></c:if>
+                    <c:if test="${not empty openid_user}"><a href="logout.bsh">logout</a></c:if>
                     
                     <form class="well form-inline" action="cip.bsh">
                         <div class="controls"><div class="input-append">
