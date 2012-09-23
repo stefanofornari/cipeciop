@@ -19,21 +19,22 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301 USA.
  */
-package ste.cipeciop.web;
+package tests.ste.cipeciop.web;
 
 
-import ste.campanile.web.mock.ServletConfigMock;
+import ste.cipeciop.test.web.mock.ServletConfigMock;
 import java.lang.reflect.Field;
-import ste.campanile.web.mock.ServletContextMock;
+import ste.cipeciop.test.web.mock.ServletContextMock;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ste.campanile.web.mock.HttpServletRequestMock;
-import ste.campanile.web.mock.HttpServletResponseMock;
+import ste.cipeciop.test.web.mock.HttpServletRequestMock;
+import ste.cipeciop.test.web.mock.HttpServletResponseMock;
 import static org.junit.Assert.*;
 import ste.cipeciop.Constants;
+import ste.cipeciop.web.OAuthServlet;
 
 /**
  *
@@ -74,18 +75,6 @@ public class OAuthServletTest implements Constants {
         servlet.init(config);
         
         assertNotNull(getPrivateField(servlet, "consumerManager"));
-    }
-    
-    @Test
-    public void testLogout() throws Exception {
-        HttpServletRequestMock req = new HttpServletRequestMock(servletContext);
-        HttpServletResponseMock res = new HttpServletResponseMock();
-        
-        req.setParameter("logout", "");
-        req.getSession().setAttribute(ATTRIBUTE_IDENTIFIER, new Object());
-        servlet.doGet(req, res);
-        
-        assertNull(req.getSession().getAttribute(ATTRIBUTE_IDENTIFIER));
     }
     
     // --------------------------------------------------------- Private methods

@@ -1,4 +1,4 @@
-package ste.campanile.web.mock;
+package ste.cipeciop.test.web.mock;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;

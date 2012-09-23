@@ -19,25 +19,24 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301 USA.
  */
-
-package ste.cipeciop;
+package tests.ste.cipeciop;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ste.cipeciop.Cip;
+import ste.cipeciop.CipCiopManager;
 import static org.junit.Assert.*;
 
 /**
  *
  * @author ste
  */
-public class CipTest {
+public class CipCiopManagerTest {
     
-    public static final String TEST_NEW_CHIP_TXT  = "thi is a new cip";
-    
-    public CipTest() {
+    public CipCiopManagerTest() {
     }
 
     @BeforeClass
@@ -55,42 +54,33 @@ public class CipTest {
     @After
     public void tearDown() {
     }
-
-    @Test
-    public void newCip() {
-        Cip cip = new Cip();
-        
-        assertFalse(cip.getId() == 0);
-        assertEquals("", cip.getText());
-        
-        cip = new Cip(TEST_NEW_CHIP_TXT);
-        assertEquals(TEST_NEW_CHIP_TXT, cip.getText());
-    }
     
     @Test
-    public void testCipText() {
-        Cip cip = new Cip();
+    public void addCips() {
+        CipCiopManager ccm = new CipCiopManager();
         
-        cip.setText(TEST_NEW_CHIP_TXT);
-        assertEquals(TEST_NEW_CHIP_TXT, cip.getText());
+        Cip cip1 = new Cip(), cip2 = new Cip();
         
+        assertEquals(0, ccm.getCips().size());
+        
+        ccm.addCip(cip1); 
+        assertEquals(1, ccm.getCips().size());
+        assertSame(cip1, ccm.getCips().get(0));
+        
+        ccm.addCip(cip2);
+        assertEquals(2, ccm.getCips().size());
+        assertSame(cip2, ccm.getCips().get(1));
+        
+        //
+        // Not null
+        //
         try {
-            cip.setText(null);
-            fail("text cannot be null");
+            ccm.addCip(null);
+            fail("cip cannot be null");
         } catch (NullPointerException e) {
             //
-            // This is ok!
+            // OK
             //
         }
-    }
-    
-    @Test
-    public void testToString() {
-        Cip cip = new Cip();
-        
-        assertEquals("", cip.toString());
-        
-        cip = new Cip(TEST_NEW_CHIP_TXT);
-        assertEquals(TEST_NEW_CHIP_TXT, cip.toString());
     }
 }

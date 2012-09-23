@@ -1,4 +1,4 @@
-package ste.campanile.web.mock;
+package ste.cipeciop.test.web.mock;
 
 import java.util.Enumeration;
 import javax.servlet.ServletConfig;
