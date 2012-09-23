@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package javax.servlet;
 
 /**
@@ -5,6 +9,9 @@ package javax.servlet;
  * @author ste
  */
 public interface ServletContext {
-    public Object getAttribute(String name);
-    public void setAttribute(String name, Object value);
+
+    Object getAttribute(String name);
+    void setAttribute(String name, Object value);
+    RequestDispatcher getRequestDispatcher(String d);
+    
 }
