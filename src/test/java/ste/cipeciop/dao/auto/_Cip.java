@@ -19,55 +19,61 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301 USA.
  */
-package ste.cipeciop;
-
-import ste.cipeciop.dao.auto._Cip;
+package ste.cipeciop.dao.auto;
 
 /**
  * This class represents a cip; it uses Apache Cayenne for persistence
  * 
  * @author ste
  */
-public class Cip extends _Cip {
+public class _Cip {
+    
+    private long id = System.currentTimeMillis();
     
     /**
-     * Creates a new Cip and assigns to it a randomly generated id
+     *  The cip text
      */
-    public Cip() {
-        setText("");
-        setFrom(null);
+    private String text = null;
+    
+    /**
+     * The sender id
+     */
+    private String from = null;
+ 
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
     }
-    
+
     /**
-     * Creates a new Cip with the given text (calling Cip() first)
-     * 
-     * @param text the cip text
+     * @return the text
      */
-    public Cip(String text) {
-        this();
-        setText(text);
+    public String getText() {
+        return text;
     }
 
     /**
      * @param text the text to set - NOT NULL
      * 
-     * @throws NullPointerException if text is null
      */
-    @Override
-    public void setText(String text) throws NullPointerException {
-        if (text == null) {
-            throw new NullPointerException("text cannot be null");
-        }
-        super.setText(text);
+    public void setText(String text) {
+        this.text = text;
     }
     
     /**
-     * Returns a text representation of the Cip (currently the cip's text)
-     * 
-     * @return a text representation of the Cip
+     * @return the from
      */
-    @Override
-    public String toString() {
-        return getText();
-    }    
+    public String getFrom() {
+        return from;
+    }
+
+    /**
+     * @param from the from to set
+     */
+    public void setFrom(String from) {
+        this.from = from;
+    }
+    
 }

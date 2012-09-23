@@ -37,6 +37,7 @@ import static org.junit.Assert.*;
 public class CipTest {
     
     public static final String TEST_NEW_CHIP_TXT  = "thi is a new cip";
+    public static final String TEST_FROM1 = "stefano_fornari";
     
     public CipTest() {
     }
@@ -69,7 +70,7 @@ public class CipTest {
     }
     
     @Test
-    public void testCipText() {
+    public void cipText() {
         Cip cip = new Cip();
         
         cip.setText(TEST_NEW_CHIP_TXT);
@@ -86,7 +87,16 @@ public class CipTest {
     }
     
     @Test
-    public void testToString() {
+    public void cipFrom() {
+        Cip cip = new Cip();
+        
+        assertNull(cip.getFrom());
+        
+        cip.setFrom(TEST_FROM1); assertEquals(TEST_FROM1, cip.getFrom());
+    }
+    
+    @Test
+    public void toAString() {
         Cip cip = new Cip();
         
         assertEquals("", cip.toString());
