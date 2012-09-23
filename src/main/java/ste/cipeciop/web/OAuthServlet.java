@@ -59,7 +59,6 @@ import ste.cipeciop.Constants;
 public class OAuthServlet extends HttpServlet implements Constants {
     
     public static final String PARAM_IS_RETURN = "is_return";
-    public static final String PARAM_LOGOUT    = "logout";
 
     private static final Logger log = Logger.getLogger("ste.cipeciop.web");
     private ConsumerManager consumerManager;
@@ -79,14 +78,7 @@ public class OAuthServlet extends HttpServlet implements Constants {
         //
         // OAuth 2.0 manager
         //
-        try {
-            consumerManager = new ConsumerManager();
-            consumerManager.setAssociations(new InMemoryConsumerAssociationStore());
-            consumerManager.setNonceVerifier(new InMemoryNonceVerifier(5000));
-            consumerManager.setMinAssocSessEnc(AssociationSessionType.DH_SHA256);
-        } catch (Exception e) {
-            throw new ServletException("OAuthServlet initialization failed: " + e.getMessage(), e);
-        }
+        createConsumerManager();
     }
 
     /** 
@@ -137,9 +129,6 @@ public class OAuthServlet extends HttpServlet implements Constants {
         response.setContentType("text/html;charset=UTF-8");
         if ("true".equals(request.getParameter(PARAM_IS_RETURN))) {
             processReturn(request, response);
-        } else if (request.getParameter(PARAM_LOGOUT) != null) {
-            request.getSession().invalidate();
-            getServletContext().getRequestDispatcher("/cip.bsh").forward(request, response);
         } else {
             //String identifier = AUTHENTICATION_SERVER_URL + '/' + request.getParameter("openid");
             String identifier = request.getParameter("openid");
@@ -200,8 +189,6 @@ public class OAuthServlet extends HttpServlet implements Constants {
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/formredirection.jsp");
                 request.setAttribute("prameterMap", request.getParameterMap());
                 request.setAttribute("message", authReq);
-                // httpReq.setAttribute("destinationUrl", httpResp
-                // .getDestinationUrl(false));
                 dispatcher.forward(request, response);
             }
         } catch (OpenIDException e) {
@@ -291,11 +278,20 @@ public class OAuthServlet extends HttpServlet implements Constants {
                     String[] arr = new String[values.size()];
                     values.toArray(arr);
                     attributes.put(alias, StringUtils.join(arr));
+                    if (ALIAS_EMAIL.equals(alias)) {
+                        attributes.put(ALIAS_USER_ID, StringUtils.substringBefore(arr[0], "@"));
+                    }
                 }
             }
 
             httpReq.getSession().setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
         }
-
     }
+    
+    private void createConsumerManager() {
+        consumerManager = new ConsumerManager();
+        consumerManager.setAssociations(new InMemoryConsumerAssociationStore());
+        consumerManager.setNonceVerifier(new InMemoryNonceVerifier(5000));
+        consumerManager.setMinAssocSessEnc(AssociationSessionType.DH_SHA256);
+    }  
 }
