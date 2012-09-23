@@ -26,7 +26,7 @@ package ste.cipeciop.dao.auto;
  * 
  * @author ste
  */
-public class _Cip {
+public class _Cip2 {
     
     private long id = System.currentTimeMillis();
     

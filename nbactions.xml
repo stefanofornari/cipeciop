@@ -7,4 +7,11 @@
                 <goal>compiler:compile</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-cayenne-modeller</actionName>
+            <displayName>cayenne-modeller</displayName>
+            <goals>
+                <goal>cayenne-modeler:run</goal>
+            </goals>
+        </action>
     </actions>

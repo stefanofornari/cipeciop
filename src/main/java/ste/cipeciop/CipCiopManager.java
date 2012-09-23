@@ -21,8 +21,12 @@
  */
 package ste.cipeciop;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.query.SelectQuery;
 
 /**
  * This class manage a collection of cips and ciops
@@ -31,13 +35,13 @@ import java.util.List;
  */
 public class CipCiopManager {
     
-    List cips;
+    private ObjectContext context;
     
     /**
      * Creates a new CipCiopManager
      */
     public CipCiopManager() {
-        cips = new ArrayList();
+        context = DataContext.createDataContext();
     }
     
     /**
@@ -51,7 +55,12 @@ public class CipCiopManager {
         if (cip == null) {
             throw new NullPointerException("cip cannot be null");
         }
-        cips.add(cip);
+        Cip cipDAO = context.newObject(Cip.class);
+        cipDAO.setFrom(cip.getFrom());
+        cipDAO.setText(cip.getText());
+        cipDAO.setTo(cip.getTo());
+        
+        context.commitChanges();
     }
     
     /**
@@ -59,7 +68,27 @@ public class CipCiopManager {
      * 
      * @return the collection of chips
      */
-    public List getCips() {
-        return cips;
+    public List<Cip> getCips() {
+        SelectQuery query = new SelectQuery(Cip.class);
+        return context.performQuery(query);
+    }
+    
+    /**
+     * Returns the collection of cips for the given sender
+     * 
+     * @param from the sender user id - not null
+     * 
+     * @return the collection of chips
+     */
+    public List<Cip> getCips(String from) {
+        if (from == null) {
+            throw new NullPointerException("from cannot be null");
+        }
+        Expression where = Expression.fromString("from = $from");
+        HashMap<String,String> params = new HashMap<String, String>();
+        params.put("from", from);
+        SelectQuery proto = new SelectQuery(Cip.class, where);
+        
+        return context.performQuery(proto.queryWithParameters(params));
     }
 }

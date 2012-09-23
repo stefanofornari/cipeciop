@@ -4,10 +4,12 @@
  */
 package tests.ste.cipeciop.web;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
+import        org.junit.Test;
 
+import ste.cipeciop.Constants;
 import com.funambol.tools.test.BeanShellTest;
-import org.junit.Before;
+import ste.cipeciop.CipCiopManager;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import ste.cipeciop.test.web.mock.ServletContextMock;
 
@@ -15,7 +17,7 @@ import ste.cipeciop.test.web.mock.ServletContextMock;
  *
  * @author ste
  */
-public class CipControllerTest extends BeanShellTest {
+public class CipControllerTest extends BeanShellTest implements Constants {
     
     public CipControllerTest() throws Exception {
         setCommandsDirectory("src/main/webapp/WEB-INF/commands");
@@ -26,10 +28,15 @@ public class CipControllerTest extends BeanShellTest {
     protected void beanshellSetup() throws Exception {
         ServletContextMock context = new ServletContextMock();
         HttpServletRequestMock r = new HttpServletRequestMock(context);
+        
+        CipCiopManager ccm = new CipCiopManager();       
+        context.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
+        
         beanshell.set("request", r);
     }
 
-
     @Test
-    public void hello() {}
+    public void cipciopManagerExists() throws Exception {
+        assertNotNull(beanshell.get("ccm"));
+    }
 }

@@ -21,6 +21,7 @@
  */
 package tests.ste.cipeciop;
 
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,6 +36,9 @@ import static org.junit.Assert.*;
  * @author ste
  */
 public class CipCiopManagerTest {
+    
+    public static final String TEST_FROM1 = "stefano_fornari";
+    public static final String TEST_FROM2 = "cipeciopd";
     
     public CipCiopManagerTest() {
     }
@@ -53,6 +57,13 @@ public class CipCiopManagerTest {
     
     @After
     public void tearDown() {
+    }
+    
+    @Test 
+    public void createCCM() {
+        CipCiopManager ccm = new CipCiopManager();
+        
+        assertEquals(0, ccm.getCips().size());
     }
     
     @Test
@@ -82,5 +93,34 @@ public class CipCiopManagerTest {
             // OK
             //
         }
+    }
+    
+    @Test
+    public void chipsFromUser() {
+        CipCiopManager ccm = new CipCiopManager();
+        
+        Cip cip = new Cip();
+        cip.setFrom(TEST_FROM1);
+        cip.setText("Cip from " + TEST_FROM1);
+        ccm.addCip(cip);
+        
+        ccm.addCip(cip = new Cip());
+        cip.setFrom(TEST_FROM2);
+        cip.setText("Cip from " + TEST_FROM2);
+        
+        try {
+            ccm.getCips(null);
+            fail("from not null must be checked");
+        } catch (NullPointerException e) {
+            // OK
+        }
+        
+        List cips = ccm.getCips(TEST_FROM1);
+        assertEquals(1, cips.size());
+        assertTrue(cips.get(0).toString().contains(TEST_FROM1));
+        
+        cips = ccm.getCips(TEST_FROM2);
+        assertEquals(1, cips.size());
+        assertTrue(cips.get(0).toString().contains(TEST_FROM2));
     }
 }
