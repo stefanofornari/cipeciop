@@ -19,20 +19,21 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301 USA.
  */
-package ste.cipeciop.web;
+package tests.ste.cipeciop.web;
 
 
 import java.lang.reflect.Field;
-import ste.campanile.web.mock.FilterConfigMock;
+import ste.cipeciop.test.web.mock.FilterConfigMock;
 import ste.cipeciop.CipCiopManager;
-import ste.campanile.web.mock.ServletContextMock;
-import ste.campanile.web.mock.FilterChainMock;
-import ste.campanile.web.mock.HttpServletRequestMock;
+import ste.cipeciop.test.web.mock.ServletContextMock;
+import ste.cipeciop.test.web.mock.FilterChainMock;
+import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ste.cipeciop.web.CipCiopFilter;
 import static org.junit.Assert.*;
 
 /**
