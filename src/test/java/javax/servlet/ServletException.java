@@ -9,5 +9,5 @@ package javax.servlet;
  * @author ste
  */
 public class ServletException extends Exception {
-    
+    public ServletException(String message) {}
 }
