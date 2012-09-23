@@ -3,7 +3,7 @@ package javax.servlet.http;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletConfig;
 
-import ste.campanile.web.mock.ServletContextMock;
+import ste.cipeciop.test.web.mock.ServletContextMock;
 
 
 /**
