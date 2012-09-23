@@ -30,7 +30,9 @@ public interface Constants {
     public final static String PARAM_CIP_TEXT = "cip";
     
     public final static String ATTRIBUTE_CIPCIOP_MANAGER = "ccm";
-    
     public final static String ATTRIBUTE_IDENTIFIER = "openid_user";
+    
+    public static final String ALIAS_EMAIL   = "email";
+    public static final String ALIAS_USER_ID = "userid";
     
 }
