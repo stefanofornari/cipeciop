@@ -69,5 +69,24 @@ public class Cip extends _Cip {
     @Override
     public String toString() {
         return getText();
-    }    
+    }  
+    
+    @Override
+    public int hashCode() {
+        return getText().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cip other = (Cip) obj;
+        return getText().equals(other.getText())
+            && getFrom().contains(other.getFrom())
+            && getTo().equals(other.getTo());
+    }
 }
