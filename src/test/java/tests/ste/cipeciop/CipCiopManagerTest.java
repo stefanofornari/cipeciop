@@ -21,6 +21,8 @@
  */
 package tests.ste.cipeciop;
 
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.access.DataContext;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -39,6 +41,18 @@ public class CipCiopManagerTest {
     
     public static final String TEST_FROM1 = "stefano_fornari";
     public static final String TEST_FROM2 = "cipeciopd";
+    public static final String TEST_TO1   = TEST_FROM2;
+    public static final String TEST_TO2   = TEST_FROM1;
+    public static final String TEST_TEXT1 = "message from " 
+                                          + TEST_FROM1
+                                          + " to "
+                                          + TEST_TO1
+                                          ;
+    public static final String TEST_TEXT2 = "message from " 
+                                          + TEST_FROM2
+                                          + " to "
+                                          + TEST_TO2
+                                          ;
     
     public CipCiopManagerTest() {
     }
@@ -53,6 +67,8 @@ public class CipCiopManagerTest {
     
     @Before
     public void setUp() {
+        ObjectContext context = DataContext.createDataContext();
+        context.
     }
     
     @After
@@ -70,17 +86,19 @@ public class CipCiopManagerTest {
     public void addCips() {
         CipCiopManager ccm = new CipCiopManager();
         
-        Cip cip1 = new Cip(), cip2 = new Cip();
+        Cip cip1 = new Cip(TEST_TEXT1), cip2 = new Cip(TEST_TEXT2);
+        cip1.setFrom(TEST_FROM1); cip1.setTo(TEST_TO1);
+        cip2.setFrom(TEST_FROM2); cip2.setTo(TEST_TO2);
         
         assertEquals(0, ccm.getCips().size());
         
         ccm.addCip(cip1); 
         assertEquals(1, ccm.getCips().size());
-        assertSame(cip1, ccm.getCips().get(0));
+        assertEquals(cip1, ccm.getCips().get(0));
         
         ccm.addCip(cip2);
         assertEquals(2, ccm.getCips().size());
-        assertSame(cip2, ccm.getCips().get(1));
+        assertEquals(cip2, ccm.getCips().get(1));
         
         //
         // Not null
@@ -99,14 +117,13 @@ public class CipCiopManagerTest {
     public void chipsFromUser() {
         CipCiopManager ccm = new CipCiopManager();
         
-        Cip cip = new Cip();
-        cip.setFrom(TEST_FROM1);
-        cip.setText("Cip from " + TEST_FROM1);
+        Cip cip = new Cip(TEST_TEXT1);
+        cip.setFrom(TEST_FROM1); cip.setTo(TEST_TO1);
         ccm.addCip(cip);
         
-        ccm.addCip(cip = new Cip());
-        cip.setFrom(TEST_FROM2);
-        cip.setText("Cip from " + TEST_FROM2);
+        cip = new Cip(TEST_TEXT2);
+        cip.setFrom(TEST_FROM2); cip.setTo(TEST_TO2);
+        ccm.addCip(cip);
         
         try {
             ccm.getCips(null);
