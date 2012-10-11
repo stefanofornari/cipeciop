@@ -22,9 +22,16 @@
 
 import ste.cipeciop.Cip;
 
+username = getUserName();
+
 ccm = getCipCiopManager();
 if ((cip != void) && !empty(cip)) {
-    ccm.addCip(new Cip(cip));
+    c = new Cip(cip);
+    c.to = to;
+    c.from = username;
+    ccm.addCip(c);
 }
+
+cips = ccm.getCips(username);
 
 view = "cipeciop.jsp";
