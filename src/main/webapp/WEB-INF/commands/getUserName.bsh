@@ -1,0 +1,3 @@
+getUserName() {
+  return session.getAttribute(ste.cipeciop.Constants.ATTRIBUTE_IDENTIFIER).get("userid");
+}
