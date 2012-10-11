@@ -24,6 +24,7 @@ package tests.ste.cipeciop;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import java.util.List;
+import org.apache.cayenne.query.SQLTemplate;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -39,21 +40,6 @@ import static org.junit.Assert.*;
  */
 public class CipCiopManagerTest {
     
-    public static final String TEST_FROM1 = "stefano_fornari";
-    public static final String TEST_FROM2 = "cipeciopd";
-    public static final String TEST_TO1   = TEST_FROM2;
-    public static final String TEST_TO2   = TEST_FROM1;
-    public static final String TEST_TEXT1 = "message from " 
-                                          + TEST_FROM1
-                                          + " to "
-                                          + TEST_TO1
-                                          ;
-    public static final String TEST_TEXT2 = "message from " 
-                                          + TEST_FROM2
-                                          + " to "
-                                          + TEST_TO2
-                                          ;
-    
     public CipCiopManagerTest() {
     }
 
@@ -67,8 +53,7 @@ public class CipCiopManagerTest {
     
     @Before
     public void setUp() {
-        ObjectContext context = DataContext.createDataContext();
-        context.
+        CipCiopTestUtil.deleteAllCips();
     }
     
     @After
@@ -86,9 +71,10 @@ public class CipCiopManagerTest {
     public void addCips() {
         CipCiopManager ccm = new CipCiopManager();
         
-        Cip cip1 = new Cip(TEST_TEXT1), cip2 = new Cip(TEST_TEXT2);
-        cip1.setFrom(TEST_FROM1); cip1.setTo(TEST_TO1);
-        cip2.setFrom(TEST_FROM2); cip2.setTo(TEST_TO2);
+        Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
+            cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2);
+        cip1.setFrom(CipCiopTestUtil.TEST_FROM1); cip1.setTo(CipCiopTestUtil.TEST_TO1);
+        cip2.setFrom(CipCiopTestUtil.TEST_FROM2); cip2.setTo(CipCiopTestUtil.TEST_TO2);
         
         assertEquals(0, ccm.getCips().size());
         
@@ -117,12 +103,12 @@ public class CipCiopManagerTest {
     public void chipsFromUser() {
         CipCiopManager ccm = new CipCiopManager();
         
-        Cip cip = new Cip(TEST_TEXT1);
-        cip.setFrom(TEST_FROM1); cip.setTo(TEST_TO1);
+        Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
+        cip.setFrom(CipCiopTestUtil.TEST_FROM1); cip.setTo(CipCiopTestUtil.TEST_TO1);
         ccm.addCip(cip);
         
-        cip = new Cip(TEST_TEXT2);
-        cip.setFrom(TEST_FROM2); cip.setTo(TEST_TO2);
+        cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
+        cip.setFrom(CipCiopTestUtil.TEST_FROM2); cip.setTo(CipCiopTestUtil.TEST_TO2);
         ccm.addCip(cip);
         
         try {
@@ -132,12 +118,12 @@ public class CipCiopManagerTest {
             // OK
         }
         
-        List cips = ccm.getCips(TEST_FROM1);
+        List cips = ccm.getCips(CipCiopTestUtil.TEST_FROM1);
         assertEquals(1, cips.size());
-        assertTrue(cips.get(0).toString().contains(TEST_FROM1));
+        assertTrue(cips.get(0).toString().contains(CipCiopTestUtil.TEST_FROM1));
         
-        cips = ccm.getCips(TEST_FROM2);
+        cips = ccm.getCips(CipCiopTestUtil.TEST_FROM2);
         assertEquals(1, cips.size());
-        assertTrue(cips.get(0).toString().contains(TEST_FROM2));
+        assertTrue(cips.get(0).toString().contains(CipCiopTestUtil.TEST_FROM2));
     }
 }
