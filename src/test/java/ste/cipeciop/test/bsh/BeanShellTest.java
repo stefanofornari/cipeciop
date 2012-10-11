@@ -137,10 +137,7 @@ public abstract class BeanShellTest {
         
         beanshellSetup();
         
-        if (fileName != null) {
-            beanshell.source(fileName);
-        }
-        bshThis = (bsh.This)beanshell.eval(";return this;");
+        exec();
     }
 
     @After
@@ -155,10 +152,27 @@ public abstract class BeanShellTest {
      * script is executed.
      * 
      */
-    protected void beanshellSetup() throws Exception {
-        
-    }
+    protected void beanshellSetup() throws Exception { }
     
+    /**
+     * Sources the beanshell script and returns the object result of the 
+     * execution. It update <code>bshThis</code>.
+     * 
+     * @return the object result of the execution of the beanshell script
+     * @throws Exception in case of errors
+     * 
+     */
+    protected Object exec() throws Exception {
+        Object ret = null;
+
+        if (fileName != null) {
+            ret = beanshell.source(fileName);
+            bshThis = (bsh.This)beanshell.eval(";return this;");
+        }
+
+        return ret;
+    }
+
     /**
      * Exec the given method calling it on the configured beanshell file.
      * This version is useful for methods that returns a String and that have just
