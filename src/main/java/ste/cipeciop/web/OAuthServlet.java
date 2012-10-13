@@ -279,7 +279,7 @@ public class OAuthServlet extends HttpServlet implements Constants {
                     values.toArray(arr);
                     attributes.put(alias, StringUtils.join(arr));
                     if (ALIAS_EMAIL.equals(alias)) {
-                        attributes.put(ALIAS_USER_ID, StringUtils.substringBefore(arr[0], "@"));
+                        attributes.put(ALIAS_USER_ID, arr[0]);
                     }
                 }
             }
