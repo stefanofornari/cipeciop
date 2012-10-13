@@ -38,6 +38,7 @@ public class CipTest {
     
     public static final String TEST_NEW_CHIP_TXT  = "thi is a new cip";
     public static final String TEST_FROM1 = "stefano_fornari";
+    public static final String TEST_TO1 = "someone";
     
     public CipTest() {
     }
@@ -96,12 +97,28 @@ public class CipTest {
     }
     
     @Test
-    public void toAString() {
+    //
+    // It cannot be called toString as it is altready a method of the class
+    //
+    public void toText() {
         Cip cip = new Cip();
         
-        assertEquals("", cip.toString());
+        assertTrue(cip.toString().contains("From null"));
+        assertTrue(cip.toString().contains("to null"));
         
         cip = new Cip(TEST_NEW_CHIP_TXT);
-        assertEquals(TEST_NEW_CHIP_TXT, cip.toString());
+        assertTrue(cip.toString().contains(TEST_NEW_CHIP_TXT));
+        assertTrue(cip.toString().contains("From null"));
+        assertTrue(cip.toString().contains("to null"));
+        
+        cip.setTo(TEST_TO1);
+        assertTrue(cip.toString().contains(TEST_NEW_CHIP_TXT));
+        assertTrue(cip.toString().contains("From null"));
+        assertFalse(cip.toString().contains("to null"));
+        
+        cip.setFrom(TEST_FROM1);
+        assertTrue(cip.toString().contains(TEST_NEW_CHIP_TXT));
+        assertFalse(cip.toString().contains("From null"));
+        assertFalse(cip.toString().contains("to null"));
     }
 }

@@ -167,8 +167,9 @@ public abstract class BeanShellTest {
 
         if (fileName != null) {
             ret = beanshell.source(fileName);
-            bshThis = (bsh.This)beanshell.eval(";return this;");
         }
+        
+        bshThis = (bsh.This)beanshell.eval(";return this;");
 
         return ret;
     }

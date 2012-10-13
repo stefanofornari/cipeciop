@@ -21,10 +21,7 @@
  */
 package tests.ste.cipeciop;
 
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.access.DataContext;
 import java.util.List;
-import org.apache.cayenne.query.SQLTemplate;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -100,7 +97,7 @@ public class CipCiopManagerTest {
     }
     
     @Test
-    public void chipsFromUser() {
+    public void chipsForUser() {
         CipCiopManager ccm = new CipCiopManager();
         
         Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
@@ -118,12 +115,12 @@ public class CipCiopManagerTest {
             // OK
         }
         
-        List cips = ccm.getCips(CipCiopTestUtil.TEST_FROM1);
+        List<Cip> cips = ccm.getCips(CipCiopTestUtil.TEST_FROM1);
         assertEquals(1, cips.size());
         assertTrue(cips.get(0).toString().contains(CipCiopTestUtil.TEST_FROM1));
         
-        cips = ccm.getCips(CipCiopTestUtil.TEST_FROM2);
+        cips = ccm.getCips(CipCiopTestUtil.TEST_TO1);
         assertEquals(1, cips.size());
-        assertTrue(cips.get(0).toString().contains(CipCiopTestUtil.TEST_FROM2));
+        assertEquals(CipCiopTestUtil.TEST_TO1, cips.get(0).getTo());
     }
 }

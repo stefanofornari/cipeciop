@@ -74,19 +74,19 @@ public class CipCiopManager {
     }
     
     /**
-     * Returns the collection of cips for the given sender
+     * Returns the collection of cips for the given user
      * 
-     * @param from the sender user id - not null
+     * @param to the recipient user id - not null
      * 
      * @return the collection of chips
      */
-    public List<Cip> getCips(String from) {
-        if (from == null) {
+    public List<Cip> getCips(String user) {
+        if (user == null) {
             throw new NullPointerException("from cannot be null");
         }
-        Expression where = Expression.fromString("from = $from");
+        Expression where = Expression.fromString("to = $to");
         HashMap<String,String> params = new HashMap<String, String>();
-        params.put("from", from);
+        params.put("to", user);
         SelectQuery proto = new SelectQuery(Cip.class, where);
         
         return context.performQuery(proto.queryWithParameters(params));

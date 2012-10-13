@@ -28,8 +28,7 @@ public class GetUserNameTest extends BeanShellTest implements Constants {
     public static final String TEST_USERID = "userid@yahoo.com";
     
     public GetUserNameTest() throws Exception {
-        setCommandsDirectory("src/main/webapp/WEB-INF/commands");
-        //setBshFileName("src/main/webapp/controllers/cip.bsh");
+        setBshFileName("src/main/webapp/WEB-INF/commands/getUserName.bsh");
     }
     
     @Override
@@ -38,16 +37,20 @@ public class GetUserNameTest extends BeanShellTest implements Constants {
         HttpServletRequestMock r = new HttpServletRequestMock(context);
         
         HttpSession s = r.getSession();
-        Map attributes = new HashMap();
-        attributes.put("userid", TEST_USERID);
-        s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
-        
         beanshell.set("session", s);
     }
 
     @Test
-    public void cipciopManagerExists() throws Exception {
-        String userid = (String)beanshell.eval("getUserName()");
+    public void getUserName() throws Throwable {
+        String userid = (String)exec("getUserName");
+        assertNull(userid);
+        
+        HttpSession s = (HttpSession)beanshell.get("session");
+        Map attributes = new HashMap();
+        attributes.put("userid", TEST_USERID);
+        s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
+        
+        userid = (String)exec("getUserName");
         assertEquals(TEST_USERID, userid);
     }
 

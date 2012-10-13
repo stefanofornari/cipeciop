@@ -52,7 +52,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         
         HttpSession s = r.getSession();
         Map attributes = new HashMap();
-        attributes.put("userid", CipCiopTestUtil.TEST_FROM1);
+        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_FROM1);
         s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
         
         beanshell.set("request", r);
@@ -69,36 +69,50 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     // I should get only one cip out of 2
     //
     public void myCips() throws Exception {
-        List cips = (List)beanshell.get("cips");
+        List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         
         assertEquals(1, cips.size());
     }
     
     @Test
+    public void noSession() throws Throwable {
+        HttpSession s = (HttpSession)beanshell.get("session");
+        s.setAttribute(ATTRIBUTE_IDENTIFIER, null);
+        
+        exec();
+        
+        //
+        // Nothing to do, just no exceptions
+        //
+    }
+    
+    @Test
     public void addCip() throws Exception {
-        beanshell.set("to", CipCiopTestUtil.TEST_TO2);
+        //
+        // As TEST_FROM1 nothing changes
+        //
+        beanshell.set("to", CipCiopTestUtil.TEST_TO1);
         beanshell.set("cip", CipCiopTestUtil.TEST_TEXT2);
         
         exec();
         
-        List cips = (List)beanshell.get("cips");
-        assertEquals(2, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_FROM1, ((Cip)cips.get(0)).getFrom());
-        assertEquals(CipCiopTestUtil.TEST_FROM1, ((Cip)cips.get(1)).getFrom());
-        assertEquals(CipCiopTestUtil.TEST_TO2, ((Cip)cips.get(1)).getTo());
+        List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        assertEquals(1, cips.size());
         
+        //
+        // As TEST_FROM2 I have a new cip
+        //
+        HttpSession s = (HttpSession)beanshell.get("session");
+        Map attributes = (Map)s.getAttribute(ATTRIBUTE_IDENTIFIER);
+        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_FROM2);
         beanshell.set("to", CipCiopTestUtil.TEST_TO2);
         beanshell.set("cip", "some text");
         
         exec();
         
-        cips = (List)beanshell.get("cips");
-        assertEquals(3, cips.size());
-        
-        beanshell.set("to", "someotherto");
-        beanshell.set("cip", "some text");
-        
-        cips = (List)beanshell.get("cips");
-        assertEquals(3, cips.size());
+        cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        assertEquals(2, cips.size());
+        assertEquals(CipCiopTestUtil.TEST_FROM1, ((Cip)cips.get(1)).getFrom());
+        assertEquals(CipCiopTestUtil.TEST_TEXT2, ((Cip)cips.get(1)).getText());
     }
 }

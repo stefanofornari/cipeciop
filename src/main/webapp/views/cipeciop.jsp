@@ -44,13 +44,14 @@
                     
                     <form class="well form-inline" action="cip.bsh">
                         <div class="controls"><div class="input-append">
+                            <input name="to"/><br/>
                             <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea><span class="add-on"><i class="icon-user"></i></span>
                         </div></div>
                         <button type="submit" class="btn btn-primary btn-small">Cip</button>
                         <button type="submit" class="btn btn-success btn-small">Ciop</button> 
                     </form>
                 </div>
-                <c:forEach items="${ccm.cips}" var="cip">
+                <c:forEach items="${cips}" var="cip">
                 <div class="well">
                     <c:out value="${cip}"/>
                 </div>

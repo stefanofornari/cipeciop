@@ -68,7 +68,7 @@ public class Cip extends _Cip {
      */
     @Override
     public String toString() {
-        return getText();
+        return String.format("From %s to %s: %s", getFrom(), getTo(), getText());
     }  
     
     @Override
