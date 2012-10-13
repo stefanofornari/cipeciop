@@ -176,33 +176,6 @@ public abstract class BeanShellTest {
 
     /**
      * Exec the given method calling it on the configured beanshell file.
-     * This version is useful for methods that returns a String and that have just
-     * Strings as arguments.
-     * @param method the method to invoke
-     * @param args the arguments of the method
-     * @return the string returned by the invoked method
-     * @throws java.lang.Throwable if an error occurs
-     */
-    protected String exec(String method, String... args) throws Throwable {
-        Object o = null;
-
-        try {
-            o = bshThis.invokeMethod(method, args);
-        } catch (TargetError e) {
-            throw e.getTarget();
-        }
-
-        if (o == null) {
-            return null;
-        }
-        if (o == Primitive.NULL) {
-            return null;
-        }
-        return (String)o;
-    }
-
-    /**
-     * Exec the given method calling it on the configured beanshell file.
      * This version is useful for methods that returns an object and that have
      * not defined arguments.
      *
