@@ -1,0 +1,33 @@
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.query.SelectQuery;
+
+dump() {
+
+  //
+  // Cips from manager
+  //
+  print("");
+  print("In the manager");
+  print("--------------");
+  ccm = getCipCiopManager();
+
+  if (ccm != null) {
+    for (cip: ccm.cips) {
+      print("---"); print(cip); print("-"); 
+    }
+  }
+
+  //
+  // Cips from the database
+  //
+  print("");
+  print("In the database");
+  print("---------------"); 
+  ObjectContext cayenne = DataContext.createDataContext();
+  SelectQuery query = new SelectQuery(Cip.class);
+  for (cip: cayenne.performQuery(query)) {
+    print("---"); print(cip); print("-");
+  }
+
+}
