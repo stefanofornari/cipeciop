@@ -39,6 +39,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SQLTemplate;
 import ste.cipeciop.Cip;
+import ste.cipeciop.CipCiopManager;
 
 /**
  *
@@ -50,6 +51,8 @@ public class CipCiopTestUtil {
     public static final String TEST_FROM2 = "cipeciopd";
     public static final String TEST_TO1   = TEST_FROM2;
     public static final String TEST_TO2   = TEST_FROM1;
+    public static final String TEST_FROM3 = "cipeciopa";
+    public static final String TEST_TO3 = TEST_FROM1;
     public static final String TEST_TEXT1 = "message from " 
                                           + TEST_FROM1
                                           + " to "
@@ -60,10 +63,33 @@ public class CipCiopTestUtil {
                                           + " to "
                                           + TEST_TO2
                                           ;
+    public static final String TEST_TEXT3 = "message from " 
+                                          + TEST_FROM3
+                                          + " to "
+                                          + TEST_TO3
+                                          ;
     
     public static void deleteAllCips() {
         ObjectContext cayenne = DataContext.createDataContext();
         cayenne.performQuery(new SQLTemplate(Cip.class, "delete from cip"));
         cayenne.commitChanges();
+    }
+    
+    public static CipCiopManager createCCM() {
+        CipCiopManager ccm = new CipCiopManager();
+        
+        Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
+        cip.setFrom(CipCiopTestUtil.TEST_FROM1); cip.setTo(CipCiopTestUtil.TEST_TO1);
+        ccm.addCip(cip);
+        
+        cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
+        cip.setFrom(CipCiopTestUtil.TEST_FROM2); cip.setTo(CipCiopTestUtil.TEST_TO2);
+        ccm.addCip(cip);
+        
+        cip = new Cip(CipCiopTestUtil.TEST_TEXT3);
+        cip.setFrom(CipCiopTestUtil.TEST_FROM3); cip.setTo(CipCiopTestUtil.TEST_TO3);
+        ccm.addCip(cip);
+        
+        return ccm;
     }
 }

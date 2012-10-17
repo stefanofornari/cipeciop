@@ -84,9 +84,11 @@ public class CipCiopManager {
         if (user == null) {
             throw new NullPointerException("from cannot be null");
         }
-        Expression where = Expression.fromString("to = $to");
+        Expression where = Expression.fromString("to=$to or from=$from");
         HashMap<String,String> params = new HashMap<String, String>();
         params.put("to", user);
+        params.put("from", user);
+        
         SelectQuery proto = new SelectQuery(Cip.class, where);
         
         return context.performQuery(proto.queryWithParameters(params));

@@ -42,11 +42,14 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         
         CipCiopManager ccm = new CipCiopManager();
         
-        Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2);
+        Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
+            cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2),
+            cip3 = new Cip(CipCiopTestUtil.TEST_TEXT3);
         cip1.setFrom(CipCiopTestUtil.TEST_FROM1); cip1.setTo(CipCiopTestUtil.TEST_TO1);
         cip2.setFrom(CipCiopTestUtil.TEST_FROM2); cip2.setTo(CipCiopTestUtil.TEST_TO2);
+        cip3.setFrom(CipCiopTestUtil.TEST_FROM3); cip3.setTo(CipCiopTestUtil.TEST_TO3);
         
-        ccm.addCip(cip1); ccm.addCip(cip2);
+        ccm.addCip(cip1); ccm.addCip(cip2); ccm.addCip(cip3);
         
         context.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
         
@@ -71,7 +74,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     public void myCips() throws Exception {
         List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         
-        assertEquals(1, cips.size());
+        assertEquals(3, cips.size());
     }
     
     @Test
@@ -97,7 +100,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         exec();
         
         List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
-        assertEquals(1, cips.size());
+        assertEquals(4, cips.size());
         
         //
         // As TEST_FROM2 I have a new cip
@@ -105,14 +108,12 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         HttpSession s = (HttpSession)beanshell.get("session");
         Map attributes = (Map)s.getAttribute(ATTRIBUTE_IDENTIFIER);
         attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_FROM2);
-        beanshell.set("to", CipCiopTestUtil.TEST_TO2);
-        beanshell.set("cip", "some text");
         
         exec();
         
         cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
-        assertEquals(2, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_FROM1, ((Cip)cips.get(1)).getFrom());
-        assertEquals(CipCiopTestUtil.TEST_TEXT2, ((Cip)cips.get(1)).getText());
+        assertEquals(3, cips.size());
+        assertEquals(CipCiopTestUtil.TEST_FROM1, ((Cip)cips.get(2)).getFrom());
+        assertEquals(CipCiopTestUtil.TEST_TEXT2, ((Cip)cips.get(2)).getText());
     }
 }
