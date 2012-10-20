@@ -6,3 +6,6 @@
 *.ear
 /target/
 /openid4java/target/
+/catalog.xml
+/derby.log
+/nb-configuration.xml
