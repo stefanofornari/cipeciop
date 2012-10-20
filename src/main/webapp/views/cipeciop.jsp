@@ -33,12 +33,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script src="autosize/jquery.autosize-min.js"W></script>
+        <meta name="userid" content="<c:out value="${openid_user['userid']}"/>"/>
     </head>  
     <body>
-        <c:out value="${openid_user['userid']}"/>
-
     </div>
-        <div style="display: table; height: 400px; width: 300px; margin: auto;">
+        <div style="display: table; height: 400px; width: 280px; margin: auto;">
             <div style="display: table-cell; vertical-align: middle;">
                 <div id="main" class="pagination-right">
                     <c:if test="${empty openid_user}"><a href="auth?openid=https%3A%2F%2Fme.yahoo.com">login</a></c:if>
@@ -51,12 +50,13 @@
                         </div></div>
                         <input type="hidden" name="to"/>
                         <button type="submit" class="btn btn-primary btn-small" onclick="$('input[name=to]').val($(tovalue).text());">Cip</button>
-                        <button type="submit" class="btn btn-success btn-small">Ciop</button>
+                        <%--<button type="submit" class="btn btn-success btn-small">Ciop</button>--%>
                     </form>
                 </div>
                 <c:forEach items="${cips}" var="cip">
                 <div class="well">
-                    <c:out value="${cip}"/>
+                    <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong><p>
+                    <c:out value="${cip.text}"/>
                 </div>
                 </c:forEach>
             </div>
