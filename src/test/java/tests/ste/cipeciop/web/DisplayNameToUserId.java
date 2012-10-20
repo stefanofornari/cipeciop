@@ -23,35 +23,47 @@ import tests.ste.cipeciop.CipCiopManagerTest;
  *
  * @author ste
  */
-public class GetUserNameTest extends BeanShellTest implements Constants {
+public class DisplayNameToUserId extends BeanShellTest implements Constants {
     
-    public static final String TEST_USERID = "userid@yahoo.com";
+    public static final String TEST_USERNAME1 = "userid@yahoo.com";
+    public static final String TEST_USERNAME2 = "<userid>";
+    public static final String TEST_USERNAME3 = "<userid>userid@yahoo.com";
     
-    public GetUserNameTest() throws Exception {
-        setBshFileName("src/main/webapp/WEB-INF/commands/getUserName.bsh");
+    public DisplayNameToUserId() throws Exception {
+        setCommandsDirectory("src/main/webapp/WEB-INF/commands");
+        setBshFileName("src/main/webapp/WEB-INF/commands/displayNameToUserId.bsh");
     }
     
     @Override
     protected void beanshellSetup() throws Exception {
-        ServletContextMock context = new ServletContextMock();
-        HttpServletRequestMock r = new HttpServletRequestMock(context);
-        
-        HttpSession s = r.getSession();
-        beanshell.set("session", s);
     }
 
     @Test
-    public void getUserName() throws Throwable {
-        String userid = (String)exec("getUserName");
+    public void voidAndEmpty() throws Throwable {
+        String userid = (String)exec("displayNameToUserId", (String)null);
         assertNull(userid);
         
-        HttpSession s = (HttpSession)beanshell.get("session");
-        Map attributes = new HashMap();
-        attributes.put("userid", TEST_USERID);
-        s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
+        userid = (String)exec("displayNameToUserId", "");
         
-        userid = (String)exec("getUserName");
-        assertEquals(TEST_USERID, userid);
+        assertNull(userid);
+    }
+    
+    @Test
+    public void idOnly() throws Throwable {
+        String userid = (String)exec("displayNameToUserId", TEST_USERNAME1);
+        assertEquals(TEST_USERNAME1, userid);
+    }
+    
+    @Test
+    public void displayOnly() throws Throwable {
+        String userid = (String)exec("displayNameToUserId", TEST_USERNAME2);
+        assertEquals(TEST_USERNAME2, userid);
+    }
+    
+    @Test
+    public void idAndDisplay() throws Throwable {
+        String userid = (String)exec("displayNameToUserId", TEST_USERNAME3);
+        assertEquals(TEST_USERNAME1, userid);
     }
 
 }

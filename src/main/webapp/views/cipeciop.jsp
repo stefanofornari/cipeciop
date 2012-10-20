@@ -29,13 +29,15 @@
     <head>   
         <title>Cip&AMP;Ciop</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script src="autosize/jquery.autosize-min.js"W></script>
     </head>  
     <body>
         <c:out value="${openid_user['userid']}"/>
-        
+
+    </div>
         <div style="display: table; height: 400px; width: 300px; margin: auto;">
             <div style="display: table-cell; vertical-align: middle;">
                 <div id="main" class="pagination-right">
@@ -44,11 +46,12 @@
                     
                     <form class="well form-inline" action="cip.bsh">
                         <div class="controls"><div class="input-append">
-                            <input name="to"/><br/>
-                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea><span class="add-on"><i class="icon-user"></i></span>
+                            <%@ include file="/views/friends.jsp" %>
+                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea>
                         </div></div>
-                        <button type="submit" class="btn btn-primary btn-small">Cip</button>
-                        <button type="submit" class="btn btn-success btn-small">Ciop</button> 
+                        <input type="hidden" name="to"/>
+                        <button type="submit" class="btn btn-primary btn-small" onclick="$('input[name=to]').val($(tovalue).text());">Cip</button>
+                        <button type="submit" class="btn btn-success btn-small">Ciop</button>
                     </form>
                 </div>
                 <c:forEach items="${cips}" var="cip">
@@ -64,4 +67,5 @@
             $('textarea').autosize();  
         });
     </script>
+     <script src="bootstrap/js/bootstrap.js"></script>
 </html> 

@@ -1,5 +1,23 @@
-getUserName() {
-  username = session.getAttribute(ste.cipeciop.Constants.ATTRIBUTE_IDENTIFIER);
+import org.apache.commons.lang.StringUtils;
 
-  return (username != null) ? username.get("userid") : null;
+getFriends() {
+  friends = session.getAttribute(ste.cipeciop.Constants.ATTRIBUTE_FRIENDS);
+
+  print("CHECK getFriends (" + '/' + getUserName() + ".properties"+")");
+  if (friends == null) {
+    friendlist = new Properties();
+    in = this.getClass().getResourceAsStream('/' + getUserName() + ".properties");
+
+    if (in == null) {
+      print("FRIENDS NOT FOUND!");
+      return new String[0];
+    }
+
+    friendlist.load(in);
+
+    friends = StringUtils.split(friendlist.get("friends"), ',');
+    session.setAttribute(ste.cipeciop.Constants.ATTRIBUTE_FRIENDS, friends);
+  }
+
+  return friends;
 }

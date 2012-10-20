@@ -1,5 +1,5 @@
 getUserName() {
-  username = session.getAttribute(ste.cipeciop.Constants.ATTRIBUTE_IDENTIFIER);
+  user = session.getAttribute(ste.cipeciop.Constants.ATTRIBUTE_IDENTIFIER);
 
-  return (username != null) ? username.get("userid") : null;
+  return (user != null) ? user.get("userid") : null;
 }

@@ -10,25 +10,23 @@ import        org.junit.Test;
 import ste.cipeciop.Constants;
 import com.funambol.tools.test.BeanShellTest;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Properties;
 import javax.servlet.http.HttpSession;
-import ste.cipeciop.Cip;
-import ste.cipeciop.CipCiopManager;
+import org.apache.commons.lang.StringUtils;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import ste.cipeciop.test.web.mock.ServletContextMock;
-import tests.ste.cipeciop.CipCiopManagerTest;
 
 /**
  *
  * @author ste
  */
-public class GetUserNameTest extends BeanShellTest implements Constants {
+public class GetFriendsTest extends BeanShellTest implements Constants {
     
-    public static final String TEST_USERID = "userid@yahoo.com";
+    Properties one, two, three;
     
-    public GetUserNameTest() throws Exception {
-        setBshFileName("src/main/webapp/WEB-INF/commands/getUserName.bsh");
+    public GetFriendsTest() throws Exception {
+        setCommandsDirectory("src/main/webapp/WEB-INF/commands");
+        setBshFileName("src/main/webapp/WEB-INF/commands/getFriends.bsh");
     }
     
     @Override
@@ -38,20 +36,67 @@ public class GetUserNameTest extends BeanShellTest implements Constants {
         
         HttpSession s = r.getSession();
         beanshell.set("session", s);
+        
+        one = new Properties(); 
+        one.load(this.getClass().getResourceAsStream("/one@yahoo.com.properties"));
+        
+        two = new Properties(); 
+        two.load(this.getClass().getResourceAsStream("/two@yahoo.com.properties"));
+        
+        three = new Properties(); 
+        three.load(this.getClass().getResourceAsStream("/three@yahoo.com.properties"));
     }
 
     @Test
-    public void getUserName() throws Throwable {
-        String userid = (String)exec("getUserName");
-        assertNull(userid);
-        
+    public void getFriendsForOne() throws Throwable {
         HttpSession s = (HttpSession)beanshell.get("session");
-        Map attributes = new HashMap();
-        attributes.put("userid", TEST_USERID);
-        s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
         
-        userid = (String)exec("getUserName");
-        assertEquals(TEST_USERID, userid);
+        HashMap id = new HashMap();
+        id.put("userid", "one@yahoo.com");
+        s.setAttribute(ATTRIBUTE_IDENTIFIER, id);
+        
+        //
+        // get the friends the first time (i.e. from there persisted list)
+        //
+        String[] friends = (String[])exec("getFriends");
+        assertNotNull(friends);
+        assertEquals(2, friends.length);
+        assertEquals(one.get("friends"), StringUtils.join(friends, ','));
+        
+        id = new HashMap();
+        id.put("userid", "two@yahoo.com");
+        s.setAttribute(ATTRIBUTE_IDENTIFIER, id);
+        
+        assertNotNull(((HttpSession)beanshell.get("session")).getAttribute(ATTRIBUTE_FRIENDS));
+
+    }
+    
+    @Test
+    public void getFriendsForTwo() throws Throwable {
+        HttpSession s = (HttpSession)beanshell.get("session");
+        
+        HashMap id = new HashMap();
+        id.put("userid", "two@yahoo.com");
+        s.setAttribute(ATTRIBUTE_IDENTIFIER, id);
+
+        String[] friends = (String[])exec("getFriends");
+        assertNotNull(friends);
+        assertEquals(1, friends.length);
+        assertEquals(two.get("friends"), friends[0]);
+    }
+    
+    
+    @Test
+    public void getNoFriendList() throws Throwable {
+        HttpSession s = (HttpSession)beanshell.get("session");
+        
+        HashMap id = new HashMap();
+        id.put("userid", "none@yahoo.com");
+        s.setAttribute(ATTRIBUTE_IDENTIFIER, id);
+
+        String[] friends = (String[])exec("getFriends");
+        assertNotNull(friends);
+        assertEquals(0, friends.length);
     }
 
 }

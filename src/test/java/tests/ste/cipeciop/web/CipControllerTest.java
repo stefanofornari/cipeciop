@@ -116,4 +116,12 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         assertEquals(CipCiopTestUtil.TEST_FROM1, ((Cip)cips.get(2)).getFrom());
         assertEquals(CipCiopTestUtil.TEST_TEXT2, ((Cip)cips.get(2)).getText());
     }
+    
+    @Test
+    public void friendsAreAvailable() throws Throwable {
+        HttpSession s = (HttpSession)beanshell.get("session");
+        s.setAttribute(ATTRIBUTE_FRIENDS, null);
+        exec();
+        assertNotNull(s.getAttribute(ATTRIBUTE_FRIENDS));
+    } 
 }

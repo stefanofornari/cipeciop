@@ -47,8 +47,8 @@ import ste.cipeciop.CipCiopManager;
  */
 public class CipCiopTestUtil {
     
-    public static final String TEST_FROM1 = "stefano_fornari";
-    public static final String TEST_FROM2 = "cipeciopd";
+    public static final String TEST_FROM1 = "stefano_fornari@yahoo.com";
+    public static final String TEST_FROM2 = "cipeciopd@yahoo.com";
     public static final String TEST_TO1   = TEST_FROM2;
     public static final String TEST_TO2   = TEST_FROM1;
     public static final String TEST_FROM3 = "cipeciopa";
