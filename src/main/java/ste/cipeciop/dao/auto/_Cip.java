@@ -11,6 +11,7 @@ import org.apache.cayenne.CayenneDataObject;
 public abstract class _Cip extends CayenneDataObject {
 
     public static final String FROM_PROPERTY = "from";
+    public static final String ID_PROPERTY = "id";
     public static final String TEXT_PROPERTY = "text";
     public static final String TO_PROPERTY = "to";
 
@@ -21,6 +22,13 @@ public abstract class _Cip extends CayenneDataObject {
     }
     public String getFrom() {
         return (String)readProperty("from");
+    }
+
+    public void setId(Integer id) {
+        writeProperty("id", id);
+    }
+    public Integer getId() {
+        return (Integer)readProperty("id");
     }
 
     public void setText(String text) {
