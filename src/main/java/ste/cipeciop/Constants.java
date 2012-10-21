@@ -37,4 +37,8 @@ public interface Constants {
     public final static String ALIAS_EMAIL   = "email";
     public final static String ALIAS_USER_ID = "userid";
     
+    public final static String AJAX_ACTION = "action";
+    public final static String AJAX_ACTION_DELETE = "delete";
+    public final static String AJAX_PARAM_ID = "id";
+    
 }

@@ -23,9 +23,12 @@ package ste.cipeciop;
 
 import java.util.HashMap;
 import java.util.List;
+import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 
 /**
@@ -92,5 +95,28 @@ public class CipCiopManager {
         SelectQuery proto = new SelectQuery(Cip.class, where);
         
         return context.performQuery(proto.queryWithParameters(params));
+    }
+    
+    /**
+     * Deletes the Cip with the given id. It returns <code>true</code> if the
+     * cip existed, <code>false</code> otherwise.
+     * 
+     * @param id cip id
+     * 
+     * @return  <code>true</code> if the cip existed, <code>false</code> otherwise
+     */
+    public boolean deleteCip(Integer id) {
+        ObjectIdQuery q = new ObjectIdQuery(
+                              new ObjectId("Cip", Cip.ID_PK_COLUMN, id)
+                          );
+        Cip c = (Cip)DataObjectUtils.objectForQuery(context, q);
+        
+        if (c != null) {
+            context.deleteObject(c);
+            context.commitChanges();
+            return true;
+        }
+        
+        return false;
     }
 }

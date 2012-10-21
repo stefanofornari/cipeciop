@@ -54,18 +54,33 @@
                     </form>
                 </div>
                 <c:forEach items="${cips}" var="cip">
-                <div class="well">
+                <div id="cip<c:out value='${cip.id}'/>" class="well">
+                    <button onclick="deleteCip(<c:out value='${cip.id}'/>);" class="close">&times;</button>
                     <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong><p>
                     <c:out value="${cip.text}"/>
                 </div>
                 </c:forEach>
             </div>
         </div>
+                    <div id="images">
+
+</div>
     </body>
+    
     <script lang="JavaScript">
         $(document).ready(function(){
             $('textarea').autosize();  
         });
+        
+        function deleteCip(id) {
+          $.getJSON(
+            '/cipeciop/ajax/cip.bsh?action=delete&id='+id,
+            {}, 
+            function(data) {
+              $('#cip'+id).hide('slow')
+            }
+          );
+        }
     </script>
-     <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
 </html> 

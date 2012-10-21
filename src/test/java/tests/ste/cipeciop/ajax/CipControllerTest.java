@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tests.ste.cipeciop.web;
+package tests.ste.cipeciop.ajax;
 
 import static org.junit.Assert.*;
 import        org.junit.Test;
@@ -17,7 +17,6 @@ import ste.cipeciop.Cip;
 import ste.cipeciop.CipCiopManager;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import ste.cipeciop.test.web.mock.ServletContextMock;
-import tests.ste.cipeciop.CipCiopManagerTest;
 import tests.ste.cipeciop.CipCiopTestUtil;
 
 /**
@@ -30,7 +29,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     
     public CipControllerTest() throws Exception {
         setCommandsDirectory("src/main/webapp/WEB-INF/commands");
-        setBshFileName("src/main/webapp/controllers/cip.bsh");
+        setBshFileName("src/main/webapp/ajax/controllers/cip.bsh");
     }
     
     @Override
@@ -63,65 +62,30 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     }
 
     @Test
-    public void cipciopManagerExists() throws Exception {
-        assertNotNull(beanshell.get("ccm"));
-    }
-    
-    @Test
-    //
-    // I should get only one cip out of 2
-    //
-    public void myCips() throws Exception {
-        List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
-        
-        assertEquals(3, cips.size());
-    }
-    
-    @Test
-    public void noSession() throws Throwable {
-        HttpSession s = (HttpSession)beanshell.get("session");
-        s.setAttribute(ATTRIBUTE_IDENTIFIER, null);
+    public void deleteCip() throws Exception {
+        //
+        // No id given, no cips deleted
+        //
+        beanshell.set(AJAX_ACTION, AJAX_ACTION_DELETE);
         
         exec();
         
+        CipCiopManager ccm  = 
+            (CipCiopManager)beanshell.eval("request.context.getAttribute(Constants.ATTRIBUTE_CIPCIOP_MANAGER)");
+        assertEquals(3, ccm.getCips().size());
+        
         //
-        // Nothing to do, just no exceptions
+        // now we delete one cip, the change should be reflected by ccm
         //
+        Cip cip = ccm.getCips().get(0);
+        beanshell.set(AJAX_PARAM_ID, String.valueOf(cip.getId()));
+        
+        exec();
+        
+        assertEquals(2, ccm.getCips().size());
+        assertFalse(cip.getId() == ccm.getCips().get(0).getId());
+        
     }
     
-    @Test
-    public void addCip() throws Exception {
-        //
-        // As TEST_FROM1 nothing changes
-        //
-        beanshell.set("to", CipCiopTestUtil.TEST_TO1);
-        beanshell.set("cip", CipCiopTestUtil.TEST_TEXT2);
-        
-        exec();
-        
-        List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
-        assertEquals(4, cips.size());
-        
-        //
-        // As TEST_FROM2 I have a new cip
-        //
-        HttpSession s = (HttpSession)beanshell.get("session");
-        Map attributes = (Map)s.getAttribute(ATTRIBUTE_IDENTIFIER);
-        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_FROM2);
-        
-        exec();
-        
-        cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
-        assertEquals(3, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_FROM1, ((Cip)cips.get(2)).getFrom());
-        assertEquals(CipCiopTestUtil.TEST_TEXT2, ((Cip)cips.get(2)).getText());
-    }
-    
-    @Test
-    public void friendsAreAvailable() throws Throwable {
-        HttpSession s = (HttpSession)beanshell.get("session");
-        s.setAttribute(ATTRIBUTE_FRIENDS, null);
-        exec();
-        assertNotNull(s.getAttribute(ATTRIBUTE_FRIENDS));
-    } 
+   
 }
