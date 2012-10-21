@@ -5,15 +5,17 @@
   project-version="3.0.0.1">
 	<property name="defaultPackage" value="ste.cipeciop.dao"/>
 	<db-entity name="cip">
-                <db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="recipient" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="sender" type="VARCHAR" isMandatory="true" length="100"/>
-                <db-attribute name="recipient" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="text" type="VARCHAR" isMandatory="true" length="1000"/>
+		<db-attribute name="when" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<obj-entity name="Cip" className="ste.cipeciop.Cip" dbEntityName="cip">
-                <obj-attribute name="id" type="java.lang.Integer" db-attribute-path="id"/>
 		<obj-attribute name="from" type="java.lang.String" db-attribute-path="sender"/>
+		<obj-attribute name="id" type="java.lang.Integer" db-attribute-path="id"/>
 		<obj-attribute name="text" type="java.lang.String" db-attribute-path="text"/>
 		<obj-attribute name="to" type="java.lang.String" db-attribute-path="recipient"/>
+		<obj-attribute name="when" type="long" db-attribute-path="when"/>
 	</obj-entity>
 </data-map>

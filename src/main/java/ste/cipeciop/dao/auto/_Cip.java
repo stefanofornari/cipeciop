@@ -14,6 +14,7 @@ public abstract class _Cip extends CayenneDataObject {
     public static final String ID_PROPERTY = "id";
     public static final String TEXT_PROPERTY = "text";
     public static final String TO_PROPERTY = "to";
+    public static final String WHEN_PROPERTY = "when";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -43,6 +44,14 @@ public abstract class _Cip extends CayenneDataObject {
     }
     public String getTo() {
         return (String)readProperty("to");
+    }
+
+    public void setWhen(long when) {
+        writeProperty("when", when);
+    }
+    public long getWhen() {
+        Object value = readProperty("when");
+        return (value != null) ? (Long) value : 0;
     }
 
 }
