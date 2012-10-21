@@ -23,7 +23,9 @@ package tests.ste.cipeciop.web;
 
 
 import java.lang.reflect.Field;
-import ste.cipeciop.test.web.mock.FilterConfigMock;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
 import ste.cipeciop.CipCiopManager;
 import ste.cipeciop.test.web.mock.ServletContextMock;
 import ste.cipeciop.test.web.mock.FilterChainMock;
@@ -35,6 +37,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ste.cipeciop.web.CipCiopFilter;
 import static org.junit.Assert.*;
+import ste.cipeciop.Constants;
+import tests.ste.cipeciop.CipCiopTestUtil;
 
 /**
  *
@@ -71,15 +75,21 @@ public class CipCiopFilterTest {
     }
     
     @Test
-    public void testInit() throws Exception {
+    public void testCCMCreation() throws Exception {
+        HttpServletRequestMock r = new HttpServletRequestMock(servletContext);
+        HttpSession s = r.getSession();
+        Map openid = new HashMap();
+        openid.put(Constants.ALIAS_USER_ID, CipCiopTestUtil.TEST_USER1);
+        s.setAttribute(Constants.ATTRIBUTE_IDENTIFIER, openid);
+        
         CipCiopManager ccm = 
-            (CipCiopManager)servletContext.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
+            (CipCiopManager)s.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
         
         assertNull(ccm); 
         
-        filter.init(new FilterConfigMock(servletContext));
+        filter.doFilter(r, null, new FilterChainMock());
         
-        ccm = (CipCiopManager)servletContext.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
+        ccm = (CipCiopManager)s.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
         assertNotNull(ccm);
     }
     

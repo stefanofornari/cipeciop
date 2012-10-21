@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import ste.cipeciop.CipCiopManager;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import ste.cipeciop.test.web.mock.ServletContextMock;
+import tests.ste.cipeciop.CipCiopTestUtil;
 
 /**
  *
@@ -30,11 +31,11 @@ public class GetCipCiopManagerTest extends BeanShellTest implements Constants {
     
     @Override
     protected void beanshellSetup() throws Exception {
-        ServletContextMock context = new ServletContextMock();
-        context.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, new CipCiopManager());
-        HttpServletRequestMock r = new HttpServletRequestMock(context);
+        HttpServletRequestMock r = new HttpServletRequestMock(new ServletContextMock());
+        r.getSession().setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, new CipCiopManager(CipCiopTestUtil.TEST_USER1));
         
         beanshell.set("request", r);
+        beanshell.set("session", r.getSession());
     }
 
     @Test

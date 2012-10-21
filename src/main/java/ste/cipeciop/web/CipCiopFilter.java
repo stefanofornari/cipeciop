@@ -23,6 +23,7 @@ package ste.cipeciop.web;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -50,12 +51,6 @@ public final class CipCiopFilter implements Filter, Constants {
 
     @Override
     public void init(FilterConfig config) throws ServletException {
-        CipCiopManager ccm = (CipCiopManager)config.getServletContext().getAttribute(ATTRIBUTE_CIPCIOP_MANAGER);
-
-        if (ccm == null) {
-            ccm = new CipCiopManager();
-            config.getServletContext().setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
-        }
     }
 
     @Override
@@ -66,12 +61,20 @@ public final class CipCiopFilter implements Filter, Constants {
         HttpServletResponse response = (HttpServletResponse)res;
         
         if (!request.getServletPath().equals("/auth")) {
-            Object openId = request.getSession().getAttribute(ATTRIBUTE_IDENTIFIER);
+            Map openId = (Map)request.getSession().getAttribute(ATTRIBUTE_IDENTIFIER);
 
             if (openId == null) {
                 String url = "auth?openid="
                            + URLEncoder.encode("https://me.yahoo.com", "UTF-8");
                 request.getRequestDispatcher(url).forward(request, response);
+                return;
+            }
+            
+            CipCiopManager ccm = (CipCiopManager)request.getServletContext().getAttribute(ATTRIBUTE_CIPCIOP_MANAGER);
+
+            if (ccm == null) {
+                ccm = new CipCiopManager((String)openId.get(ALIAS_USER_ID));
+                request.getSession().setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
             }
         }
 

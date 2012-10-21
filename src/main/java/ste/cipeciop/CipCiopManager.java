@@ -38,13 +38,37 @@ import org.apache.cayenne.query.SelectQuery;
  */
 public class CipCiopManager {
     
+    // ------------------------------------------------------------ Private data
+    
     private ObjectContext context;
+    private String userId;
+    
+    // ------------------------------------------------------------ Constructors
     
     /**
      * Creates a new CipCiopManager
      */
-    public CipCiopManager() {
+    protected CipCiopManager() {
         context = DataContext.createDataContext();
+    }
+    
+    /**
+     * Creates a new CipCiopManager for the given userid
+     * 
+     * @param userId the user id
+     */
+    public CipCiopManager(final String userId) {
+        this();
+        this.userId = userId;
+    }
+    
+    // ---------------------------------------------------------- Public methods
+    
+    /**
+     * @return the userId
+     */
+    public String getUserId() {
+        return userId;
     }
     
     /**
@@ -58,22 +82,13 @@ public class CipCiopManager {
         if (cip == null) {
             throw new NullPointerException("cip cannot be null");
         }
-        Cip cipDAO = context.newObject(Cip.class);
-        cipDAO.setFrom(cip.getFrom());
-        cipDAO.setText(cip.getText());
-        cipDAO.setTo(cip.getTo());
+        Cip c = context.newObject(Cip.class);
+        c.setFrom(userId);
+        c.setText(cip.getText());
+        c.setTo(cip.getTo());
+        c.setWhen(System.currentTimeMillis());
         
         context.commitChanges();
-    }
-    
-    /**
-     * Returns the collection of cips
-     * 
-     * @return the collection of chips
-     */
-    public List<Cip> getCips() {
-        SelectQuery query = new SelectQuery(Cip.class);
-        return context.performQuery(query);
     }
     
     /**
@@ -83,14 +98,10 @@ public class CipCiopManager {
      * 
      * @return the collection of chips
      */
-    public List<Cip> getCips(String user) {
-        if (user == null) {
-            throw new NullPointerException("from cannot be null");
-        }
-        Expression where = Expression.fromString("to=$to or from=$from");
+    public List<Cip> getCips() {
+        Expression where = Expression.fromString("from=$from");
         HashMap<String,String> params = new HashMap<String, String>();
-        params.put("to", user);
-        params.put("from", user);
+        params.put("from", userId);
         
         SelectQuery proto = new SelectQuery(Cip.class, where);
         
@@ -119,4 +130,6 @@ public class CipCiopManager {
         
         return false;
     }
+
+
 }

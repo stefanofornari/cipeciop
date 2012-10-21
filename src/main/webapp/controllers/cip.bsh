@@ -19,13 +19,13 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301 USA.
  */
+import java.util.ArrayList;
 
 import ste.cipeciop.Cip;
 
 void addCip() {
   c = new Cip(cip);
   c.to = displayNameToUserId(to);
-  c.from = username;
   ccm.addCip(c);
 }
 
@@ -38,7 +38,10 @@ if ((username = getUserName()) != null) {
         addCip();
     }
 
-    request.setAttribute("cips", ccm.getCips(username));
+    cips = ccm.getCips();
+    cips.addAll(ccm.getCiops());
+
+    request.setAttribute("cips", cips);
 }
 
 dump();

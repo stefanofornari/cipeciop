@@ -59,29 +59,17 @@ public class CipCiopManagerTest {
     
     @Test 
     public void createCCM() {
-        CipCiopManager ccm = new CipCiopManager();
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
         
+        assertEquals(CipCiopTestUtil.TEST_USER1, ccm.getUserId());
         assertEquals(0, ccm.getCips().size());
     }
     
     @Test
     public void addCips() {
-        CipCiopManager ccm = new CipCiopManager();
-        
-        Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
-            cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip1.setFrom(CipCiopTestUtil.TEST_FROM1); cip1.setTo(CipCiopTestUtil.TEST_TO1);
-        cip2.setFrom(CipCiopTestUtil.TEST_FROM2); cip2.setTo(CipCiopTestUtil.TEST_TO2);
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
         
         assertEquals(0, ccm.getCips().size());
-        
-        ccm.addCip(cip1); 
-        assertEquals(1, ccm.getCips().size());
-        assertEquals(cip1, ccm.getCips().get(0));
-        
-        ccm.addCip(cip2);
-        assertEquals(2, ccm.getCips().size());
-        assertEquals(cip2, ccm.getCips().get(1));
         
         //
         // Not null
@@ -94,38 +82,87 @@ public class CipCiopManagerTest {
             // OK
             //
         }
+        
+        Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
+            cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2);
+        cip1.setFrom(CipCiopTestUtil.TEST_USER1); cip1.setTo(CipCiopTestUtil.TEST_USER2);
+        cip2.setFrom(CipCiopTestUtil.TEST_USER1); cip2.setTo(CipCiopTestUtil.TEST_USER3);
+        
+        ccm.addCip(cip1); 
+        List<Cip> cips = ccm.getCips();
+        assertEquals(1, cips.size());
+        assertEquals(cip1, cips.get(0));
+        
+        ccm.addCip(cip2);
+        cips = ccm.getCips();
+        assertEquals(2, cips.size());
+        assertEquals(cip2, cips.get(1));
+        
+        assertTrue(cips.get(0).getWhen() < cips.get(1).getWhen());
     }
     
     @Test
-    public void chipsForUser() {
-        CipCiopManager ccm = CipCiopTestUtil.createCCM();
+    public void addChipWithDifferentFrom() {
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER2);
         
-        try {
-            ccm.getCips(null);
-            fail("from not null must be checked");
-        } catch (NullPointerException e) {
-            // OK
-        }
+        //
+        // From shall be always the same as the user set in the CCM
+        //
+        Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1),
+            cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2);
+        cip1.setFrom(CipCiopTestUtil.TEST_USER2); cip1.setTo(CipCiopTestUtil.TEST_USER1);
+        cip2.setFrom(CipCiopTestUtil.TEST_USER3); cip2.setTo(CipCiopTestUtil.TEST_USER1);
+        ccm.addCip(cip1); ccm.addCip(cip2);
         
-        List<Cip> cips = ccm.getCips(CipCiopTestUtil.TEST_FROM1);
+        List<Cip> cips = ccm.getCips();
+        assertEquals(CipCiopTestUtil.TEST_USER2, cips.get(0).getFrom());
+        assertEquals(CipCiopTestUtil.TEST_USER2, cips.get(1).getFrom());
+    }
+    
+    @Test
+    public void cipsForUser() {
+        CipCiopManager ccm = CipCiopTestUtil.createCCMForUser1();
+                
+        List<Cip> cips = ccm.getCips();
         assertEquals(3, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_TO1, cips.get(0).getTo());
-        assertEquals(CipCiopTestUtil.TEST_TO2, cips.get(1).getTo());
-        assertEquals(CipCiopTestUtil.TEST_TO3, cips.get(2).getTo());
+        assertEquals(CipCiopTestUtil.TEST_USER2, cips.get(0).getTo());
+        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(1).getTo());
+        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(2).getTo());
         
-        cips = ccm.getCips(CipCiopTestUtil.TEST_FROM3);
-        assertEquals(1, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_FROM3, cips.get(0).getFrom());
+        ccm = CipCiopTestUtil.createCCMForUser2();
+        
+        cips = ccm.getCips();
+        assertEquals(2, cips.size());
+        assertEquals(CipCiopTestUtil.TEST_USER1, cips.get(0).getTo());
+        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(1).getTo());
+    }
+    
+    @Test
+    public void ciopsForUser() {
+        CipCiopManager ccm = CipCiopTestUtil.createCCMForUser1();
+                
+        List<Cip> cips = ccm.getCips();
+        assertEquals(3, cips.size());
+        assertEquals(CipCiopTestUtil.TEST_USER2, cips.get(0).getTo());
+        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(1).getTo());
+        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(2).getTo());
+        
+        ccm = CipCiopTestUtil.createCCMForUser2();
+        
+        cips = ccm.getCips();
+        assertEquals(2, cips.size());
+        assertEquals(CipCiopTestUtil.TEST_USER1, cips.get(0).getTo());
+        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(1).getTo());
     }
     
     @Test
     public void deleteCip() throws Exception {
-        CipCiopManager ccm = new CipCiopManager();
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
         
         Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
             cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip1.setFrom(CipCiopTestUtil.TEST_FROM1); cip1.setTo(CipCiopTestUtil.TEST_TO1);
-        cip2.setFrom(CipCiopTestUtil.TEST_FROM2); cip2.setTo(CipCiopTestUtil.TEST_TO2);
+        cip1.setFrom(CipCiopTestUtil.TEST_USER1); cip1.setTo(CipCiopTestUtil.TEST_USER2);
+        cip2.setFrom(CipCiopTestUtil.TEST_USER2); cip2.setTo(CipCiopTestUtil.TEST_USER1);
         ccm.addCip(cip1); ccm.addCip(cip2);
         
         //

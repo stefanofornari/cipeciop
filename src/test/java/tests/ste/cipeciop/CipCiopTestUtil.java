@@ -47,27 +47,12 @@ import ste.cipeciop.CipCiopManager;
  */
 public class CipCiopTestUtil {
     
-    public static final String TEST_FROM1 = "stefano_fornari@yahoo.com";
-    public static final String TEST_FROM2 = "cipeciopd@yahoo.com";
-    public static final String TEST_TO1   = TEST_FROM2;
-    public static final String TEST_TO2   = TEST_FROM1;
-    public static final String TEST_FROM3 = "cipeciopa";
-    public static final String TEST_TO3 = TEST_FROM1;
-    public static final String TEST_TEXT1 = "message from " 
-                                          + TEST_FROM1
-                                          + " to "
-                                          + TEST_TO1
-                                          ;
-    public static final String TEST_TEXT2 = "message from " 
-                                          + TEST_FROM2
-                                          + " to "
-                                          + TEST_TO2
-                                          ;
-    public static final String TEST_TEXT3 = "message from " 
-                                          + TEST_FROM3
-                                          + " to "
-                                          + TEST_TO3
-                                          ;
+    public static final String TEST_USER1 = "stefano_fornari@yahoo.com";
+    public static final String TEST_USER2 = "cipeciopd@yahoo.com";
+    public static final String TEST_USER3 = "cipeciopa@yahoo.com";
+    public static final String TEST_TEXT1 = "message test one";
+    public static final String TEST_TEXT2 = "message test two";
+    public static final String TEST_TEXT3 = "message test three";
     
     public static void deleteAllCips() {
         ObjectContext cayenne = DataContext.createDataContext();
@@ -75,20 +60,29 @@ public class CipCiopTestUtil {
         cayenne.commitChanges();
     }
     
-    public static CipCiopManager createCCM() {
-        CipCiopManager ccm = new CipCiopManager();
+    public static CipCiopManager createCCMForUser1() {
+        CipCiopManager ccm = new CipCiopManager(TEST_USER1);
         
         Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
-        cip.setFrom(CipCiopTestUtil.TEST_FROM1); cip.setTo(CipCiopTestUtil.TEST_TO1);
-        ccm.addCip(cip);
+        cip.setTo(CipCiopTestUtil.TEST_USER2); ccm.addCip(cip);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip.setFrom(CipCiopTestUtil.TEST_FROM2); cip.setTo(CipCiopTestUtil.TEST_TO2);
-        ccm.addCip(cip);
+        cip.setTo(CipCiopTestUtil.TEST_USER3); ccm.addCip(cip);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT3);
-        cip.setFrom(CipCiopTestUtil.TEST_FROM3); cip.setTo(CipCiopTestUtil.TEST_TO3);
-        ccm.addCip(cip);
+        cip.setTo(CipCiopTestUtil.TEST_USER3); ccm.addCip(cip);
+        
+        return ccm;
+    }
+    
+    public static CipCiopManager createCCMForUser2() {
+        CipCiopManager ccm = new CipCiopManager(TEST_USER2);
+        
+        Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
+        cip.setTo(CipCiopTestUtil.TEST_USER1); ccm.addCip(cip);
+        
+        cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
+        cip.setTo(CipCiopTestUtil.TEST_USER3); ccm.addCip(cip);
         
         return ccm;
     }

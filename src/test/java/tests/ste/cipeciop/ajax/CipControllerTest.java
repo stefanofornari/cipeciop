@@ -39,22 +39,12 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         ServletContextMock context = new ServletContextMock();
         HttpServletRequestMock r = new HttpServletRequestMock(context);
         
-        CipCiopManager ccm = new CipCiopManager();
-        
-        Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
-            cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2),
-            cip3 = new Cip(CipCiopTestUtil.TEST_TEXT3);
-        cip1.setFrom(CipCiopTestUtil.TEST_FROM1); cip1.setTo(CipCiopTestUtil.TEST_TO1);
-        cip2.setFrom(CipCiopTestUtil.TEST_FROM2); cip2.setTo(CipCiopTestUtil.TEST_TO2);
-        cip3.setFrom(CipCiopTestUtil.TEST_FROM3); cip3.setTo(CipCiopTestUtil.TEST_TO3);
-        
-        ccm.addCip(cip1); ccm.addCip(cip2); ccm.addCip(cip3);
-        
-        context.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
+        CipCiopManager ccm = CipCiopTestUtil.createCCMForUser1();
         
         HttpSession s = r.getSession();
+        s.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
         Map attributes = new HashMap();
-        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_FROM1);
+        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_USER1);
         s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
         
         beanshell.set("request", r);
@@ -71,7 +61,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         exec();
         
         CipCiopManager ccm  = 
-            (CipCiopManager)beanshell.eval("request.context.getAttribute(Constants.ATTRIBUTE_CIPCIOP_MANAGER)");
+            (CipCiopManager)beanshell.eval("session.getAttribute(Constants.ATTRIBUTE_CIPCIOP_MANAGER)");
         assertEquals(3, ccm.getCips().size());
         
         //

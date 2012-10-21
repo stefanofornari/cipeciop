@@ -37,25 +37,12 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     protected void beanshellSetup() throws Exception {
         CipCiopTestUtil.deleteAllCips();
         
-        ServletContextMock context = new ServletContextMock();
-        HttpServletRequestMock r = new HttpServletRequestMock(context);
-        
-        CipCiopManager ccm = new CipCiopManager();
-        
-        Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
-            cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2),
-            cip3 = new Cip(CipCiopTestUtil.TEST_TEXT3);
-        cip1.setFrom(CipCiopTestUtil.TEST_FROM1); cip1.setTo(CipCiopTestUtil.TEST_TO1);
-        cip2.setFrom(CipCiopTestUtil.TEST_FROM2); cip2.setTo(CipCiopTestUtil.TEST_TO2);
-        cip3.setFrom(CipCiopTestUtil.TEST_FROM3); cip3.setTo(CipCiopTestUtil.TEST_TO3);
-        
-        ccm.addCip(cip1); ccm.addCip(cip2); ccm.addCip(cip3);
-        
-        context.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
+        HttpServletRequestMock r = new HttpServletRequestMock(new ServletContextMock());
         
         HttpSession s = r.getSession();
+        s.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, CipCiopTestUtil.createCCMForUser1());
         Map attributes = new HashMap();
-        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_FROM1);
+        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_USER1);
         s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
         
         beanshell.set("request", r);
@@ -68,9 +55,6 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     }
     
     @Test
-    //
-    // I should get only one cip out of 2
-    //
     public void myCips() throws Exception {
         List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         
@@ -78,15 +62,24 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     }
     
     @Test
+    public void myCipsAndCiops() throws Exception {
+        //
+        // Creates the ciops from user2
+        //
+        CipCiopTestUtil.createCCMForUser2();
+        
+        List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        
+        assertEquals(4, cips.size());
+    }
+    
+    @Test
     public void noSession() throws Throwable {
-        HttpSession s = (HttpSession)beanshell.get("session");
-        s.setAttribute(ATTRIBUTE_IDENTIFIER, null);
+        HttpServletRequestMock r = new HttpServletRequestMock(new ServletContextMock());
+        beanshell.set("request", r);
+        beanshell.set("session", r.getSession());
         
         exec();
-        
-        //
-        // Nothing to do, just no exceptions
-        //
     }
     
     @Test
@@ -94,7 +87,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         //
         // As TEST_FROM1 nothing changes
         //
-        beanshell.set("to", CipCiopTestUtil.TEST_TO1);
+        beanshell.set("to", CipCiopTestUtil.TEST_USER3);
         beanshell.set("cip", CipCiopTestUtil.TEST_TEXT2);
         
         exec();
@@ -107,13 +100,14 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         //
         HttpSession s = (HttpSession)beanshell.get("session");
         Map attributes = (Map)s.getAttribute(ATTRIBUTE_IDENTIFIER);
-        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_FROM2);
+        attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_USER2);
+        s.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, CipCiopTestUtil.createCCMForUser2());
         
         exec();
         
         cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(3, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_FROM1, ((Cip)cips.get(2)).getFrom());
+        assertEquals(CipCiopTestUtil.TEST_USER3, ((Cip)cips.get(2)).getTo());
         assertEquals(CipCiopTestUtil.TEST_TEXT2, ((Cip)cips.get(2)).getText());
     }
     
