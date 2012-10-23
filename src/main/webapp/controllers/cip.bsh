@@ -21,29 +21,43 @@
  */
 import java.util.ArrayList;
 
-import ste.cipeciop.Cip;
+import ste.cipeciop.*;
 
-void addCip() {
+void addCipCiop() {
+  userIdTo = displayNameToUserId(to);
+  //
+  // The Cip
+  //
   c = new Cip(cip);
-  c.to = displayNameToUserId(to);
+  c.to = userIdTo;
   ccm.addCip(c);
+
+  //
+  // The Ciop
+  //
+  ccmTo = new CipCiopManager(userIdTo);
+  c = new Ciop(cip);
+  c.from = from;
+  ccmTo.addCiop(c);
 }
 
-if ((username = getUserName()) != null) {
-    ccm = getCipCiopManager();
+if ((from = getUserName()) != null) {
+  //ccm = getCipCiopManager();
+  ccm = new CipCiopManager(from);
 
-    friends = getFriends();
+  friends = getFriends();
 
-    if ((cip != void) && !empty(cip)) {
-        addCip();
-    }
+  if ((cip != void) && !empty(cip)) {
+    addCipCiop();
+  }
 
-    cips = ccm.getCips();
-    cips.addAll(ccm.getCiops());
+  cips = new ArrayList();
+  cips.addAll(ccm.getCips());
+  cips.addAll(ccm.getCiops());
 
-    request.setAttribute("cips", cips);
+  request.setAttribute("cips", cips);
 }
 
-dump();
+//dump();
 
 view = "cipeciop.jsp";

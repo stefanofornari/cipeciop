@@ -41,4 +41,6 @@ public interface Constants {
     public final static String AJAX_ACTION_DELETE = "delete";
     public final static String AJAX_PARAM_ID = "id";
     
+    public final static String DB_ENTITY_CIP  = "Cip" ;
+    public final static String DB_ENTITY_CIOP = "Ciop";
 }

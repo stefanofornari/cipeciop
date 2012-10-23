@@ -13,8 +13,8 @@ dump() {
   ccm = getCipCiopManager();
 
   if (ccm != null) {
-    for (cip: ccm.cips) {
-      print("---"); print(cip); print("-"); 
+    for (c: ccm.cips) {
+      print("---"); print(c); print("-"); 
     }
   }
 
@@ -26,8 +26,8 @@ dump() {
   print("---------------"); 
   ObjectContext cayenne = DataContext.createDataContext();
   SelectQuery query = new SelectQuery(Cip.class);
-  for (cip: cayenne.performQuery(query)) {
-    print("---"); print(cip); print("-");
+  for (c: cayenne.performQuery(query)) {
+    print("---"); print(c); print("-");
   }
 
 }

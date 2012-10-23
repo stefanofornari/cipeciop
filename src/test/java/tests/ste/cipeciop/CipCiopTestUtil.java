@@ -38,8 +38,10 @@ package tests.ste.cipeciop;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SQLTemplate;
+import ste.cipeciop.Ciop;
 import ste.cipeciop.Cip;
 import ste.cipeciop.CipCiopManager;
+import ste.cipeciop.Constants;
 
 /**
  *
@@ -54,23 +56,33 @@ public class CipCiopTestUtil {
     public static final String TEST_TEXT2 = "message test two";
     public static final String TEST_TEXT3 = "message test three";
     
-    public static void deleteAllCips() {
+    public static void deleteAllCipCiop() {
         ObjectContext cayenne = DataContext.createDataContext();
-        cayenne.performQuery(new SQLTemplate(Cip.class, "delete from cip"));
+        cayenne.performQuery(new SQLTemplate(Constants.DB_ENTITY_CIP, "delete from cips"));
+        cayenne.performQuery(new SQLTemplate(Constants.DB_ENTITY_CIOP, "delete from ciops"));
         cayenne.commitChanges();
     }
     
     public static CipCiopManager createCCMForUser1() {
         CipCiopManager ccm = new CipCiopManager(TEST_USER1);
         
+        //
+        // Cips
+        //
         Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
-        cip.setTo(CipCiopTestUtil.TEST_USER2); ccm.addCip(cip);
+        cip.setTo(TEST_USER2); ccm.addCip(cip);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip.setTo(CipCiopTestUtil.TEST_USER3); ccm.addCip(cip);
+        cip.setTo(TEST_USER3); ccm.addCip(cip);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT3);
-        cip.setTo(CipCiopTestUtil.TEST_USER3); ccm.addCip(cip);
+        cip.setTo(TEST_USER3); ccm.addCip(cip);
+        
+        //
+        // Ciops
+        //
+        Ciop ciop = new Ciop(CipCiopTestUtil.TEST_TEXT1);
+        ciop.setFrom(TEST_USER2); ccm.addCiop(ciop);
         
         return ccm;
     }

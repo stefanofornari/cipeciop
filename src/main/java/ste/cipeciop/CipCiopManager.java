@@ -21,6 +21,7 @@
  */
 package ste.cipeciop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.cayenne.DataObjectUtils;
@@ -82,11 +83,32 @@ public class CipCiopManager {
         if (cip == null) {
             throw new NullPointerException("cip cannot be null");
         }
+        
         Cip c = context.newObject(Cip.class);
         c.setFrom(userId);
         c.setText(cip.getText());
         c.setTo(cip.getTo());
-        c.setWhen(System.currentTimeMillis());
+        
+        context.commitChanges();
+    }
+    
+        /**
+     * Adds a new ciop to the ciops collection
+     * 
+     * @param ciop the ciop to add - NOT NULL
+     * 
+     * @throws NullPointerException if ciop is null
+     */
+    public void addCiop(final Ciop ciop) {
+        if (ciop == null) {
+            throw new NullPointerException("ciop cannot be null");
+        }
+        
+        Ciop c = context.newObject(Ciop.class);
+        c.setTo(userId);
+        c.setText(ciop.getText());
+        c.setFrom(ciop.getFrom());
+        c.setCreated(System.currentTimeMillis());
         
         context.commitChanges();
     }
@@ -103,7 +125,24 @@ public class CipCiopManager {
         HashMap<String,String> params = new HashMap<String, String>();
         params.put("from", userId);
         
-        SelectQuery proto = new SelectQuery(Cip.class, where);
+        SelectQuery proto = new SelectQuery(Constants.DB_ENTITY_CIP, where);
+        
+        return context.performQuery(proto.queryWithParameters(params));
+    }
+    
+        /**
+     * Returns the collection of cips for the given user
+     * 
+     * @param to the recipient user id - not null
+     * 
+     * @return the collection of chips
+     */
+    public List<Ciop> getCiops() {
+        Expression where = Expression.fromString("to=$to");
+        HashMap<String,String> params = new HashMap<String, String>();
+        params.put("to", userId);
+        
+        SelectQuery proto = new SelectQuery(Constants.DB_ENTITY_CIOP, where);
         
         return context.performQuery(proto.queryWithParameters(params));
     }
@@ -118,7 +157,7 @@ public class CipCiopManager {
      */
     public boolean deleteCip(Integer id) {
         ObjectIdQuery q = new ObjectIdQuery(
-                              new ObjectId("Cip", Cip.ID_PK_COLUMN, id)
+                              new ObjectId(Constants.DB_ENTITY_CIP, Cip.ID_PK_COLUMN, id)
                           );
         Cip c = (Cip)DataObjectUtils.objectForQuery(context, q);
         

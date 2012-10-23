@@ -30,6 +30,7 @@ import org.junit.Test;
 import ste.cipeciop.Cip;
 import ste.cipeciop.CipCiopManager;
 import static org.junit.Assert.*;
+import ste.cipeciop.Ciop;
 
 /**
  *
@@ -50,7 +51,7 @@ public class CipCiopManagerTest {
     
     @Before
     public void setUp() {
-        CipCiopTestUtil.deleteAllCips();
+        CipCiopTestUtil.deleteAllCipCiop();
     }
     
     @After
@@ -98,7 +99,47 @@ public class CipCiopManagerTest {
         assertEquals(2, cips.size());
         assertEquals(cip2, cips.get(1));
         
-        assertTrue(cips.get(0).getWhen() < cips.get(1).getWhen());
+        //assertTrue(cips.get(0).getWhen() < cips.get(1).getWhen());
+    }
+    
+    @Test
+    public void addCiops() {
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
+        
+        assertEquals(0, ccm.getCiops().size());
+        
+        //
+        // Not null
+        //
+        try {
+            ccm.addCiop(null);
+            fail("ciop cannot be null");
+        } catch (NullPointerException e) {
+            //
+            // OK
+            //
+        }
+        
+        Ciop ciop1 = new Ciop(CipCiopTestUtil.TEST_TEXT1), 
+             ciop2 = new Ciop(CipCiopTestUtil.TEST_TEXT2),
+             ciop3 = new Ciop(CipCiopTestUtil.TEST_TEXT2);
+        ciop1.setFrom(CipCiopTestUtil.TEST_USER1);
+        ciop2.setFrom(CipCiopTestUtil.TEST_USER2);
+        ciop3.setFrom(CipCiopTestUtil.TEST_USER3);
+                
+        ccm.addCiop(ciop1);
+        List<Ciop> ciops = ccm.getCiops();
+        assertEquals(1, ciops.size());
+        assertEquals(CipCiopTestUtil.TEST_USER1, ciops.get(0).getFrom());
+        
+        ccm.addCiop(ciop2); ccm.addCiop(ciop3);
+        ciops = ccm.getCiops();
+        assertEquals(3, ciops.size());
+        assertEquals(CipCiopTestUtil.TEST_USER2, ciops.get(1).getFrom());
+        assertEquals(CipCiopTestUtil.TEST_USER3, ciops.get(2).getFrom());
+        
+        assertTrue(ciops.get(0).getCreated() < ciops.get(1).getCreated());
+        assertTrue(ciops.get(1).getCreated() < ciops.get(2).getCreated());
     }
     
     @Test
@@ -141,18 +182,9 @@ public class CipCiopManagerTest {
     public void ciopsForUser() {
         CipCiopManager ccm = CipCiopTestUtil.createCCMForUser1();
                 
-        List<Cip> cips = ccm.getCips();
-        assertEquals(3, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_USER2, cips.get(0).getTo());
-        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(1).getTo());
-        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(2).getTo());
-        
-        ccm = CipCiopTestUtil.createCCMForUser2();
-        
-        cips = ccm.getCips();
-        assertEquals(2, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_USER1, cips.get(0).getTo());
-        assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(1).getTo());
+        List<Ciop> ciops = ccm.getCiops();
+        assertEquals(1, ciops.size());
+        assertEquals(CipCiopTestUtil.TEST_USER1, ciops.get(0).getTo());
     }
     
     @Test

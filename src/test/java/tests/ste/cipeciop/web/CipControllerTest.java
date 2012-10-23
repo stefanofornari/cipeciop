@@ -13,11 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-import ste.cipeciop.Cip;
-import ste.cipeciop.CipCiopManager;
+import ste.cipeciop.Ciop;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import ste.cipeciop.test.web.mock.ServletContextMock;
-import tests.ste.cipeciop.CipCiopManagerTest;
 import tests.ste.cipeciop.CipCiopTestUtil;
 
 /**
@@ -35,7 +33,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     
     @Override
     protected void beanshellSetup() throws Exception {
-        CipCiopTestUtil.deleteAllCips();
+        CipCiopTestUtil.deleteAllCipCiop();
         
         HttpServletRequestMock r = new HttpServletRequestMock(new ServletContextMock());
         
@@ -58,7 +56,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     public void myCips() throws Exception {
         List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         
-        assertEquals(3, cips.size());
+        assertEquals(4, cips.size());
     }
     
     @Test
@@ -87,28 +85,28 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         //
         // As TEST_FROM1 nothing changes
         //
-        beanshell.set("to", CipCiopTestUtil.TEST_USER3);
+        beanshell.set("to", CipCiopTestUtil.TEST_USER2);
         beanshell.set("cip", CipCiopTestUtil.TEST_TEXT2);
         
         exec();
         
         List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
-        assertEquals(4, cips.size());
+        assertEquals(5, cips.size());
         
         //
-        // As TEST_FROM2 I have a new cip
+        // As TEST_FROM2 I have a new ciop
         //
         HttpSession s = (HttpSession)beanshell.get("session");
         Map attributes = (Map)s.getAttribute(ATTRIBUTE_IDENTIFIER);
         attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_USER2);
         s.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, CipCiopTestUtil.createCCMForUser2());
         
+        beanshell.unset("cip"); beanshell.unset("to");
         exec();
         
         cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(3, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_USER3, ((Cip)cips.get(2)).getTo());
-        assertEquals(CipCiopTestUtil.TEST_TEXT2, ((Cip)cips.get(2)).getText());
+        assertEquals(CipCiopTestUtil.TEST_USER1, ((Ciop)cips.get(2)).getFrom());
     }
     
     @Test

@@ -21,9 +21,7 @@
  * MA 02110-1301 USA.
  */
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>   
 <html lang="en">   
     <head>   
@@ -34,52 +32,49 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script src="autosize/jquery.autosize-min.js"W></script>
         <meta name="userid" content="<c:out value="${openid_user['userid']}"/>"/>
+        <meta charset="UTF-8">
     </head>  
     <body>
-    </div>
         <div style="display: table; height: 400px; width: 280px; margin: auto;">
             <div style="display: table-cell; vertical-align: middle;">
                 <div id="main" class="pagination-right">
                     <c:if test="${empty openid_user}"><a href="auth?openid=https%3A%2F%2Fme.yahoo.com">login</a></c:if>
                     <c:if test="${not empty openid_user}"><a href="logout.bsh">logout</a></c:if>
-                    
-                    <form class="well form-inline" action="cip.bsh">
-                        <div class="controls"><div class="input-append">
-                            <%@ include file="/views/friends.jsp" %>
-                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea>
-                        </div></div>
+
+                        <form class="well form-inline" action="cip.bsh">
+                            <div class="controls"><div class="input-append">
+                                <%@ include file="/views/friends.jsp" %>
+                                <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea>
+                            </div></div>
                         <input type="hidden" name="to"/>
                         <button type="submit" class="btn btn-primary btn-small" onclick="$('input[name=to]').val($(tovalue).text());">Cip</button>
                         <%--<button type="submit" class="btn btn-success btn-small">Ciop</button>--%>
                     </form>
                 </div>
                 <c:forEach items="${cips}" var="cip">
-                <div id="cip<c:out value='${cip.id}'/>" class="well">
-                    <button onclick="deleteCip(<c:out value='${cip.id}'/>);" class="close">&times;</button>
-                    <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong><p>
-                    <c:out value="${cip.text}"/>
-                </div>
+                    <div id="cip<c:out value='${cip.id}'/>" class="well">
+                        <button onclick="deleteCip(<c:out value='${cip.id}'/>);" class="close">&times;</button>
+                        <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong><br>
+                        <c:out value="${cip.text}"/>
+                    </div>
                 </c:forEach>
             </div>
         </div>
-                    <div id="images">
-
-</div>
     </body>
-    
+
     <script lang="JavaScript">
         $(document).ready(function(){
             $('textarea').autosize();  
         });
         
         function deleteCip(id) {
-          $.getJSON(
+            $.getJSON(
             '/cipeciop/ajax/cip.bsh?action=delete&id='+id,
             {}, 
             function(data) {
-              $('#cip'+id).hide('slow')
+                $('#cip'+id).hide('slow')
             }
-          );
+        );
         }
     </script>
     <script src="bootstrap/js/bootstrap.js"></script>
