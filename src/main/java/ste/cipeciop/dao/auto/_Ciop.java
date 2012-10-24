@@ -13,6 +13,7 @@ public abstract class _Ciop extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String FROM_PROPERTY = "from";
     public static final String ID_PROPERTY = "id";
+    public static final String SEEN_PROPERTY = "seen";
     public static final String TEXT_PROPERTY = "text";
     public static final String TO_PROPERTY = "to";
 
@@ -39,6 +40,14 @@ public abstract class _Ciop extends CayenneDataObject {
     public int getId() {
         Object value = readProperty("id");
         return (value != null) ? (Integer) value : 0;
+    }
+
+    public void setSeen(long seen) {
+        writeProperty("seen", seen);
+    }
+    public long getSeen() {
+        Object value = readProperty("seen");
+        return (value != null) ? (Long) value : 0;
     }
 
     public void setText(String text) {

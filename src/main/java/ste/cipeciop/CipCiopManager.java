@@ -88,6 +88,7 @@ public class CipCiopManager {
         c.setFrom(userId);
         c.setText(cip.getText());
         c.setTo(cip.getTo());
+        c.setCreated(cip.getCreated());
         
         context.commitChanges();
     }
@@ -108,7 +109,7 @@ public class CipCiopManager {
         c.setTo(userId);
         c.setText(ciop.getText());
         c.setFrom(ciop.getFrom());
-        c.setCreated(System.currentTimeMillis());
+        c.setCreated(ciop.getCreated());
         
         context.commitChanges();
     }

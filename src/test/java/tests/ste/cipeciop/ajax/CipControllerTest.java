@@ -42,7 +42,6 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         CipCiopManager ccm = CipCiopTestUtil.createCCMForUser1();
         
         HttpSession s = r.getSession();
-        s.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
         Map attributes = new HashMap();
         attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_USER1);
         s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
@@ -60,8 +59,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         
         exec();
         
-        CipCiopManager ccm  = 
-            (CipCiopManager)beanshell.eval("session.getAttribute(Constants.ATTRIBUTE_CIPCIOP_MANAGER)");
+        CipCiopManager ccm  = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
         assertEquals(3, ccm.getCips().size());
         
         //

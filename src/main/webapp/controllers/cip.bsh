@@ -28,8 +28,10 @@ void addCipCiop() {
   //
   // The Cip
   //
+  ts = System.currentTimeMillis();
   c = new Cip(cip);
   c.to = userIdTo;
+  c.created = ts;
   ccm.addCip(c);
 
   //
@@ -38,11 +40,11 @@ void addCipCiop() {
   ccmTo = new CipCiopManager(userIdTo);
   c = new Ciop(cip);
   c.from = from;
+  c.created = ts;
   ccmTo.addCiop(c);
 }
 
 if ((from = getUserName()) != null) {
-  //ccm = getCipCiopManager();
   ccm = new CipCiopManager(from);
 
   friends = getFriends();
@@ -54,6 +56,8 @@ if ((from = getUserName()) != null) {
   cips = new ArrayList();
   cips.addAll(ccm.getCips());
   cips.addAll(ccm.getCiops());
+
+  Collections.sort(cips);
 
   request.setAttribute("cips", cips);
 }

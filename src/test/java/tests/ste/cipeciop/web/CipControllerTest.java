@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import ste.cipeciop.Ciop;
+import ste.cipeciop.CipCiop;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import ste.cipeciop.test.web.mock.ServletContextMock;
 import tests.ste.cipeciop.CipCiopTestUtil;
@@ -38,10 +39,10 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         HttpServletRequestMock r = new HttpServletRequestMock(new ServletContextMock());
         
         HttpSession s = r.getSession();
-        s.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, CipCiopTestUtil.createCCMForUser1());
         Map attributes = new HashMap();
         attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_USER1);
         s.setAttribute(ATTRIBUTE_IDENTIFIER, attributes);
+        CipCiopTestUtil.createCCMForUser1();
         
         beanshell.set("request", r);
         beanshell.set("session", r.getSession());
@@ -51,24 +52,26 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     public void cipciopManagerExists() throws Exception {
         assertNotNull(beanshell.get("ccm"));
     }
-    
-    @Test
-    public void myCips() throws Exception {
-        List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         
-        assertEquals(4, cips.size());
-    }
-    
     @Test
     public void myCipsAndCiops() throws Exception {
         //
-        // Creates the ciops from user2
+        // Creates the cips and ciops from user2
         //
         CipCiopTestUtil.createCCMForUser2();
+        
+        exec();
         
         List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         
         assertEquals(4, cips.size());
+        
+        //
+        // Check the correct ordering
+        //
+        assertTrue(((CipCiop)cips.get(0)).getCreated() < ((CipCiop)cips.get(1)).getCreated());
+        assertTrue(((CipCiop)cips.get(1)).getCreated() < ((CipCiop)cips.get(2)).getCreated());
+        assertTrue(((CipCiop)cips.get(2)).getCreated() < ((CipCiop)cips.get(3)).getCreated());
     }
     
     @Test
@@ -99,14 +102,14 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         HttpSession s = (HttpSession)beanshell.get("session");
         Map attributes = (Map)s.getAttribute(ATTRIBUTE_IDENTIFIER);
         attributes.put(ALIAS_USER_ID, CipCiopTestUtil.TEST_USER2);
-        s.setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, CipCiopTestUtil.createCCMForUser2());
+        CipCiopTestUtil.createCCMForUser2();
         
         beanshell.unset("cip"); beanshell.unset("to");
         exec();
         
         cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(3, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_USER1, ((Ciop)cips.get(2)).getFrom());
+        assertEquals(CipCiopTestUtil.TEST_USER1, ((Ciop)cips.get(0)).getFrom());
     }
     
     @Test

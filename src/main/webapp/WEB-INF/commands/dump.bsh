@@ -10,7 +10,7 @@ dump() {
   print("");
   print("In the manager");
   print("--------------");
-  ccm = getCipCiopManager();
+  ccm = new CipCiopManager(getUserName());
 
   if (ccm != null) {
     for (c: ccm.cips) {

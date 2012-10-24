@@ -1,3 +1,0 @@
-getCipCiopManager() {
-  return session.getAttribute(ste.cipeciop.Constants.ATTRIBUTE_CIPCIOP_MANAGER);
-}

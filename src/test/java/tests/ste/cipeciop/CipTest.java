@@ -97,28 +97,58 @@ public class CipTest {
     }
     
     @Test
+    public void comparisons() {
+        Cip cip1 = new Cip(), cip2 = new Cip();
+        cip1.setCreated(10); cip2.setCreated(20);
+        
+        try {
+            cip1.compareTo(null);
+            fail("the object cannot be null");
+        } catch (NullPointerException e) {
+            //
+            // OK
+            //
+        }
+        
+        try {
+            cip1.compareTo(new String());
+            fail("the object cannot be null");
+        } catch (IllegalArgumentException e) {
+            //
+            // OK
+            //
+        }
+        assertTrue(cip1.compareTo(cip2)<0);
+        assertTrue(cip2.compareTo(cip1)>0);
+        assertTrue(cip1.compareTo(cip1)==0);
+    }
+    
+    @Test
     //
     // It cannot be called toString as it is altready a method of the class
     //
     public void toText() {
         Cip cip = new Cip();
-        
+
         assertTrue(cip.toString().contains("From null"));
         assertTrue(cip.toString().contains("to null"));
-        
+
         cip = new Cip(TEST_NEW_CHIP_TXT);
         assertTrue(cip.toString().contains(TEST_NEW_CHIP_TXT));
         assertTrue(cip.toString().contains("From null"));
         assertTrue(cip.toString().contains("to null"));
-        
+
         cip.setTo(TEST_TO1);
         assertTrue(cip.toString().contains(TEST_NEW_CHIP_TXT));
         assertTrue(cip.toString().contains("From null"));
         assertFalse(cip.toString().contains("to null"));
-        
+
         cip.setFrom(TEST_FROM1);
         assertTrue(cip.toString().contains(TEST_NEW_CHIP_TXT));
-        assertFalse(cip.toString().contains("From null"));
-        assertFalse(cip.toString().contains("to null"));
+        assertTrue(cip.toString().contains(TEST_FROM1));
+        assertTrue(cip.toString().contains(TEST_TO1));
+
+        cip.setCreated(111222);
+        assertTrue(cip.toString().contains(String.valueOf(111222)));
     }
 }
