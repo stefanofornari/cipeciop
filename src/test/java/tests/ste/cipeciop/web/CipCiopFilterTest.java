@@ -75,25 +75,6 @@ public class CipCiopFilterTest {
     }
     
     @Test
-    public void testCCMCreation() throws Exception {
-        HttpServletRequestMock r = new HttpServletRequestMock(servletContext);
-        HttpSession s = r.getSession();
-        Map openid = new HashMap();
-        openid.put(Constants.ALIAS_USER_ID, CipCiopTestUtil.TEST_USER1);
-        s.setAttribute(Constants.ATTRIBUTE_IDENTIFIER, openid);
-        
-        CipCiopManager ccm = 
-            (CipCiopManager)s.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
-        
-        assertNull(ccm); 
-        
-        filter.doFilter(r, null, new FilterChainMock());
-        
-        ccm = (CipCiopManager)s.getAttribute(CipCiopFilter.ATTRIBUTE_CIPCIOP_MANAGER);
-        assertNotNull(ccm);
-    }
-    
-    @Test
     public void testForceLogin() throws Exception {
         HttpServletRequestMock r = new HttpServletRequestMock(servletContext);
         
