@@ -69,13 +69,6 @@ public final class CipCiopFilter implements Filter, Constants {
                 request.getRequestDispatcher(url).forward(request, response);
                 return;
             }
-            
-            CipCiopManager ccm = (CipCiopManager)request.getServletContext().getAttribute(ATTRIBUTE_CIPCIOP_MANAGER);
-
-            if (ccm == null) {
-                ccm = new CipCiopManager((String)openId.get(ALIAS_USER_ID));
-                request.getSession().setAttribute(ATTRIBUTE_CIPCIOP_MANAGER, ccm);
-            }
         }
 
         next.doFilter(request, response);
