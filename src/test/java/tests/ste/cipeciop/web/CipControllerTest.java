@@ -69,9 +69,9 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         //
         // Check the correct ordering
         //
-        assertTrue(((CipCiop)cips.get(0)).getCreated() < ((CipCiop)cips.get(1)).getCreated());
-        assertTrue(((CipCiop)cips.get(1)).getCreated() < ((CipCiop)cips.get(2)).getCreated());
-        assertTrue(((CipCiop)cips.get(2)).getCreated() < ((CipCiop)cips.get(3)).getCreated());
+        assertTrue(((CipCiop)cips.get(0)).getCreated().before(((CipCiop)cips.get(1)).getCreated()));
+        assertTrue(((CipCiop)cips.get(1)).getCreated().before(((CipCiop)cips.get(2)).getCreated()));
+        assertTrue(((CipCiop)cips.get(2)).getCreated().before(((CipCiop)cips.get(3)).getCreated()));
     }
     
     @Test

@@ -21,6 +21,7 @@
  */
 package tests.ste.cipeciop;
 
+import java.util.Date;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -84,24 +85,25 @@ public class CipCiopManagerTest {
             //
         }
         
+        Date now = new Date();
         Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
             cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2);
         cip1.setFrom(CipCiopTestUtil.TEST_USER1); 
         cip1.setTo(CipCiopTestUtil.TEST_USER2);
         cip2.setFrom(CipCiopTestUtil.TEST_USER1); cip2.setTo(CipCiopTestUtil.TEST_USER3);
-        cip2.setCreated(10);
+        cip2.setCreated(now);
         
         ccm.addCip(cip1); 
         List<Cip> cips = ccm.getCips();
         assertEquals(1, cips.size());
         assertEquals(cip1, cips.get(0));
-        assertEquals(0, cip1.getCreated());
+        assertNull(cip1.getCreated());
         
         ccm.addCip(cip2);
         cips = ccm.getCips();
         assertEquals(2, cips.size());
         assertEquals(cip2, cips.get(1));
-        assertEquals(10, cip2.getCreated());
+        assertEquals(now, cip2.getCreated());
     }
     
     @Test
@@ -125,11 +127,11 @@ public class CipCiopManagerTest {
         Ciop ciop1 = new Ciop(CipCiopTestUtil.TEST_TEXT1), 
              ciop2 = new Ciop(CipCiopTestUtil.TEST_TEXT2),
              ciop3 = new Ciop(CipCiopTestUtil.TEST_TEXT2);
-        ciop1.setFrom(CipCiopTestUtil.TEST_USER1); ciop1.setCreated(System.currentTimeMillis());
+        ciop1.setFrom(CipCiopTestUtil.TEST_USER1); ciop1.setCreated(new Date());
         Thread.sleep(1);
-        ciop2.setFrom(CipCiopTestUtil.TEST_USER2); ciop2.setCreated(System.currentTimeMillis());
+        ciop2.setFrom(CipCiopTestUtil.TEST_USER2); ciop2.setCreated(new Date());
         Thread.sleep(1);
-        ciop3.setFrom(CipCiopTestUtil.TEST_USER3); ciop3.setCreated(System.currentTimeMillis());
+        ciop3.setFrom(CipCiopTestUtil.TEST_USER3); ciop3.setCreated(new Date());
                 
         ccm.addCiop(ciop1);
         List<Ciop> ciops = ccm.getCiops();
@@ -142,8 +144,8 @@ public class CipCiopManagerTest {
         assertEquals(CipCiopTestUtil.TEST_USER2, ciops.get(1).getFrom());
         assertEquals(CipCiopTestUtil.TEST_USER3, ciops.get(2).getFrom());
         
-        assertTrue(ciops.get(0).getCreated() < ciops.get(1).getCreated());
-        assertTrue(ciops.get(1).getCreated() < ciops.get(2).getCreated());
+        assertTrue(ciops.get(0).getCreated().before(ciops.get(1).getCreated()));
+        assertTrue(ciops.get(1).getCreated().before(ciops.get(2).getCreated()));
     }
     
     @Test

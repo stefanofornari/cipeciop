@@ -22,6 +22,7 @@
 
 package tests.ste.cipeciop;
 
+import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -99,7 +100,7 @@ public class CipTest {
     @Test
     public void comparisons() {
         Cip cip1 = new Cip(), cip2 = new Cip();
-        cip1.setCreated(10); cip2.setCreated(20);
+        cip1.setCreated(new Date()); cip2.setCreated(new Date(cip1.getCreated().getTime()+10));
         
         try {
             cip1.compareTo(null);
@@ -148,7 +149,8 @@ public class CipTest {
         assertTrue(cip.toString().contains(TEST_FROM1));
         assertTrue(cip.toString().contains(TEST_TO1));
 
-        cip.setCreated(111222);
-        assertTrue(cip.toString().contains(String.valueOf(111222)));
+        Date now = new Date();
+        cip.setCreated(now);
+        assertTrue(cip.toString().contains(String.valueOf(now)));
     }
 }

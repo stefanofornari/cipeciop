@@ -20,6 +20,7 @@
  * MA 02110-1301 USA.
  */
 import java.util.ArrayList;
+import java.util.Date;
 
 import ste.cipeciop.*;
 
@@ -28,7 +29,7 @@ void addCipCiop() {
   //
   // The Cip
   //
-  ts = System.currentTimeMillis();
+  ts = new Date();
   c = new Cip(cip);
   c.to = userIdTo;
   c.created = ts;

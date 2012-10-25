@@ -21,6 +21,8 @@
  */
 package ste.cipeciop;
 
+import java.util.Date;
+
 /**
  *
  * @author ste
@@ -32,5 +34,5 @@ public interface CipCiop extends Comparable {
      * 
      * @return the creation timestamp
      */
-    public long getCreated();
+    public Date getCreated();
 }

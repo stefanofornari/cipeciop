@@ -71,7 +71,7 @@ public class Cip extends _Cip implements CipCiop {
             throw new IllegalArgumentException("The target object must be of type CipCiop");
         }
         
-        return (int)(getCreated() - ((CipCiop)o).getCreated());
+        return getCreated().compareTo(((CipCiop)o).getCreated());
     }
     
     /**
@@ -81,7 +81,7 @@ public class Cip extends _Cip implements CipCiop {
      */
     @Override
     public String toString() {
-        return String.format("From %s to %s: %s on (%d)", getFrom(), getTo(), getText(), getCreated());
+        return String.format("From %s to %s: %s on %s", getFrom(), getTo(), getText(), String.valueOf(getCreated()));
     }  
     
     @Override

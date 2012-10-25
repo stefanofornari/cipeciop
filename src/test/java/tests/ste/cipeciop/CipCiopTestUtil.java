@@ -35,6 +35,7 @@
 
 package tests.ste.cipeciop;
 
+import java.util.Date;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SQLTemplate;
@@ -67,19 +68,19 @@ public class CipCiopTestUtil {
         CipCiopManager ccm = new CipCiopManager(TEST_USER1);
         
         Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
-        cip.setTo(TEST_USER2); cip.setCreated(System.currentTimeMillis());
+        cip.setTo(TEST_USER2); cip.setCreated(new Date());
         ccm.addCip(cip);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip.setTo(TEST_USER3); cip.setCreated(System.currentTimeMillis());
+        cip.setTo(TEST_USER3); cip.setCreated(new Date());
         ccm.addCip(cip);
         
         Ciop ciop = new Ciop(CipCiopTestUtil.TEST_TEXT1);
-        ciop.setFrom(TEST_USER3); ciop.setCreated(System.currentTimeMillis());
+        ciop.setFrom(TEST_USER3); ciop.setCreated(new Date());
         ccm.addCiop(ciop);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT3);
-        cip.setTo(TEST_USER3); cip.setCreated(System.currentTimeMillis());
+        cip.setTo(TEST_USER3); cip.setCreated(new Date());
         ccm.addCip(cip);
         
        return ccm;
@@ -89,11 +90,11 @@ public class CipCiopTestUtil {
         CipCiopManager ccm = new CipCiopManager(TEST_USER2);
         
         Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
-        cip.setTo(CipCiopTestUtil.TEST_USER1); cip.setCreated(System.currentTimeMillis());
+        cip.setTo(CipCiopTestUtil.TEST_USER1); cip.setCreated(new Date());
         ccm.addCip(cip);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip.setTo(CipCiopTestUtil.TEST_USER3); cip.setCreated(System.currentTimeMillis());
+        cip.setTo(CipCiopTestUtil.TEST_USER3); cip.setCreated(new Date());
         ccm.addCip(cip);
         
         return ccm;

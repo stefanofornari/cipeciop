@@ -1,5 +1,7 @@
 package ste.cipeciop.dao.auto;
 
+import java.util.Date;
+
 import org.apache.cayenne.CayenneDataObject;
 
 /**
@@ -18,12 +20,11 @@ public abstract class _Cip extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setCreated(long created) {
+    public void setCreated(Date created) {
         writeProperty("created", created);
     }
-    public long getCreated() {
-        Object value = readProperty("created");
-        return (value != null) ? (Long) value : 0;
+    public Date getCreated() {
+        return (Date)readProperty("created");
     }
 
     public void setFrom(String from) {
