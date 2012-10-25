@@ -55,7 +55,8 @@
                     <div id="cip<c:out value='${cip.id}'/>" class="well">
                         <button onclick="deleteCip(<c:out value='${cip.id}'/>);" class="close">&times;</button>
                         <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong><br>
-                        <c:out value="${cip.text}"/>
+                        <c:out value="${cip.text}"/><br>
+                        <small><c:out value="${cip.created}"/></small>
                     </div>
                 </c:forEach>
             </div>
