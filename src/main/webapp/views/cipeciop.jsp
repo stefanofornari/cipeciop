@@ -31,7 +31,8 @@
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-        <script src="autosize/jquery.autosize-min.js"W></script>
+        <script src="autosize/jquery.autosize-min.js"></script>
+        <script src="emotions-fb/jquery.emotions.js"></script>
         <meta name="userid" content="<c:out value="${openid_user['userid']}"/>"/>
         <meta charset="UTF-8">
     </head>
@@ -52,14 +53,16 @@
                         <%--<button type="submit" class="btn btn-success btn-small">Ciop</button>--%>
                     </form>
                 </div>
-                <c:forEach items="${cips}" var="cip">
-                    <div id="cip<c:out value='${cip.id}'/>" class="well">
-                        <button onclick="deleteCip(<c:out value='${cip.id}'/>);" class="close">&times;</button>
-                        <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong><br>
-                        <c:out value="${cip.text}"/><br>
-                        <small class="muted"><c:out value="${cip.created}"/></small>
-                    </div>
-                </c:forEach>
+                <div id="cipsciops">
+                    <c:forEach items="${cips}" var="cip">
+                        <div id="cip<c:out value='${cip.id}'/>" class="well">
+                            <button onclick="deleteCip(<c:out value='${cip.id}'/>);" class="close">&times;</button>
+                            <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong>
+                            <div id="cipciop"><c:out value="${cip.text}"/></div>
+                            <small class="muted" style="font-size:75%"><c:out value="${cip.created}"/></small>
+                        </div>
+                    </c:forEach>
+                </div>
             </div>
         </div>
     </body>
@@ -68,6 +71,8 @@
         $(document).ready(function(){
             $('textarea').autosize();
         });
+        
+        $('div #cipciop').emotions();
         
         function deleteCip(id) {
             /*
@@ -78,7 +83,7 @@
                 $('#cip'+id).hide('slow')
             }
         );*/
-        $('#cip'+id).hide('slow')
+            $('#cip'+id).hide('slow')
         }
     </script>
     <script src="bootstrap/js/bootstrap.js"></script>
