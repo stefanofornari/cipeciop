@@ -9,27 +9,29 @@
 		<db-attribute name="recipient" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="sender" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="text" type="VARCHAR" isMandatory="true" length="1000"/>
-		<db-attribute name="when" type="BIGINT" isMandatory="false"/>
+		<db-attribute name="created" type="BIGINT"/>
 	</db-entity>
         <db-entity name="ciops">
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="recipient" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="sender" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="text" type="VARCHAR" isMandatory="true" length="1000"/>
-		<db-attribute name="when" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="BIGINT" isMandatory="true"/>
+                <db-attribute name="seen" type="BIGINT"/>
 	</db-entity>
 	<obj-entity name="Cip" className="ste.cipeciop.Cip" dbEntityName="cips">
 		<obj-attribute name="from" type="java.lang.String" db-attribute-path="sender"/>
 		<obj-attribute name="id" type="int" db-attribute-path="id"/>
 		<obj-attribute name="text" type="java.lang.String" db-attribute-path="text"/>
 		<obj-attribute name="to" type="java.lang.String" db-attribute-path="recipient"/>
-		<obj-attribute name="seen" type="long" db-attribute-path="when"/>
+                <obj-attribute name="created" type="long" db-attribute-path="created"/>
 	</obj-entity>
         <obj-entity name="Ciop" className="ste.cipeciop.Ciop" dbEntityName="ciops">
 		<obj-attribute name="from" type="java.lang.String" db-attribute-path="sender"/>
 		<obj-attribute name="id" type="int" db-attribute-path="id"/>
 		<obj-attribute name="text" type="java.lang.String" db-attribute-path="text"/>
 		<obj-attribute name="to" type="java.lang.String" db-attribute-path="recipient"/>
-		<obj-attribute name="created" type="long" db-attribute-path="when"/>
+		<obj-attribute name="created" type="long" db-attribute-path="created"/>
+                <obj-attribute name="seen" type="long" db-attribute-path="seen"/>
 	</obj-entity>
 </data-map>

@@ -19,20 +19,18 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301 USA.
  */
-import ste.cipeciop.Constants;
-import ste.cipeciop.CipCiopManager;
+package ste.cipeciop;
 
-void delete(id) {
-  ccm = new CipCiopManager(getUserName());
-  ccm.deleteCip(new Integer(id)); 
-}
-
-if (action == void) {
-  return;
-}
-
-if (Constants.AJAX_ACTION_DELETE.equals(action)) {
-  if (id != void) {
-    delete(id);
-  }
+/**
+ *
+ * @author ste
+ */
+public interface CipCiop extends Comparable {
+    
+    /**
+     * The creation timestamp
+     * 
+     * @return the creation timestamp
+     */
+    public long getCreated();
 }

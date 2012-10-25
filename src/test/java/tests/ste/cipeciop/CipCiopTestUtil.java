@@ -66,35 +66,35 @@ public class CipCiopTestUtil {
     public static CipCiopManager createCCMForUser1() {
         CipCiopManager ccm = new CipCiopManager(TEST_USER1);
         
-        //
-        // Cips
-        //
         Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
-        cip.setTo(TEST_USER2); ccm.addCip(cip);
+        cip.setTo(TEST_USER2); cip.setCreated(System.currentTimeMillis());
+        ccm.addCip(cip);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip.setTo(TEST_USER3); ccm.addCip(cip);
+        cip.setTo(TEST_USER3); cip.setCreated(System.currentTimeMillis());
+        ccm.addCip(cip);
+        
+        Ciop ciop = new Ciop(CipCiopTestUtil.TEST_TEXT1);
+        ciop.setFrom(TEST_USER3); ciop.setCreated(System.currentTimeMillis());
+        ccm.addCiop(ciop);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT3);
-        cip.setTo(TEST_USER3); ccm.addCip(cip);
+        cip.setTo(TEST_USER3); cip.setCreated(System.currentTimeMillis());
+        ccm.addCip(cip);
         
-        //
-        // Ciops
-        //
-        Ciop ciop = new Ciop(CipCiopTestUtil.TEST_TEXT1);
-        ciop.setFrom(TEST_USER2); ccm.addCiop(ciop);
-        
-        return ccm;
+       return ccm;
     }
     
     public static CipCiopManager createCCMForUser2() {
         CipCiopManager ccm = new CipCiopManager(TEST_USER2);
         
         Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
-        cip.setTo(CipCiopTestUtil.TEST_USER1); ccm.addCip(cip);
+        cip.setTo(CipCiopTestUtil.TEST_USER1); cip.setCreated(System.currentTimeMillis());
+        ccm.addCip(cip);
         
         cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip.setTo(CipCiopTestUtil.TEST_USER3); ccm.addCip(cip);
+        cip.setTo(CipCiopTestUtil.TEST_USER3); cip.setCreated(System.currentTimeMillis());
+        ccm.addCip(cip);
         
         return ccm;
     }

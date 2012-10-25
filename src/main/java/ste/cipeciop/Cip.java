@@ -28,7 +28,7 @@ import ste.cipeciop.dao.auto._Cip;
  * 
  * @author ste
  */
-public class Cip extends _Cip {
+public class Cip extends _Cip implements CipCiop {
     
     /**
      * Creates a new Cip and assigns to it a randomly generated id
@@ -61,6 +61,19 @@ public class Cip extends _Cip {
         super.setText(text);
     }
     
+    @Override
+    public int compareTo(Object o) {
+        if (o == null) {
+            throw new NullPointerException("The object to compare to cannot be null");
+        }
+        
+        if (!(o instanceof CipCiop)) {
+            throw new IllegalArgumentException("The target object must be of type CipCiop");
+        }
+        
+        return (int)(getCreated() - ((CipCiop)o).getCreated());
+    }
+    
     /**
      * Returns a text representation of the Cip (currently the cip's text)
      * 
@@ -68,7 +81,7 @@ public class Cip extends _Cip {
      */
     @Override
     public String toString() {
-        return String.format("From %s to %s: %s", getFrom(), getTo(), getText());
+        return String.format("From %s to %s: %s on (%d)", getFrom(), getTo(), getText(), getCreated());
     }  
     
     @Override

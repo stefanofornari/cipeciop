@@ -21,6 +21,7 @@
  * MA 02110-1301 USA.
  */
 --%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>   
 <html lang="en">   
@@ -32,7 +33,7 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script src="autosize/jquery.autosize-min.js"W></script>
         <meta name="userid" content="<c:out value="${openid_user['userid']}"/>"/>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8">  
     </head>  
     <body>
         <div style="display: table; height: 400px; width: 280px; margin: auto;">
@@ -69,13 +70,15 @@
         });
         
         function deleteCip(id) {
+            /*
             $.getJSON(
             '/cipeciop/ajax/cip.bsh?action=delete&id='+id,
             {}, 
             function(data) {
                 $('#cip'+id).hide('slow')
             }
-        );
+        );*/
+        $('#cip'+id).hide('slow')
         }
     </script>
     <script src="bootstrap/js/bootstrap.js"></script>

@@ -29,7 +29,6 @@ public interface Constants {
     
     public final static String PARAM_CIP_TEXT = "cip";
     
-    public final static String ATTRIBUTE_CIPCIOP_MANAGER = "ccm";
     public final static String ATTRIBUTE_IDENTIFIER = "openid_user";
     
     public final static String ATTRIBUTE_FRIENDS = "friends";

@@ -86,24 +86,26 @@ public class CipCiopManagerTest {
         
         Cip cip1 = new Cip(CipCiopTestUtil.TEST_TEXT1), 
             cip2 = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip1.setFrom(CipCiopTestUtil.TEST_USER1); cip1.setTo(CipCiopTestUtil.TEST_USER2);
+        cip1.setFrom(CipCiopTestUtil.TEST_USER1); 
+        cip1.setTo(CipCiopTestUtil.TEST_USER2);
         cip2.setFrom(CipCiopTestUtil.TEST_USER1); cip2.setTo(CipCiopTestUtil.TEST_USER3);
+        cip2.setCreated(10);
         
         ccm.addCip(cip1); 
         List<Cip> cips = ccm.getCips();
         assertEquals(1, cips.size());
         assertEquals(cip1, cips.get(0));
+        assertEquals(0, cip1.getCreated());
         
         ccm.addCip(cip2);
         cips = ccm.getCips();
         assertEquals(2, cips.size());
         assertEquals(cip2, cips.get(1));
-        
-        //assertTrue(cips.get(0).getWhen() < cips.get(1).getWhen());
+        assertEquals(10, cip2.getCreated());
     }
     
     @Test
-    public void addCiops() {
+    public void addCiops() throws Exception {
         CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
         
         assertEquals(0, ccm.getCiops().size());
@@ -123,9 +125,11 @@ public class CipCiopManagerTest {
         Ciop ciop1 = new Ciop(CipCiopTestUtil.TEST_TEXT1), 
              ciop2 = new Ciop(CipCiopTestUtil.TEST_TEXT2),
              ciop3 = new Ciop(CipCiopTestUtil.TEST_TEXT2);
-        ciop1.setFrom(CipCiopTestUtil.TEST_USER1);
-        ciop2.setFrom(CipCiopTestUtil.TEST_USER2);
-        ciop3.setFrom(CipCiopTestUtil.TEST_USER3);
+        ciop1.setFrom(CipCiopTestUtil.TEST_USER1); ciop1.setCreated(System.currentTimeMillis());
+        Thread.sleep(1);
+        ciop2.setFrom(CipCiopTestUtil.TEST_USER2); ciop2.setCreated(System.currentTimeMillis());
+        Thread.sleep(1);
+        ciop3.setFrom(CipCiopTestUtil.TEST_USER3); ciop3.setCreated(System.currentTimeMillis());
                 
         ccm.addCiop(ciop1);
         List<Ciop> ciops = ccm.getCiops();
