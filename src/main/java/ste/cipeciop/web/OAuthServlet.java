@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.openid4java.OpenIDException;
 import org.openid4java.association.AssociationSessionType;
+import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
 import org.openid4java.consumer.InMemoryConsumerAssociationStore;
 import org.openid4java.consumer.InMemoryNonceVerifier;
@@ -78,7 +79,12 @@ public class OAuthServlet extends HttpServlet implements Constants {
         //
         // OAuth 2.0 manager
         //
-        createConsumerManager();
+        try {
+            createConsumerManager();
+        } catch (ConsumerException e) {
+            throw new ServletException("Unable to create the consumer: " + e.getMessage(), e);
+        }
+        
     }
 
     /** 
@@ -288,7 +294,7 @@ public class OAuthServlet extends HttpServlet implements Constants {
         }
     }
     
-    private void createConsumerManager() {
+    private void createConsumerManager() throws ConsumerException {
         consumerManager = new ConsumerManager();
         consumerManager.setAssociations(new InMemoryConsumerAssociationStore());
         consumerManager.setNonceVerifier(new InMemoryNonceVerifier(5000));
