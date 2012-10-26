@@ -75,7 +75,6 @@
         $('div #cipciop').emotions();
         
         function deleteCipCiop(id, type) {
-          alert(id + " " + type);
           $.getJSON(
           '/cipeciop/ajax/cip.bsh?action=delete&id='+id+'&type='+type,
           {},
