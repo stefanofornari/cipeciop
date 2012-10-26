@@ -56,7 +56,7 @@
                 <div id="cipsciops">
                     <c:forEach items="${cips}" var="cip">
                         <div id="cip<c:out value='${cip.id}'/>" class="well">
-                            <button onclick="deleteCip(<c:out value='${cip.id}'/>);" class="close">&times;</button>
+                            <button onclick="deleteCipCiop(<c:out value='${cip.id}'/>, '<c:out value='${cip.getClass().name}'/>');" class="close">&times;</button>
                             <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong>
                             <div id="cipciop"><c:out value="${cip.text}"/></div>
                             <small class="muted" style="font-size:75%"><c:out value="${cip.created}"/></small>
@@ -74,17 +74,15 @@
         
         $('div #cipciop').emotions();
         
-        function deleteCip(id) {
-            /*
-            $.getJSON(
-            '/cipeciop/ajax/cip.bsh?action=delete&id='+id,
-            {},
-            function(data) {
-                $('#cip'+id).hide('slow')
-            }
-        );*/
-            $('#cip'+id).hide('slow')
-        }
+        function deleteCipCiop(id, type) {
+          alert(id + " " + type);
+          $.getJSON(
+          '/cipeciop/ajax/cip.bsh?action=delete&id='+id+'&type='+type,
+          {},
+          function(data) {
+              $('#cip'+id).hide('slow')
+          });
+        }  
     </script>
     <script src="bootstrap/js/bootstrap.js"></script>
 </html> 

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.access.DataContext;
@@ -160,7 +161,39 @@ public class CipCiopManager {
         ObjectIdQuery q = new ObjectIdQuery(
                               new ObjectId(Constants.DB_ENTITY_CIP, Cip.ID_PK_COLUMN, id)
                           );
-        Cip c = (Cip)DataObjectUtils.objectForQuery(context, q);
+        
+        return deleteCipCiop(q);
+    }
+    
+    /**
+     * Deletes the Ciop with the given id. It returns <code>true</code> if the
+     * ciop existed, <code>false</code> otherwise.
+     * 
+     * @param id ciop id
+     * 
+     * @return  <code>true</code> if the ciop existed, <code>false</code> otherwise
+     */
+    public boolean deleteCiop(Integer id) {
+        ObjectIdQuery q = new ObjectIdQuery(
+                              new ObjectId(Constants.DB_ENTITY_CIOP, Ciop.ID_PK_COLUMN, id)
+                          );
+        
+        return deleteCipCiop(q);
+    }
+
+    // --------------------------------------------------------- Private methods
+    
+    /**
+     * Deletes an object given its ObjectIdQuery.
+     * 
+     * @param q the ObjectIdQuery
+     * 
+     * @return <code>true</code> if the ciop existed, <code>false</code> otherwise
+     * 
+     * @throws DeleteDenyException 
+     */
+    private boolean deleteCipCiop(ObjectIdQuery q) throws DeleteDenyException {
+        Object c = DataObjectUtils.objectForQuery(context, q);
         
         if (c != null) {
             context.deleteObject(c);

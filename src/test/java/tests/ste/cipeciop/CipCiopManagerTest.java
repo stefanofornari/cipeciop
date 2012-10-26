@@ -220,4 +220,32 @@ public class CipCiopManagerTest {
         assertFalse(id.equals(cips.get(0).getId()));
         
     }
+    
+    @Test
+    public void deleteCiop() throws Exception {
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
+        
+        Ciop ciop1 = new Ciop(CipCiopTestUtil.TEST_TEXT1), 
+             ciop2 = new Ciop(CipCiopTestUtil.TEST_TEXT2);
+        ciop1.setFrom(CipCiopTestUtil.TEST_USER1); ciop1.setTo(CipCiopTestUtil.TEST_USER2);
+        ciop2.setFrom(CipCiopTestUtil.TEST_USER2); ciop2.setTo(CipCiopTestUtil.TEST_USER1);
+        ciop1.setCreated(new Date()); ciop2.setCreated(new Date());
+        ccm.addCiop(ciop1); ccm.addCiop(ciop2);
+        
+        //
+        // deleting a not existing cip results in nothing done
+        //
+        assertFalse(ccm.deleteCiop((Integer)0));
+        assertEquals(2, ccm.getCiops().size());
+        
+        //
+        // deleteing an existing cip results in the cip to be removed from the list
+        //
+        List<Ciop>ciops = ccm.getCiops();
+        Integer id = ciops.get(1).getId();
+        assertTrue(ccm.deleteCiop(id));
+        ciops = ccm.getCiops();
+        assertEquals(1, ciops.size());
+        assertFalse(id.equals(ciops.get(0).getId()));
+    }
 }

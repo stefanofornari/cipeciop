@@ -1,6 +1,23 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Cip&Ciop
+ * Copyright (C) 2012 Stefano Fornari
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation with the addition of the following permission
+ * added to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED
+ * WORK IN WHICH THE COPYRIGHT IS OWNED BY Stefano Fornari, Stefano Fornari
+ * DISCLAIMS THE WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program; if not, see http://www.gnu.org/licenses or write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301 USA.
  */
 package tests.ste.cipeciop.ajax;
 
@@ -13,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
+import ste.cipeciop.Ciop;
 import ste.cipeciop.Cip;
 import ste.cipeciop.CipCiopManager;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
@@ -60,19 +78,38 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         exec();
         
         CipCiopManager ccm  = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
-        assertEquals(3, ccm.getCips().size());
+        List<Cip> cips = ccm.getCips();
+        List<Ciop> ciops = ccm.getCiops();
+        
+        assertEquals(3, ccm.getCips().size()); assertEquals(1, ccm.getCiops().size());;
+        
+        //
+        // If type is missing, nothing gets deleted
+        //
+        beanshell.set(AJAX_PARAM_ID, String.valueOf(cips.get(0).getId()));
+        
+        exec();
+        
+        assertEquals(3, ccm.getCips().size()); assertEquals(1, ccm.getCiops().size());
         
         //
         // now we delete one cip, the change should be reflected by ccm
         //
-        Cip cip = ccm.getCips().get(0);
-        beanshell.set(AJAX_PARAM_ID, String.valueOf(cip.getId()));
+        beanshell.set(AJAX_PARAM_TYPE, cips.get(0).getClass().getName());
         
         exec();
         
-        assertEquals(2, ccm.getCips().size());
-        assertFalse(cip.getId() == ccm.getCips().get(0).getId());
+        assertEquals(2, ccm.getCips().size()); assertEquals(1, ccm.getCiops().size());
+        assertFalse(cips.get(0).getId() == ccm.getCips().get(0).getId());
         
+        //
+        // now we delete one ciop, the change
+        //
+        beanshell.set(AJAX_PARAM_ID, String.valueOf(ciops.get(0).getId()));
+        beanshell.set(AJAX_PARAM_TYPE, ciops.get(0).getClass().getName());
+        
+        exec();
+        assertEquals(0, ccm.getCiops().size());
     }
     
    
