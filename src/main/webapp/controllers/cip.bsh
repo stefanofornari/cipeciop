@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import ste.cipeciop.*;
+import ste.cipeciop.web.Utils;
 
 void addCipCiop() {
   userIdTo = displayNameToUserId(to);
@@ -45,6 +46,8 @@ void addCipCiop() {
   ccmTo.addCiop(c);
 }
 
+// ------------------------------------------------------------------------ Main
+
 if ((from = getUserName()) != null) {
   ccm = new CipCiopManager(from);
 
@@ -59,6 +62,10 @@ if ((from = getUserName()) != null) {
   cips.addAll(ccm.getCiops());
 
   Collections.sort(cips);
+
+  for(c: cips) {
+    c.text = Utils.htmlize(c.text);
+  }
 
   request.setAttribute("cips", cips);
 }

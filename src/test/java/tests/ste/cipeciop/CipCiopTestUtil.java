@@ -57,6 +57,10 @@ public class CipCiopTestUtil {
     public static final String TEST_TEXT2 = "message test two";
     public static final String TEST_TEXT3 = "message test three";
     
+    public static final String TEST_TEXT_WITH_ICONS_AND_URLS =
+        ";) some text http://www.yahoo.com/pippo :D some othertest " +
+        "http://thecampanileproject.org/campanile?param1=1&param2=xxx%32yy gfjkhf";
+    
     public static void deleteAllCipCiop() {
         ObjectContext cayenne = DataContext.createDataContext();
         cayenne.performQuery(new SQLTemplate(Constants.DB_ENTITY_CIP, "delete from cips"));

@@ -26,6 +26,7 @@ import        org.junit.Test;
 
 import ste.cipeciop.Constants;
 import com.funambol.tools.test.BeanShellTest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +112,4 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         exec();
         assertEquals(0, ccm.getCiops().size());
     }
-    
-   
 }

@@ -43,11 +43,11 @@
                     <c:if test="${empty openid_user}"><a href="auth?openid=https%3A%2F%2Fme.yahoo.com">login</a></c:if>
                     <c:if test="${not empty openid_user}"><a href="logout.bsh">logout</a></c:if>
 
-                        <form class="well form-inline" action="cip.bsh">
-                            <div class="controls"><div class="input-append">
-                                <%@ include file="/views/friends.jsp" %>
-                                <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea>
-                            </div></div>
+                    <form class="well form-inline" action="cip.bsh" method="POST">
+                        <div class="controls"><div class="input-append">
+                            <%@ include file="/views/friends.jsp" %>
+                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea>
+                        </div></div>
                         <input type="hidden" name="to"/>
                         <button type="submit" class="btn btn-primary btn-small" onclick="$('input[name=to]').val($(tovalue).text());">Cip</button>
                         <%--<button type="submit" class="btn btn-success btn-small">Ciop</button>--%>
@@ -58,7 +58,7 @@
                         <div id="cip<c:out value='${cip.id}'/>" class="well">
                             <button onclick="deleteCipCiop(<c:out value='${cip.id}'/>, '<c:out value='${cip.getClass().name}'/>');" class="close">&times;</button>
                             <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong>
-                            <div id="cipciop"><c:out value="${cip.text}"/></div>
+                            <div id="cipciop"><c:out value="${cip.text}" escapeXml="false"/></div>
                             <small class="muted" style="font-size:75%"><c:out value="${cip.created}"/></small>
                         </div>
                     </c:forEach>
@@ -71,8 +71,6 @@
         $(document).ready(function(){
             $('textarea').autosize();
         });
-        
-        $('div #cipciop').emotions();
         
         function deleteCipCiop(id, type) {
           $.getJSON(

@@ -9,12 +9,15 @@ import        org.junit.Test;
 
 import ste.cipeciop.Constants;
 import com.funambol.tools.test.BeanShellTest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import ste.cipeciop.Ciop;
+import ste.cipeciop.Cip;
 import ste.cipeciop.CipCiop;
+import ste.cipeciop.CipCiopManager;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import ste.cipeciop.test.web.mock.ServletContextMock;
 import tests.ste.cipeciop.CipCiopTestUtil;
@@ -118,5 +121,26 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         s.setAttribute(ATTRIBUTE_FRIENDS, null);
         exec();
         assertNotNull(s.getAttribute(ATTRIBUTE_FRIENDS));
-    } 
+    }
+    
+    @Test
+    public void emoticons() throws Exception {
+        beanshell.set("to", CipCiopTestUtil.TEST_USER2);
+        beanshell.set("cip", CipCiopTestUtil.TEST_TEXT_WITH_ICONS_AND_URLS);
+        
+        exec();
+        
+        List<Cip> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        assertEquals(5, cips.size());
+        //
+        // here we want just to make sure the text has been translated. See 
+        // htmlize() for all cases
+        //
+        
+        String t = cips.get(4).getText();
+        assertFalse(t.contains(";)"));
+        assertFalse(t.contains(":D"));
+        assertTrue(t.contains("<img src"));
+        //assertTrue(t.contains("<a href"));
+    }
 }
