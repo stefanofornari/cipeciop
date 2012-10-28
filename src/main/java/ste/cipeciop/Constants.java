@@ -43,4 +43,5 @@ public interface Constants {
     
     public final static String DB_ENTITY_CIP  = "Cip" ;
     public final static String DB_ENTITY_CIOP = "Ciop";
+
 }

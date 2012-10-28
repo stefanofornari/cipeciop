@@ -136,7 +136,6 @@ public class OAuthServlet extends HttpServlet implements Constants {
         if ("true".equals(request.getParameter(PARAM_IS_RETURN))) {
             processReturn(request, response);
         } else {
-            //String identifier = AUTHENTICATION_SERVER_URL + '/' + request.getParameter("openid");
             String identifier = request.getParameter("openid");
             if (identifier != null) {
                 authRequest(identifier, request, response);

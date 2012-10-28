@@ -1,5 +1,6 @@
 package ste.cipeciop.test.web.mock;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
@@ -20,6 +21,7 @@ public class HttpServletRequestMock implements HttpServletRequest {
     
     public Map attributes;
     public Map<String, String> parameters;
+    public Map<String, String> headers;
     public String pathInfo;
     public String servletPath;
     
@@ -27,10 +29,15 @@ public class HttpServletRequestMock implements HttpServletRequest {
         this.context     = context;
         this.attributes  = new HashMap();
         this.parameters  = new HashMap<String, String>();
+        this.headers     = new HashMap<String, String>();
         this.session     = new SessionMock();
         this.dispatcher  = null;
         this.pathInfo    = "";
         this.servletPath = "";
+    }
+    
+    public HttpServletRequestMock() {
+        this(new ServletContextMock());
     }
     
     @Override
@@ -51,6 +58,23 @@ public class HttpServletRequestMock implements HttpServletRequest {
     @Override
     public void setAttribute(String name, Object value) {
         attributes.put(name, value);
+    }
+    
+    @Override
+    public String getHeader(String name) {
+        return headers.get(name);
+    }
+    
+    @Override
+    public Enumeration getHeaderNames() {
+        //
+        // TODO
+        //
+        return null;
+    }
+
+    public void setHeader(String name, String value) {
+        headers.put(name, value);
     }
         
     @Override
@@ -81,5 +105,7 @@ public class HttpServletRequestMock implements HttpServletRequest {
     public String getParameter(String name) {
         return parameters.get(name);
     }
+    
+    
 
 }

@@ -1,0 +1,10 @@
+httpdump() {
+  print("Headers");
+  print("-------\n");
+
+  for(n: request.headerNames) {
+    print(n + ": " + request.getHeader(n));
+  }
+
+  print("");
+}

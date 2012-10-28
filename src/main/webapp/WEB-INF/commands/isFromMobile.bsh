@@ -1,0 +1,5 @@
+isFromMobile() {
+  h = request.getHeader("x-wap-profile");
+ print("h: " + h);
+  return (h != null);
+}

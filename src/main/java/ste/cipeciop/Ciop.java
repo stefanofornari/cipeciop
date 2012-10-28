@@ -103,4 +103,9 @@ public class Ciop extends _Ciop implements CipCiop {
             && getFrom().contains(other.getFrom())
             && getTo().equals(other.getTo());
     }
+    
+    @Override
+    public boolean isFromMobile() {
+        return ((getFlags() & FLAG_SENT_FROM_MOBILE) > 0);
+    }
 }

@@ -60,6 +60,7 @@
                             <i class="icon-user icon-black"></i> <strong><c:out value="${cip.from}"/></strong>
                             <div id="cipciop"><c:out value="${cip.text}" escapeXml="false"/></div>
                             <small class="muted" style="font-size:75%"><c:out value="${cip.created}"/></small>
+                            <c:if test="${cip.fromMobile}"><img class="pull-right" src="images/phone-8x16.png" /></c:if>
                         </div>
                     </c:forEach>
                 </div>

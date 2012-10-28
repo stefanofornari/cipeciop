@@ -1,5 +1,6 @@
 package javax.servlet.http;
 
+import java.util.Enumeration;
 import javax.servlet.ServletRequest;
 
 
@@ -13,5 +14,6 @@ public interface HttpServletRequest extends ServletRequest {
     public String getServletPath();
     public HttpSession getSession();
     public String getParameter(String name);
-    
+    public String getHeader(String name);
+    public Enumeration getHeaderNames();
 }

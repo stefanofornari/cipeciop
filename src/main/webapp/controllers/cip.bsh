@@ -25,15 +25,24 @@ import java.util.Date;
 import ste.cipeciop.*;
 import ste.cipeciop.web.Utils;
 
-void addCipCiop() {
+void addCipCiop(timestamp) {
   userIdTo = displayNameToUserId(to);
+
+  //
+  // Flags
+  //
+  flags = 0;
+  if (isFromMobile()) {
+    flags = CipCiop.FLAG_SENT_FROM_MOBILE;
+  }
+
   //
   // The Cip
   //
-  ts = new Date();
   c = new Cip(cip);
   c.to = userIdTo;
-  c.created = ts;
+  c.created = timestamp;
+  c.flags = flags;
   ccm.addCip(c);
 
   //
@@ -42,24 +51,26 @@ void addCipCiop() {
   ccmTo = new CipCiopManager(userIdTo);
   c = new Ciop(cip);
   c.from = from;
-  c.created = ts;
+  c.created = timestamp;
+  c.flags = flags;
   ccmTo.addCiop(c);
 }
 
 // ------------------------------------------------------------------------ Main
 
 if ((from = getUserName()) != null) {
+  ts = new Date();
   ccm = new CipCiopManager(from);
 
   friends = getFriends();
 
   if ((cip != void) && !empty(cip)) {
-    addCipCiop();
+    addCipCiop(ts);
   }
 
   cips = new ArrayList();
   cips.addAll(ccm.getCips());
-  cips.addAll(ccm.getCiops());
+  cips.addAll(ciop = ccm.getCiops());
 
   Collections.sort(cips);
 
@@ -68,8 +79,15 @@ if ((from = getUserName()) != null) {
   }
 
   request.setAttribute("cips", cips);
+
+  //
+  // we now update the seen flag
+  //
+  ccm.setSeen(ts);
 }
 
+//httpdump();
 //dump();
+
 
 view = "cipeciop.jsp";

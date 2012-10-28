@@ -11,6 +11,7 @@
 		<db-attribute name="seen" type="TIMESTAMP"/>
 		<db-attribute name="sender" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="text" type="VARCHAR" isMandatory="true" length="1000"/>
+                <db-attribute name="flags" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="cips">
 		<db-attribute name="created" type="TIMESTAMP"/>
@@ -18,6 +19,7 @@
 		<db-attribute name="recipient" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="sender" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="text" type="VARCHAR" isMandatory="true" length="1000"/>
+                <db-attribute name="flags" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<obj-entity name="Ciop" className="ste.cipeciop.Ciop" dbEntityName="ciops">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -26,6 +28,7 @@
 		<obj-attribute name="seen" type="java.util.Date" db-attribute-path="seen"/>
 		<obj-attribute name="text" type="java.lang.String" db-attribute-path="text"/>
 		<obj-attribute name="to" type="java.lang.String" db-attribute-path="recipient"/>
+                <obj-attribute name="flags" type="int" db-attribute-path="flags"/>
 	</obj-entity>
 	<obj-entity name="Cip" className="ste.cipeciop.Cip" dbEntityName="cips">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -33,5 +36,6 @@
 		<obj-attribute name="id" type="int" db-attribute-path="id"/>
 		<obj-attribute name="text" type="java.lang.String" db-attribute-path="text"/>
 		<obj-attribute name="to" type="java.lang.String" db-attribute-path="recipient"/>
+                <obj-attribute name="flags" type="int" db-attribute-path="flags"/>
 	</obj-entity>
 </data-map>

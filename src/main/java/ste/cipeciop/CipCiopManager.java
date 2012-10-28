@@ -21,15 +21,18 @@
  */
 package ste.cipeciop;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 
@@ -90,6 +93,7 @@ public class CipCiopManager {
         c.setText(cip.getText());
         c.setTo(cip.getTo());
         c.setCreated(cip.getCreated());
+        c.setFlags(cip.getFlags());
         
         context.commitChanges();
     }
@@ -111,6 +115,7 @@ public class CipCiopManager {
         c.setText(ciop.getText());
         c.setFrom(ciop.getFrom());
         c.setCreated(ciop.getCreated());
+        c.setFlags(ciop.getFlags());
         
         context.commitChanges();
     }
@@ -180,6 +185,30 @@ public class CipCiopManager {
         
         return deleteCipCiop(q);
     }
+    
+    /**
+     * Set the seen flag to the cips corresponding to the current ciops and
+     * whose creation timestamp is earlier than the provided ts.
+     * 
+     * @param timestamp the seen timestamp
+     */
+    public void setSeen(Date timestamp) {
+        List<Ciop> ciops = getCiops();
+        
+        String from = null;
+        Set<String> friends = new HashSet<String>();
+        for(Ciop c: ciops) {
+            from = c.getFrom();
+            
+            if (!friends.contains(from)) {
+                friends.add(from);
+            }
+        }
+        
+        if (friends.size() > 0) {
+            setSeen(friends, timestamp);
+        }
+    }
 
     // --------------------------------------------------------- Private methods
     
@@ -202,6 +231,16 @@ public class CipCiopManager {
         }
         
         return false;
+    }
+    
+    private void setSeen(Set<String> friends, Date timestamp) {
+        for (String from: friends) {
+            EJBQLQuery query = new EJBQLQuery(
+                String.format("UPDATE Cip c SET c.flags = 2 WHERE c.from='%s'", from)
+            );
+            context.performGenericQuery(query);
+            context.commitChanges();
+        }
     }
 
 

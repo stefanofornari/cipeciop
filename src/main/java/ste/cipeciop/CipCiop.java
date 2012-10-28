@@ -29,10 +29,47 @@ import java.util.Date;
  */
 public interface CipCiop extends Comparable {
     
+    public final static int FLAG_SENT_FROM_MOBILE = 0x0001;
+    public final static int FLAG_SEEN             = 0x0002;
+    
     /**
      * The creation timestamp
      * 
      * @return the creation timestamp
      */
     public Date getCreated();
+    
+    /**
+     * Has this cip or ciop been sent from a mobile device?
+     * 
+     * @return true if sent from a mobile device, false otherwise
+     */
+    boolean isFromMobile();
+
+    /**
+     * @param text the text to set - NOT NULL
+     *
+     * @throws NullPointerException if text is null
+     */
+    void setText(String text) throws NullPointerException;
+    
+    int getFlags();
+
+    String getFrom();
+
+    int getId();
+
+    String getText();
+
+    String getTo();
+
+    void setCreated(Date created);
+
+    void setFlags(int flags);
+
+    void setFrom(String from);
+
+    void setId(int id);
+
+    void setTo(String to);
 }

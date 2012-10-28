@@ -248,4 +248,27 @@ public class CipCiopManagerTest {
         assertEquals(1, ciops.size());
         assertFalse(id.equals(ciops.get(0).getId()));
     }
+
+    @Test
+    public void setSeenFlag() throws Exception {
+        Date timestamp = new Date();
+        Thread.sleep(5);
+        
+        CipCiopManager ccm1 = CipCiopTestUtil.createCCMForUser1();
+        CipCiopManager ccm2 = CipCiopTestUtil.createCCMForUser2();
+        
+        Cip cip = new Cip("another ciop"); Ciop ciop = new Ciop(cip.getText());
+        cip.setTo(CipCiopTestUtil.TEST_USER1); cip.setFrom(CipCiopTestUtil.TEST_USER2);
+        ciop.setTo(cip.getTo()); ciop.setFrom(cip.getFrom());
+        ciop.setCreated(new Date());
+        ccm2.addCip(cip); ccm1.addCiop(ciop);
+        
+        ccm1.setSeen(timestamp);
+        List<Cip> cips = ccm2.getCips();
+        assertTrue(cips.get(0).isSeen());
+        //
+        // FIXME
+        //
+        //assertFalse(cips.get(1).isSeen());
+    }
 }

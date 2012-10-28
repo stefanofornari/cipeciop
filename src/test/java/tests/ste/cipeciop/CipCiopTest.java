@@ -30,18 +30,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ste.cipeciop.Cip;
 import static org.junit.Assert.*;
+import ste.cipeciop.Ciop;
+import ste.cipeciop.CipCiop;
 
 /**
  *
  * @author ste
  */
-public class CipTest {
+public class CipCiopTest {
     
     public static final String TEST_NEW_CHIP_TXT  = "thi is a new cip";
     public static final String TEST_FROM1 = "stefano_fornari";
     public static final String TEST_TO1 = "someone";
     
-    public CipTest() {
+    public CipCiopTest() {
     }
 
     @BeforeClass
@@ -62,19 +64,64 @@ public class CipTest {
 
     @Test
     public void newCip() {
-        Cip cip = new Cip();
+        newCipCiop(new Cip());
+        newCipCiop(new Ciop());
+    }
         
-        //assertFalse(cip.getId() == 0);
-        assertEquals("", cip.getText());
-        
-        cip = new Cip(TEST_NEW_CHIP_TXT);
-        assertEquals(TEST_NEW_CHIP_TXT, cip.getText());
+    @Test
+    public void text() {
+        text(new Cip());
+        text(new Ciop());
     }
     
     @Test
-    public void cipText() {
-        Cip cip = new Cip();
+    public void from() {
+        from(new Cip());
+        from(new Ciop());
+    }
+    
+    @Test
+    public void comparisons() {
+        comparisons(new Cip(), new Cip());
+        comparisons(new Ciop(), new Ciop());
+    }
+    
+    @Test
+    //
+    // It cannot be called toString as it is altready a method of the class
+    //
+    public void toText() {
+        toText(new Cip());
+        toText(new Ciop());
+    }
+    
+    @Test
+    public void sentFromMobile() {
+        sentFromMobile(new Cip());
+        sentFromMobile(new Ciop());
+    }
+    
+    @Test
+    public void sentSeen() {
+        Cip c = new Cip();
+        assertFalse(c.isSeen());
         
+        c.setFlags(0x01); assertFalse(c.isSeen());
+        c.setFlags(0x01 | CipCiop.FLAG_SEEN); assertTrue(c.isSeen());
+    }
+        
+    // --------------------------------------------------------- Private methods
+
+    private void newCipCiop(CipCiop c) {
+        assertEquals(0, c.getId());
+        assertEquals("", c.getText());
+        assertEquals(0, c.getFlags());
+        
+        c = new Cip(TEST_NEW_CHIP_TXT);
+        assertEquals(TEST_NEW_CHIP_TXT, c.getText());
+    }
+
+    private void text(CipCiop cip) throws NullPointerException {
         cip.setText(TEST_NEW_CHIP_TXT);
         assertEquals(TEST_NEW_CHIP_TXT, cip.getText());
         
@@ -87,19 +134,14 @@ public class CipTest {
             //
         }
     }
-    
-    @Test
-    public void cipFrom() {
-        Cip cip = new Cip();
-        
+
+    private void from(CipCiop cip) {
         assertNull(cip.getFrom());
         
         cip.setFrom(TEST_FROM1); assertEquals(TEST_FROM1, cip.getFrom());
     }
-    
-    @Test
-    public void comparisons() {
-        Cip cip1 = new Cip(), cip2 = new Cip();
+
+    private void comparisons(CipCiop cip1, CipCiop cip2) {
         cip1.setCreated(new Date()); cip2.setCreated(new Date(cip1.getCreated().getTime()+10));
         
         try {
@@ -123,14 +165,8 @@ public class CipTest {
         assertTrue(cip2.compareTo(cip1)>0);
         assertTrue(cip1.compareTo(cip1)==0);
     }
-    
-    @Test
-    //
-    // It cannot be called toString as it is altready a method of the class
-    //
-    public void toText() {
-        Cip cip = new Cip();
 
+    private void toText(CipCiop cip) {
         assertTrue(cip.toString().contains("From null"));
         assertTrue(cip.toString().contains("to null"));
 
@@ -152,5 +188,12 @@ public class CipTest {
         Date now = new Date();
         cip.setCreated(now);
         assertTrue(cip.toString().contains(String.valueOf(now)));
+    }
+
+    private void sentFromMobile(CipCiop c) {
+        assertFalse(c.isFromMobile());
+        
+        c.setFlags(0x20); assertFalse(c.isFromMobile());
+        c.setFlags(0x20 | CipCiop.FLAG_SENT_FROM_MOBILE); assertTrue(c.isFromMobile());
     }
 }

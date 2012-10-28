@@ -13,6 +13,7 @@ import org.apache.cayenne.CayenneDataObject;
 public abstract class _Cip extends CayenneDataObject {
 
     public static final String CREATED_PROPERTY = "created";
+    public static final String FLAGS_PROPERTY = "flags";
     public static final String FROM_PROPERTY = "from";
     public static final String ID_PROPERTY = "id";
     public static final String TEXT_PROPERTY = "text";
@@ -25,6 +26,14 @@ public abstract class _Cip extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
+    }
+
+    public void setFlags(int flags) {
+        writeProperty("flags", flags);
+    }
+    public int getFlags() {
+        Object value = readProperty("flags");
+        return (value != null) ? (Integer) value : 0;
     }
 
     public void setFrom(String from) {

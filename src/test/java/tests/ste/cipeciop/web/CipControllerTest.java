@@ -9,7 +9,6 @@ import        org.junit.Test;
 
 import ste.cipeciop.Constants;
 import com.funambol.tools.test.BeanShellTest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,8 @@ import tests.ste.cipeciop.CipCiopTestUtil;
  *
  * @author ste
  */
-public class CipControllerTest extends BeanShellTest implements Constants {
+public class CipControllerTest extends BeanShellTest 
+                               implements Constants {
     
     
     
@@ -141,6 +141,64 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         assertFalse(t.contains(";)"));
         assertFalse(t.contains(":D"));
         assertTrue(t.contains("<img src"));
-        //assertTrue(t.contains("<a href"));
+        assertTrue(t.contains("<a href"));
+    }
+    
+    @Test
+    public void cipFromMobile() throws Throwable {
+        //
+        // When a cip is sent from the mobile, its SEND_FROM_MOBILE flag shall
+        // be set
+        //
+        
+        //
+        // Not from mobile
+        //
+        beanshell.set("to", CipCiopTestUtil.TEST_USER2);
+        beanshell.set("cip", CipCiopTestUtil.TEST_TEXT_WITH_ICONS_AND_URLS);
+        
+        exec();
+        
+        List<Cip> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        assertEquals(5, cips.size());
+        assertEquals(0, cips.get(4).getFlags());
+        
+        //
+        // From mobile
+        //
+        HttpServletRequestMock r = (HttpServletRequestMock)beanshell.get("request");
+        r.setHeader("x-wap-profile", IsFromMobileTest.TEST_X_WAP_PROFILE);
+        beanshell.set("to", CipCiopTestUtil.TEST_USER2);
+        beanshell.set("cip", CipCiopTestUtil.TEST_TEXT_WITH_ICONS_AND_URLS);
+        
+        exec();
+        
+        cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        assertEquals(6, cips.size());
+        assertEquals(CipCiop.FLAG_SENT_FROM_MOBILE, cips.get(5).getFlags());
+        
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER2);
+        List<Ciop> ciops = ccm.getCiops();
+        assertTrue(ciops.get(1).isFromMobile());
+    }
+    
+    @Test
+    public void seen() throws Throwable {
+        //
+        // Once seen all ciops shall be flagged as seen
+        //
+        CipCiopManager ccm = CipCiopTestUtil.createCCMForUser2();
+        List<Cip> cips = ccm.getCips();
+        assertFalse(cips.get(0).isSeen());
+        assertFalse(cips.get(1).isSeen());
+        
+        exec();
+
+        cips = ccm.getCips();
+        //
+        // FIXME
+        //
+//        assertTrue(cips.get(0).isSeen());
+//        assertFalse(cips.get(1).isSeen());
     }
 }
