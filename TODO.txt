@@ -1,5 +1,3 @@
 - use display name in friends dropdown
 - improve logout (do not show url, use post instead of get?)
-- flag di lettura
-- flag di messaggio dal cellulare
 - optimize seen flag management so that only ciops not yet seen are updated

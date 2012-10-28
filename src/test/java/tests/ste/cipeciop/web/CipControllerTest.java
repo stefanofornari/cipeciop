@@ -155,7 +155,8 @@ public class CipControllerTest extends BeanShellTest
         
         List<Cip> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(6, cips.size());
-        assertEquals(0, cips.get(5).getFlags());
+        assertFalse(cips.get(5).isFromMobile());
+        assertFalse(cips.get(5).isSeen());
         
         //
         // From mobile
@@ -169,7 +170,7 @@ public class CipControllerTest extends BeanShellTest
         
         cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(7, cips.size());
-        assertEquals(CipCiop.FLAG_SENT_FROM_MOBILE, cips.get(6).getFlags());
+        assertTrue(cips.get(6).isFromMobile());
         
         CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER2);
         List<Ciop> ciops = ccm.getCiops();
@@ -189,10 +190,8 @@ public class CipControllerTest extends BeanShellTest
         exec();
 
         cips = ccm.getCips();
-        //
-        // FIXME
-        //
-//        assertTrue(cips.get(0).isSeen());
-//        assertFalse(cips.get(1).isSeen());
+
+        assertTrue(cips.get(0).isSeen());
+        assertFalse(cips.get(1).isSeen());
     }
 }

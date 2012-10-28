@@ -13,10 +13,9 @@ import org.apache.cayenne.CayenneDataObject;
 public abstract class _Ciop extends CayenneDataObject {
 
     public static final String CREATED_PROPERTY = "created";
-    public static final String FLAGS_PROPERTY = "flags";
     public static final String FROM_PROPERTY = "from";
     public static final String ID_PROPERTY = "id";
-    public static final String SEEN_PROPERTY = "seen";
+    public static final String MOBILE_PROPERTY = "mobile";
     public static final String TEXT_PROPERTY = "text";
     public static final String TO_PROPERTY = "to";
 
@@ -29,20 +28,9 @@ public abstract class _Ciop extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setFlags(int flags) {
-        writeProperty("flags", flags);
-    }
-
-    public int getFlags() {
-        Object value = readProperty("flags");
-        return (value != null) ? (Integer) value : 0;
-    }
-
-
     public void setFrom(String from) {
         writeProperty("from", from);
     }
-
     public String getFrom() {
         return (String)readProperty("from");
     }
@@ -50,24 +38,21 @@ public abstract class _Ciop extends CayenneDataObject {
     public void setId(int id) {
         writeProperty("id", id);
     }
-
     public int getId() {
         Object value = readProperty("id");
         return (value != null) ? (Integer) value : 0;
     }
 
-    public void setSeen(Date seen) {
-        writeProperty("seen", seen);
+    public void setMobile(Boolean mobile) {
+        writeProperty("mobile", mobile);
     }
-
-    public Date getSeen() {
-        return (Date)readProperty("seen");
+    public Boolean getMobile() {
+        return (Boolean)readProperty("mobile");
     }
 
     public void setText(String text) {
         writeProperty("text", text);
     }
-
     public String getText() {
         return (String)readProperty("text");
     }
@@ -75,7 +60,6 @@ public abstract class _Ciop extends CayenneDataObject {
     public void setTo(String to) {
         writeProperty("to", to);
     }
-
     public String getTo() {
         return (String)readProperty("to");
     }

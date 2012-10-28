@@ -260,16 +260,14 @@ public class CipCiopManagerTest {
         
         Cip cip = new Cip("another ciop"); Ciop ciop = new Ciop(cip.getText());
         cip.setTo(CipCiopTestUtil.TEST_USER1); cip.setFrom(CipCiopTestUtil.TEST_USER2);
+        cip.setCreated(new Date());
         ciop.setTo(cip.getTo()); ciop.setFrom(cip.getFrom());
-        ciop.setCreated(new Date());
+        ciop.setCreated(cip.getCreated());
         ccm2.addCip(cip); ccm1.addCiop(ciop);
         
         ccm1.setSeen(timestamp);
         List<Cip> cips = ccm2.getCips();
         assertTrue(cips.get(0).isSeen());
-        //
-        // FIXME
-        //
-        //assertFalse(cips.get(1).isSeen());
+        assertFalse(cips.get(2).isSeen());
     }
 }

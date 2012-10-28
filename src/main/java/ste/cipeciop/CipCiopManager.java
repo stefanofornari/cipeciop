@@ -93,7 +93,8 @@ public class CipCiopManager {
         c.setText(cip.getText());
         c.setTo(cip.getTo());
         c.setCreated(cip.getCreated());
-        c.setFlags(cip.getFlags());
+        c.setMobile(cip.getMobile());
+        c.setSeen(cip.getSeen());
         
         context.commitChanges();
     }
@@ -115,7 +116,7 @@ public class CipCiopManager {
         c.setText(ciop.getText());
         c.setFrom(ciop.getFrom());
         c.setCreated(ciop.getCreated());
-        c.setFlags(ciop.getFlags());
+        c.setMobile(ciop.getMobile());
         
         context.commitChanges();
     }
@@ -234,10 +235,16 @@ public class CipCiopManager {
     }
     
     private void setSeen(Set<String> friends, Date timestamp) {
-        for (String from: friends) {
+        for (String to: friends) {
             EJBQLQuery query = new EJBQLQuery(
-                String.format("UPDATE Cip c SET c.flags = 2 WHERE c.from='%s'", from)
+                "UPDATE Cip c SET c.seen=:s WHERE c.from=:f AND c.to=:t AND c.created<:c"
             );
+
+            query.setParameter("s", new java.sql.Timestamp(timestamp.getTime()));
+            query.setParameter("f", to       );
+            query.setParameter("t", userId   );
+            query.setParameter("c", new java.sql.Timestamp(timestamp.getTime()));
+            
             context.performGenericQuery(query);
             context.commitChanges();
         }

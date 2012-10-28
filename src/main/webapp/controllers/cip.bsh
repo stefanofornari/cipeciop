@@ -27,14 +27,7 @@ import ste.cipeciop.web.Utils;
 
 void addCipCiop(timestamp) {
   userIdTo = displayNameToUserId(to);
-
-  //
-  // Flags
-  //
-  flags = 0;
-  if (isFromMobile()) {
-    flags = CipCiop.FLAG_SENT_FROM_MOBILE;
-  }
+  fromMobile = isFromMobile();
 
   //
   // The Cip
@@ -42,7 +35,7 @@ void addCipCiop(timestamp) {
   c = new Cip(cip);
   c.to = userIdTo;
   c.created = timestamp;
-  c.flags = flags;
+  c.mobile = fromMobile;
   ccm.addCip(c);
 
   //
@@ -52,7 +45,7 @@ void addCipCiop(timestamp) {
   c = new Ciop(cip);
   c.from = from;
   c.created = timestamp;
-  c.flags = flags;
+  c.mobile = fromMobile;
   ccmTo.addCiop(c);
 }
 
@@ -81,7 +74,7 @@ if ((from = getUserName()) != null) {
   request.setAttribute("cips", cips);
 
   //
-  // we now update the seen flag
+  // we now update the seen timestamp
   //
   ccm.setSeen(ts);
 }

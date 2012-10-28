@@ -21,6 +21,8 @@
  */
 package ste.cipeciop;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import ste.cipeciop.dao.auto._Cip;
 
 /**
@@ -102,13 +104,13 @@ public class Cip extends _Cip implements CipCiop {
             && getFrom().contains(other.getFrom())
             && getTo().equals(other.getTo());
     }
-    
+
     @Override
     public boolean isFromMobile() {
-        return ((getFlags() & FLAG_SENT_FROM_MOBILE) > 0);
+        return Boolean.TRUE.equals(getMobile());
     }
     
     public boolean isSeen() {
-        return ((getFlags() & FLAG_SEEN) > 0);
+        return (getSeen() != null);
     }
 }

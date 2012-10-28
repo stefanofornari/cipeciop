@@ -27,11 +27,7 @@ import java.util.Date;
  *
  * @author ste
  */
-public interface CipCiop extends Comparable {
-    
-    public final static int FLAG_SENT_FROM_MOBILE = 0x0001;
-    public final static int FLAG_SEEN             = 0x0002;
-    
+public interface CipCiop extends Comparable {    
     /**
      * The creation timestamp
      * 
@@ -52,8 +48,6 @@ public interface CipCiop extends Comparable {
      * @throws NullPointerException if text is null
      */
     void setText(String text) throws NullPointerException;
-    
-    int getFlags();
 
     String getFrom();
 
@@ -65,11 +59,11 @@ public interface CipCiop extends Comparable {
 
     void setCreated(Date created);
 
-    void setFlags(int flags);
-
     void setFrom(String from);
 
     void setId(int id);
 
     void setTo(String to);
+    
+    void setMobile(Boolean mobile);
 }

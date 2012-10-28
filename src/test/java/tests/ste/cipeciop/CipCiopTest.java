@@ -64,7 +64,13 @@ public class CipCiopTest {
 
     @Test
     public void newCip() {
-        newCipCiop(new Cip());
+        Cip c = new Cip();
+        newCipCiop(c);
+        assertFalse(c.isSeen());
+    }
+    
+    @Test
+    public void newCiop() {
         newCipCiop(new Ciop());
     }
         
@@ -102,12 +108,11 @@ public class CipCiopTest {
     }
     
     @Test
-    public void sentSeen() {
+    public void seen() {
         Cip c = new Cip();
         assertFalse(c.isSeen());
         
-        c.setFlags(0x01); assertFalse(c.isSeen());
-        c.setFlags(0x01 | CipCiop.FLAG_SEEN); assertTrue(c.isSeen());
+        c.setSeen(new Date()); assertTrue(c.isSeen());
     }
         
     // --------------------------------------------------------- Private methods
@@ -115,7 +120,7 @@ public class CipCiopTest {
     private void newCipCiop(CipCiop c) {
         assertEquals(0, c.getId());
         assertEquals("", c.getText());
-        assertEquals(0, c.getFlags());
+        assertFalse(c.isFromMobile());
         
         c = new Cip(TEST_NEW_CHIP_TXT);
         assertEquals(TEST_NEW_CHIP_TXT, c.getText());
@@ -193,7 +198,6 @@ public class CipCiopTest {
     private void sentFromMobile(CipCiop c) {
         assertFalse(c.isFromMobile());
         
-        c.setFlags(0x20); assertFalse(c.isFromMobile());
-        c.setFlags(0x20 | CipCiop.FLAG_SENT_FROM_MOBILE); assertTrue(c.isFromMobile());
+        c.setMobile(Boolean.TRUE); assertTrue(c.isFromMobile());
     }
 }
