@@ -1,2 +1,1 @@
-- html escape cips in input
 - use display name in friends dropdown

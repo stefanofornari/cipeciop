@@ -22,6 +22,7 @@
 package tests.ste.cipeciop.web;
 
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,6 +47,10 @@ public class UtilsTest implements Constants {
     public final String TEST_URL1 = "http://www.yahoo.com&param1=value1&param=value%202";
     public final String TEST_URL2 = "https://www.yahoo.com&param1=value1&param=value%202";
     public final String TEST_URL_TEXT = "this message contains " + TEST_URL1 + " and " + TEST_URL2 + " !";
+    public final String TEST_URL_ESCAPE = TEST_URL_TEXT 
+                                        + " <script lang=\"javascript\"> " 
+                                        + TEST_ALL_EMO_CODES
+                                        ;
     
     public UtilsTest() {
     }
@@ -121,8 +126,17 @@ public class UtilsTest implements Constants {
     @Test
     public void htmlizeUrls() {
         String s = Utils.htmlize(TEST_URL_TEXT);
-        System.out.println(s);
+        
         assertTrue(s.contains(String.format("<a href=\"%s\"", TEST_URL1)));
         assertTrue(s.contains(String.format("<a href=\"%s\"", TEST_URL2)));
+    }
+    
+    @Test
+    public void escapeHtmlize() {
+        String s = Utils.htmlize(TEST_URL_ESCAPE);
+        
+        assertTrue(s.contains(String.format("<a href=\"%s\"", TEST_URL1)));
+        assertTrue(s.contains("<img src=\"images/emoticons/hug.gif"));
+        assertTrue(s.contains("&lt;script"));
     }
 }

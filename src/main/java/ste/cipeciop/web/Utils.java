@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -53,56 +54,56 @@ public class Utils {
      *  :d -> like
      * </pre>
      *
-     * @param s the string to translate
+     * @param s the string to translate; it is supposed the string is html encoded
      *
      * @return the translated string
      */
     public static String htmlizeEmoticons(final String s) {
         final Map<String, String> emoticons = new HashMap<String, String>();
 
-        emoticons.put("o)", "angel");
-        emoticons.put("o:-)", "angel");
-        emoticons.put("X(", "angry");
-        emoticons.put("=D>", "applause");
-        emoticons.put(":bz", "bee");
-        emoticons.put("=((", "brokenheart");
-        emoticons.put("~:>", "chicken");
-        emoticons.put("~O)", "coffee");
-        emoticons.put(":-/", "confused");
-        emoticons.put(":3", "colonthree");
-        emoticons.put(":'(", "cry");
-        emoticons.put("3:)", "devil");
-        emoticons.put("\\:D/", "dance");
-        emoticons.put(":-q", "dontlike");
-        emoticons.put(":q", "dontlike");
-        emoticons.put(":(", "sad");
-        emoticons.put(":D", "grin");
-        emoticons.put("8)", "glasses");
-        emoticons.put(">:(", "grumpy");
-        emoticons.put(">:D<", "hug");
-        emoticons.put(":))", "laugh");
-        emoticons.put(":-bd", "like");
-        emoticons.put(":bd", "like");
-        emoticons.put(":-x", "love");
-        emoticons.put(":x", "love");
-        emoticons.put("^_^", "kiki");
-        emoticons.put(":-*", "kiss");
-        emoticons.put(":*", "kiss");
-        emoticons.put(":v", "pacman");
-        emoticons.put(":@)", "pig");
-        emoticons.put("=))", "rollonfloor");
-        emoticons.put("[-X", "shame");
-        emoticons.put(":)", "smile");
-        emoticons.put("-_-", "squint");
-        emoticons.put(":|", "straight");
-        emoticons.put("8|", "sunglasses");
-        emoticons.put(":-O", "surprise");
-        emoticons.put(":O", "surprise");
-        emoticons.put(":-?", "think");
-        emoticons.put(":p", "thoungue");
-        emoticons.put(">:O", "upset");
-        emoticons.put(":-h", "wave");
-        emoticons.put(";)", "wink");
+        emoticons.put(StringEscapeUtils.escapeHtml("o)")   , "angel"      );
+        emoticons.put(StringEscapeUtils.escapeHtml("o:-)") , "angel"      );
+        emoticons.put(StringEscapeUtils.escapeHtml("X(")   , "angry"      );
+        emoticons.put(StringEscapeUtils.escapeHtml("=D>")  , "applause"   );
+        emoticons.put(StringEscapeUtils.escapeHtml(":bz")  , "bee"        );
+        emoticons.put(StringEscapeUtils.escapeHtml("=((")  , "brokenheart");
+        emoticons.put(StringEscapeUtils.escapeHtml("~:>")  , "chicken"    );
+        emoticons.put(StringEscapeUtils.escapeHtml("~O)")  , "coffee"     );
+        emoticons.put(StringEscapeUtils.escapeHtml(":-/")  , "confused"   );
+        emoticons.put(StringEscapeUtils.escapeHtml(":3")   , "colonthree" );
+        emoticons.put(StringEscapeUtils.escapeHtml(":'(")  , "cry"        );
+        emoticons.put(StringEscapeUtils.escapeHtml("3:)")  , "devil"      );
+        emoticons.put(StringEscapeUtils.escapeHtml("\\:D/"), "dance"      );
+        emoticons.put(StringEscapeUtils.escapeHtml(":-q")  , "dontlike"   );
+        emoticons.put(StringEscapeUtils.escapeHtml(":q")   , "dontlike"   );
+        emoticons.put(StringEscapeUtils.escapeHtml(":(")   , "sad"        );
+        emoticons.put(StringEscapeUtils.escapeHtml(":D")   , "grin"       );
+        emoticons.put(StringEscapeUtils.escapeHtml("8)")   , "glasses"    );
+        emoticons.put(StringEscapeUtils.escapeHtml(">:(")  , "grumpy"     );
+        emoticons.put(StringEscapeUtils.escapeHtml(">:D<") , "hug"        );
+        emoticons.put(StringEscapeUtils.escapeHtml(":))")  , "laugh"      );
+        emoticons.put(StringEscapeUtils.escapeHtml(":-bd") , "like"       );
+        emoticons.put(StringEscapeUtils.escapeHtml(":bd")  , "like"       );
+        emoticons.put(StringEscapeUtils.escapeHtml(":-x")  , "love"       );
+        emoticons.put(StringEscapeUtils.escapeHtml(":x")   , "love"       );
+        emoticons.put(StringEscapeUtils.escapeHtml("^_^")  , "kiki"       );
+        emoticons.put(StringEscapeUtils.escapeHtml(":-*")  , "kiss"       );
+        emoticons.put(StringEscapeUtils.escapeHtml(":*")   , "kiss"       );
+        emoticons.put(StringEscapeUtils.escapeHtml(":v")   , "pacman"     );
+        emoticons.put(StringEscapeUtils.escapeHtml(":@)")  , "pig"        );
+        emoticons.put(StringEscapeUtils.escapeHtml("=))")  , "rollonfloor");
+        emoticons.put(StringEscapeUtils.escapeHtml("[-X")  , "shame"      );
+        emoticons.put(StringEscapeUtils.escapeHtml(":)")   , "smile"      );
+        emoticons.put(StringEscapeUtils.escapeHtml("-_-")  , "squint"     );
+        emoticons.put(StringEscapeUtils.escapeHtml(":|")   , "straight"   );
+        emoticons.put(StringEscapeUtils.escapeHtml("8|")   , "sunglasses" );
+        emoticons.put(StringEscapeUtils.escapeHtml(":-O")  , "surprise"   );
+        emoticons.put(StringEscapeUtils.escapeHtml(":O")   , "surprise"   );
+        emoticons.put(StringEscapeUtils.escapeHtml(":-?")  , "think"      );
+        emoticons.put(StringEscapeUtils.escapeHtml(":p")   , "thoungue"   );
+        emoticons.put(StringEscapeUtils.escapeHtml(">:O")  , "upset"      );
+        emoticons.put(StringEscapeUtils.escapeHtml(":-h")  , "wave"       );
+        emoticons.put(StringEscapeUtils.escapeHtml(";)")   , "wink"       );
 
         ArrayList<String> patterns = new ArrayList<String>();
         for (String k : emoticons.keySet()) {
@@ -145,7 +146,7 @@ public class Utils {
         
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
-            String url = matcher.group();
+            String url = StringEscapeUtils.unescapeHtml(matcher.group());
             matcher.appendReplacement(sb,
                 String.format("<a href=\"%s\" target=\"_blank\">%s</a>",url, url)
             );
@@ -154,11 +155,17 @@ public class Utils {
         
         return sb.toString();
     }
+    
+    public static String htmlizeEscape(final String s) {
+        return StringEscapeUtils.escapeHtml(s);
+    }
 
     public static String htmlize(final String s) {
         return htmlizeNewLines(
                    htmlizeUrls(
-                       htmlizeEmoticons(s)
+                       htmlizeEmoticons(
+                           htmlizeEscape(s)
+                       )
                    )
                );
     }
