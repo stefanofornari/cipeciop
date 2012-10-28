@@ -27,12 +27,12 @@
 <html lang="en">
     <head>
         <title>Cip&AMP;Ciop</title>
+        <link href="images/favicon.gif" rel="icon" type="image/gif">
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script src="autosize/jquery.autosize-min.js"></script>
-        <script src="emotions-fb/jquery.emotions.js"></script>
         <meta name="userid" content="<c:out value="${openid_user['userid']}"/>"/>
         <meta charset="UTF-8">
     </head>
