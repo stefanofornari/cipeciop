@@ -50,9 +50,9 @@ import ste.cipeciop.Constants;
  */
 public class CipCiopTestUtil {
     
-    public static final String TEST_USER1 = "stefano_fornari@yahoo.com";
-    public static final String TEST_USER2 = "cipeciopd@yahoo.com";
-    public static final String TEST_USER3 = "cipeciopa@yahoo.com";
+    public static final String TEST_USER1 = "user1@yahoo.com";
+    public static final String TEST_USER2 = "user2@yahoo.com";
+    public static final String TEST_USER3 = "user3@yahoo.com";
     public static final String TEST_TEXT1 = "message test one";
     public static final String TEST_TEXT2 = "message test two";
     public static final String TEST_TEXT3 = "message test three";
@@ -68,39 +68,62 @@ public class CipCiopTestUtil {
         cayenne.commitChanges();
     }
     
-    public static CipCiopManager createCCMForUser1() {
-        CipCiopManager ccm = new CipCiopManager(TEST_USER1);
+    public static CipCiopManager prepareEnvironment() {
+        CipCiopManager ccm1 = new CipCiopManager(TEST_USER1);
+        CipCiopManager ccm2 = new CipCiopManager(TEST_USER2);
+        CipCiopManager ccm3 = new CipCiopManager(TEST_USER3);
         
-        Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
-        cip.setTo(TEST_USER2); cip.setCreated(new Date());
-        ccm.addCip(cip);
+        //
+        // USER1
+        //
+        Cip cip1_1_2 = new Cip(TEST_TEXT1); cip1_1_2.setFrom(TEST_USER1);
+        cip1_1_2.setTo(TEST_USER2); cip1_1_2.setCreated(new Date());
+        ccm1.addCip(cip1_1_2);
+        Ciop ciop1_1_2 = new Ciop(cip1_1_2.getText());
+        ciop1_1_2.setFrom(cip1_1_2.getFrom()); ciop1_1_2.setCreated(cip1_1_2.getCreated());
+        ccm2.addCiop(ciop1_1_2);
         
-        cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip.setTo(TEST_USER3); cip.setCreated(new Date());
-        ccm.addCip(cip);
+        Cip cip2_1_3 = new Cip(TEST_TEXT2); cip2_1_3.setFrom(TEST_USER1);
+        cip2_1_3.setTo(TEST_USER3); cip2_1_3.setCreated(new Date());
+        ccm1.addCip(cip2_1_3);
+        Ciop ciop2_1_3 = new Ciop(cip2_1_3.getText());
+        ciop2_1_3.setFrom(cip2_1_3.getFrom()); ciop2_1_3.setCreated(cip2_1_3.getCreated());
+        ccm3.addCiop(ciop2_1_3);
         
-        Ciop ciop = new Ciop(CipCiopTestUtil.TEST_TEXT1);
-        ciop.setFrom(TEST_USER3); ciop.setCreated(new Date());
-        ccm.addCiop(ciop);
+        Cip cip3_1_3 = new Cip(TEST_TEXT3); cip3_1_3.setFrom(TEST_USER1);
+        cip3_1_3.setTo(TEST_USER3); cip3_1_3.setCreated(new Date());
+        ccm1.addCip(cip3_1_3);
+        Ciop ciop3_1_3 = new Ciop(cip2_1_3.getText());
+        ciop3_1_3.setFrom(cip2_1_3.getFrom()); ciop3_1_3.setCreated(cip2_1_3.getCreated());
+        ccm3.addCiop(ciop3_1_3);
         
-        cip = new Cip(CipCiopTestUtil.TEST_TEXT3);
-        cip.setTo(TEST_USER3); cip.setCreated(new Date());
-        ccm.addCip(cip);
+        //
+        // USER2
+        //
+        Cip cip4_2_1 = new Cip(TEST_TEXT3); cip4_2_1.setFrom(TEST_USER2);
+        cip4_2_1.setTo(TEST_USER1); cip4_2_1.setCreated(new Date());
+        ccm2.addCip(cip4_2_1);
+        Ciop ciop4_2_1 = new Ciop(cip4_2_1.getText());
+        ciop4_2_1.setFrom(cip4_2_1.getFrom()); ciop4_2_1.setCreated(cip4_2_1.getCreated());
+        ccm1.addCiop(ciop4_2_1);
         
-       return ccm;
-    }
-    
-    public static CipCiopManager createCCMForUser2() {
-        CipCiopManager ccm = new CipCiopManager(TEST_USER2);
+        Cip cip5_2_3 = new Cip(TEST_TEXT2); cip5_2_3.setFrom(TEST_USER2);
+        cip5_2_3.setTo(TEST_USER3); cip5_2_3.setCreated(new Date());
+        ccm2.addCip(cip5_2_3);
+        Ciop ciop5_2_3 = new Ciop(cip5_2_3.getText());
+        ciop5_2_3.setFrom(cip5_2_3.getFrom()); ciop5_2_3.setCreated(cip5_2_3.getCreated());
+        ccm3.addCiop(ciop5_2_3);
         
-        Cip cip = new Cip(CipCiopTestUtil.TEST_TEXT1);
-        cip.setTo(CipCiopTestUtil.TEST_USER1); cip.setCreated(new Date());
-        ccm.addCip(cip);
+        //
+        // USER 3
+        //
+        Cip cip6_3_1 = new Cip(TEST_TEXT1); cip6_3_1.setFrom(TEST_USER3);
+        cip6_3_1.setTo(TEST_USER1); cip6_3_1.setCreated(new Date());
+        ccm3.addCip(cip6_3_1);
+        Ciop ciop6_3_1 = new Ciop(cip6_3_1.getText());
+        ciop6_3_1.setFrom(cip6_3_1.getFrom()); ciop6_3_1.setCreated(cip6_3_1.getCreated());
+        ccm1.addCiop(ciop6_3_1);
         
-        cip = new Cip(CipCiopTestUtil.TEST_TEXT2);
-        cip.setTo(CipCiopTestUtil.TEST_USER3); cip.setCreated(new Date());
-        ccm.addCip(cip);
-        
-        return ccm;
+       return ccm1;
     }
 }

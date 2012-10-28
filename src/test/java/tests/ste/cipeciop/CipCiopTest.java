@@ -40,7 +40,7 @@ import ste.cipeciop.CipCiop;
 public class CipCiopTest {
     
     public static final String TEST_NEW_CHIP_TXT  = "thi is a new cip";
-    public static final String TEST_FROM1 = "stefano_fornari";
+    public static final String TEST_FROM1 = "user1";
     public static final String TEST_TO1 = "someone";
     
     public CipCiopTest() {

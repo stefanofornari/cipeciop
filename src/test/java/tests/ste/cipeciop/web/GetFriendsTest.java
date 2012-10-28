@@ -38,13 +38,13 @@ public class GetFriendsTest extends BeanShellTest implements Constants {
         beanshell.set("session", s);
         
         one = new Properties(); 
-        one.load(this.getClass().getResourceAsStream("/one@yahoo.com.properties"));
+        one.load(this.getClass().getResourceAsStream("/user1@yahoo.com.properties"));
         
         two = new Properties(); 
-        two.load(this.getClass().getResourceAsStream("/two@yahoo.com.properties"));
+        two.load(this.getClass().getResourceAsStream("/user2@yahoo.com.properties"));
         
         three = new Properties(); 
-        three.load(this.getClass().getResourceAsStream("/three@yahoo.com.properties"));
+        three.load(this.getClass().getResourceAsStream("/user3@yahoo.com.properties"));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class GetFriendsTest extends BeanShellTest implements Constants {
         assertEquals(one.get("friends"), StringUtils.join(friends, ','));
         
         id = new HashMap();
-        id.put("userid", "two@yahoo.com");
+        id.put("userid", "user2@yahoo.com");
         s.setAttribute(ATTRIBUTE_IDENTIFIER, id);
         
         assertNotNull(((HttpSession)beanshell.get("session")).getAttribute(ATTRIBUTE_FRIENDS));
@@ -76,7 +76,7 @@ public class GetFriendsTest extends BeanShellTest implements Constants {
         HttpSession s = (HttpSession)beanshell.get("session");
         
         HashMap id = new HashMap();
-        id.put("userid", "two@yahoo.com");
+        id.put("userid", "user2@yahoo.com");
         s.setAttribute(ATTRIBUTE_IDENTIFIER, id);
 
         String[] friends = (String[])exec("getFriends");

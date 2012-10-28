@@ -54,11 +54,10 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     @Override
     protected void beanshellSetup() throws Exception {
         CipCiopTestUtil.deleteAllCipCiop();
+        CipCiopTestUtil.prepareEnvironment();
         
         ServletContextMock context = new ServletContextMock();
         HttpServletRequestMock r = new HttpServletRequestMock(context);
-        
-        CipCiopManager ccm = CipCiopTestUtil.createCCMForUser1();
         
         HttpSession s = r.getSession();
         Map attributes = new HashMap();
@@ -82,7 +81,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         List<Cip> cips = ccm.getCips();
         List<Ciop> ciops = ccm.getCiops();
         
-        assertEquals(3, ccm.getCips().size()); assertEquals(1, ccm.getCiops().size());;
+        assertEquals(3, ccm.getCips().size()); assertEquals(2, ccm.getCiops().size());;
         
         //
         // If type is missing, nothing gets deleted
@@ -91,7 +90,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         
         exec();
         
-        assertEquals(3, ccm.getCips().size()); assertEquals(1, ccm.getCiops().size());
+        assertEquals(3, ccm.getCips().size()); assertEquals(2, ccm.getCiops().size());
         
         //
         // now we delete one cip, the change should be reflected by ccm
@@ -100,7 +99,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         
         exec();
         
-        assertEquals(2, ccm.getCips().size()); assertEquals(1, ccm.getCiops().size());
+        assertEquals(2, ccm.getCips().size()); assertEquals(2, ccm.getCiops().size());
         assertFalse(cips.get(0).getId() == ccm.getCips().get(0).getId());
         
         //
@@ -110,6 +109,6 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         beanshell.set(AJAX_PARAM_TYPE, ciops.get(0).getClass().getName());
         
         exec();
-        assertEquals(0, ccm.getCiops().size());
+        assertEquals(1, ccm.getCiops().size());
     }
 }

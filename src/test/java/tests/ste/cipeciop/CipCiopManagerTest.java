@@ -53,6 +53,7 @@ public class CipCiopManagerTest {
     @Before
     public void setUp() {
         CipCiopTestUtil.deleteAllCipCiop();
+        CipCiopTestUtil.prepareEnvironment();
     }
     
     @After
@@ -64,14 +65,14 @@ public class CipCiopManagerTest {
         CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
         
         assertEquals(CipCiopTestUtil.TEST_USER1, ccm.getUserId());
-        assertEquals(0, ccm.getCips().size());
+        assertEquals(3, ccm.getCips().size());
     }
     
     @Test
     public void addCips() {
         CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
         
-        assertEquals(0, ccm.getCips().size());
+        assertEquals(3, ccm.getCips().size());
         
         //
         // Not null
@@ -95,22 +96,22 @@ public class CipCiopManagerTest {
         
         ccm.addCip(cip1); 
         List<Cip> cips = ccm.getCips();
-        assertEquals(1, cips.size());
-        assertEquals(cip1, cips.get(0));
-        assertNull(cip1.getCreated());
+        assertEquals(4, cips.size());
+        assertEquals(cip1, cips.get(3));
+        assertNull(cips.get(3).getCreated());
         
         ccm.addCip(cip2);
         cips = ccm.getCips();
-        assertEquals(2, cips.size());
-        assertEquals(cip2, cips.get(1));
-        assertEquals(now, cip2.getCreated());
+        assertEquals(5, cips.size());
+        assertEquals(cip2, cips.get(4));
+        assertEquals(now, cips.get(4).getCreated());
     }
     
     @Test
     public void addCiops() throws Exception {
         CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
         
-        assertEquals(0, ccm.getCiops().size());
+        assertEquals(2, ccm.getCiops().size());
         
         //
         // Not null
@@ -135,14 +136,14 @@ public class CipCiopManagerTest {
                 
         ccm.addCiop(ciop1);
         List<Ciop> ciops = ccm.getCiops();
-        assertEquals(1, ciops.size());
-        assertEquals(CipCiopTestUtil.TEST_USER1, ciops.get(0).getFrom());
+        assertEquals(3, ciops.size());
+        assertEquals(CipCiopTestUtil.TEST_USER1, ciops.get(2).getFrom());
         
         ccm.addCiop(ciop2); ccm.addCiop(ciop3);
         ciops = ccm.getCiops();
-        assertEquals(3, ciops.size());
-        assertEquals(CipCiopTestUtil.TEST_USER2, ciops.get(1).getFrom());
-        assertEquals(CipCiopTestUtil.TEST_USER3, ciops.get(2).getFrom());
+        assertEquals(5, ciops.size());
+        assertEquals(CipCiopTestUtil.TEST_USER2, ciops.get(3).getFrom());
+        assertEquals(CipCiopTestUtil.TEST_USER3, ciops.get(4).getFrom());
         
         assertTrue(ciops.get(0).getCreated().before(ciops.get(1).getCreated()));
         assertTrue(ciops.get(1).getCreated().before(ciops.get(2).getCreated()));
@@ -168,7 +169,7 @@ public class CipCiopManagerTest {
     
     @Test
     public void cipsForUser() {
-        CipCiopManager ccm = CipCiopTestUtil.createCCMForUser1();
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);;
                 
         List<Cip> cips = ccm.getCips();
         assertEquals(3, cips.size());
@@ -176,7 +177,7 @@ public class CipCiopManagerTest {
         assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(1).getTo());
         assertEquals(CipCiopTestUtil.TEST_USER3, cips.get(2).getTo());
         
-        ccm = CipCiopTestUtil.createCCMForUser2();
+        ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER2);
         
         cips = ccm.getCips();
         assertEquals(2, cips.size());
@@ -186,10 +187,10 @@ public class CipCiopManagerTest {
     
     @Test
     public void ciopsForUser() {
-        CipCiopManager ccm = CipCiopTestUtil.createCCMForUser1();
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
                 
         List<Ciop> ciops = ccm.getCiops();
-        assertEquals(1, ciops.size());
+        assertEquals(2, ciops.size());
         assertEquals(CipCiopTestUtil.TEST_USER1, ciops.get(0).getTo());
     }
     
@@ -207,7 +208,7 @@ public class CipCiopManagerTest {
         // deleting a not existing cip results in nothing done
         //
         assertFalse(ccm.deleteCip((Integer)0));
-        assertEquals(2, ccm.getCips().size());
+        assertEquals(5, ccm.getCips().size());
         
         //
         // deleteing an existing cip results in the cip to be removed from the list
@@ -216,8 +217,8 @@ public class CipCiopManagerTest {
         Integer id = cips.get(1).getId();
         assertTrue(ccm.deleteCip(id));
         cips = ccm.getCips();
-        assertEquals(1, cips.size());
-        assertFalse(id.equals(cips.get(0).getId()));
+        assertEquals(4, cips.size());
+        assertFalse(id.equals(cips.get(3).getId()));
         
     }
     
@@ -236,7 +237,7 @@ public class CipCiopManagerTest {
         // deleting a not existing cip results in nothing done
         //
         assertFalse(ccm.deleteCiop((Integer)0));
-        assertEquals(2, ccm.getCiops().size());
+        assertEquals(4, ccm.getCiops().size());
         
         //
         // deleteing an existing cip results in the cip to be removed from the list
@@ -245,8 +246,8 @@ public class CipCiopManagerTest {
         Integer id = ciops.get(1).getId();
         assertTrue(ccm.deleteCiop(id));
         ciops = ccm.getCiops();
-        assertEquals(1, ciops.size());
-        assertFalse(id.equals(ciops.get(0).getId()));
+        assertEquals(3, ciops.size());
+        assertFalse(id.equals(ciops.get(2).getId()));
     }
 
     @Test
@@ -254,8 +255,8 @@ public class CipCiopManagerTest {
         Date timestamp = new Date();
         Thread.sleep(5);
         
-        CipCiopManager ccm1 = CipCiopTestUtil.createCCMForUser1();
-        CipCiopManager ccm2 = CipCiopTestUtil.createCCMForUser2();
+        CipCiopManager ccm1 = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
+        CipCiopManager ccm2 = new CipCiopManager(CipCiopTestUtil.TEST_USER2);
         
         Cip cip = new Cip("another ciop"); Ciop ciop = new Ciop(cip.getText());
         cip.setTo(CipCiopTestUtil.TEST_USER1); cip.setFrom(CipCiopTestUtil.TEST_USER2);
