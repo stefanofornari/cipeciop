@@ -50,6 +50,7 @@ void addCipCiop(timestamp) {
 }
 
 // ------------------------------------------------------------------------ Main
+response.contentType = "text/html;charset=UTF-8";
 
 if ((from = getUserName()) != null) {
   ts = new Date();
@@ -84,6 +85,5 @@ if ((from = getUserName()) != null) {
 
 //httpdump();
 //dump();
-
 
 view = "cipeciop.jsp";
