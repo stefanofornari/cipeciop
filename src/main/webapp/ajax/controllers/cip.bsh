@@ -26,9 +26,9 @@ import ste.cipeciop.CipCiopManager;
 
 void delete(id, type) {
   ccm = new CipCiopManager(getUserName());
-  if (Cip.class.name.equals(type)) {
+  if (Constants.DB_ENTITY_CIP.equals(type)) {
     ccm.deleteCip(new Integer(id)); 
-  } else if (Ciop.class.name.equals(type)) {
+  } else if (Constants.DB_ENTITY_CIOP.equals(type)) {
     ccm.deleteCiop(new Integer(id)); 
   }
 }

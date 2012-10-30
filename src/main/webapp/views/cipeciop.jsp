@@ -56,12 +56,12 @@
                 <div id="cipsciops">
                     <c:forEach items="${cips}" var="cip">
                         <div id="cip<c:out value='${cip.id}'/>" class="well">
-                            <button onclick="deleteCipCiop(<c:out value='${cip.id}'/>, '<c:out value='${cip.getClass().name}'/>');" class="close">&times;</button>
+                            <button onclick="deleteCipCiop(<c:out value='${cip.id}'/>, '<c:out value='${cip.objectid.entityName}'/>');" class="close">&times;</button>
                             <i class="icon-user"></i> <strong><c:out value="${cip.from}"/></strong>
                             <div id="cipciop"><c:out value="${cip.text}" escapeXml="false"/></div>
                             <small class="muted" style="font-size:75%"><c:out value="${cip.created}"/></small>
-                            <c:if test="${cip.fromMobile}"><img class="pull-right" src="images/phone-8x16.png" style="margin-left: 3px"/></c:if>
-                            <c:if test="${cip.getClass().name == 'ste.cipeciop.Cip' && cip.seen}"><i class="icon-check pull-right"></i></c:if>
+                            <c:if test="${cip.mobile}"><img class="pull-right" src="images/phone-8x16.png" style="margin-left: 3px"/></c:if>
+                            <c:if test="${not (cip.seen eq null)}"><i class="icon-check pull-right"></i></c:if>
                         </div>
                     </c:forEach>
                 </div>

@@ -95,7 +95,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         //
         // now we delete one cip, the change should be reflected by ccm
         //
-        beanshell.set(AJAX_PARAM_TYPE, cips.get(0).getClass().getName());
+        beanshell.set(AJAX_PARAM_TYPE, DB_ENTITY_CIP);
         
         exec();
         
@@ -106,7 +106,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         // now we delete one ciop, the change
         //
         beanshell.set(AJAX_PARAM_ID, String.valueOf(ciops.get(0).getId()));
-        beanshell.set(AJAX_PARAM_TYPE, ciops.get(0).getClass().getName());
+        beanshell.set(AJAX_PARAM_TYPE, DB_ENTITY_CIOP);
         
         exec();
         assertEquals(1, ccm.getCiops().size());

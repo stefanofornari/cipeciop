@@ -9,6 +9,7 @@ import        org.junit.Test;
 
 import ste.cipeciop.Constants;
 import com.funambol.tools.test.BeanShellTest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,16 +61,16 @@ public class CipControllerTest extends BeanShellTest
     public void myCipsAndCiops() throws Exception {
         exec();
         
-        List cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        List<Map> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         
         assertEquals(5, cips.size());
         
         //
         // Check the correct ordering
         //
-        assertTrue(((CipCiop)cips.get(0)).getCreated().before(((CipCiop)cips.get(1)).getCreated()));
-        assertTrue(((CipCiop)cips.get(1)).getCreated().before(((CipCiop)cips.get(2)).getCreated()));
-        assertTrue(((CipCiop)cips.get(2)).getCreated().before(((CipCiop)cips.get(3)).getCreated()));
+        assertTrue(((Date)cips.get(0).get("created")).before((Date)(cips.get(1).get("created"))));
+        assertTrue(((Date)cips.get(1).get("created")).before((Date)(cips.get(2).get("created"))));
+        assertTrue(((Date)cips.get(2).get("created")).before((Date)(cips.get(3).get("created"))));
     }
     
     @Test
@@ -106,7 +107,7 @@ public class CipControllerTest extends BeanShellTest
         
         cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(4, cips.size());
-        assertEquals(CipCiopTestUtil.TEST_USER1, ((Ciop)cips.get(0)).getFrom());
+        assertEquals(CipCiopTestUtil.TEST_USER1, ((Map)cips.get(0)).get("from"));
     }
     
     @Test
@@ -124,14 +125,14 @@ public class CipControllerTest extends BeanShellTest
         
         exec();
         
-        List<Cip> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        List<Map> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(6, cips.size());
         //
         // here we want just to make sure the text has been translated. See 
         // htmlize() for all cases
         //
         
-        String t = cips.get(5).getText();
+        String t = (String)cips.get(5).get("text");
         assertFalse(t.contains(";)"));
         assertFalse(t.contains(":D"));
         assertTrue(t.contains("<img src"));
@@ -153,10 +154,10 @@ public class CipControllerTest extends BeanShellTest
         
         exec();
         
-        List<Cip> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        List<Map> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(6, cips.size());
-        assertFalse(cips.get(5).isFromMobile());
-        assertFalse(cips.get(5).isSeen());
+        assertFalse((Boolean)cips.get(5).get("mobile"));
+        assertNull(cips.get(5).get("seen"));
         
         //
         // From mobile
@@ -170,7 +171,7 @@ public class CipControllerTest extends BeanShellTest
         
         cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(7, cips.size());
-        assertTrue(cips.get(6).isFromMobile());
+        assertTrue((Boolean)cips.get(6).get("mobile"));
         
         CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER2);
         List<Ciop> ciops = ccm.getCiops();

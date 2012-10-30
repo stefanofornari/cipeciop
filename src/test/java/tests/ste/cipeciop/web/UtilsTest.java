@@ -22,13 +22,15 @@
 package tests.ste.cipeciop.web;
 
 
-import org.apache.commons.lang.StringEscapeUtils;
+import java.util.Date;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import ste.cipeciop.Cip;
 import ste.cipeciop.Constants;
 import ste.cipeciop.web.Utils;
 import tests.ste.cipeciop.CipCiopTestUtil;
@@ -138,5 +140,34 @@ public class UtilsTest implements Constants {
         assertTrue(s.contains(String.format("<a href=\"%s\"", TEST_URL1)));
         assertTrue(s.contains("<img src=\"images/emoticons/hug.gif"));
         assertTrue(s.contains("&lt;script"));
+    }
+    
+    /**
+     * Test of ConvertObjectToMap method, of class Utils.
+     */
+    @Test
+    public void convertToMap() throws Exception {
+        final Date TEST_NOW = new Date();
+        final String TEST_CIP = "some text",
+                     TEST_FROM = "from",
+                     TEST_TO = "to";
+        final int TEST_ID = 120;
+        
+        Cip cip = new Cip(TEST_CIP);
+        cip.setId(TEST_ID);
+        cip.setCreated(TEST_NOW);
+        cip.setFrom(TEST_FROM);
+        cip.setMobile(Boolean.TRUE);
+        cip.setSeen(TEST_NOW);
+        cip.setTo(TEST_TO);
+        
+        Map<String, Object> ret = Utils.convertToMap(cip);
+        assertEquals(new Integer(TEST_ID), ret.get("id"));
+        assertEquals(TEST_CIP, ret.get("text"));
+        assertEquals(TEST_NOW, (Date)ret.get("created"));
+        assertEquals(TEST_FROM, (String)ret.get("from"));
+        assertEquals(Boolean.TRUE, ret.get("mobile"));
+        assertEquals(TEST_NOW, ret.get("seen"));
+        assertEquals(TEST_TO, ret.get("to"));
     }
 }

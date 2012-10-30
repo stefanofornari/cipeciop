@@ -21,6 +21,8 @@
  */
 package ste.cipeciop.web;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -168,5 +170,27 @@ public class Utils {
                        )
                    )
                );
+    }
+    
+    public static Map<String, Object> convertToMap(Object obj) throws
+            IllegalAccessException,
+            IllegalArgumentException,
+            InvocationTargetException {
+        Class<?> pomclass = obj.getClass();
+        pomclass = obj.getClass();
+        Method[] methods = obj.getClass().getMethods();
+
+        String propertyName = null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        for (Method m : methods) {
+            propertyName = m.getName();
+            if ((propertyName.length() > 3) && propertyName.startsWith("get") && !propertyName.startsWith("getClass")) {
+                Object value = (Object) m.invoke(obj);
+                propertyName = propertyName.substring(3).toLowerCase();
+                map.put(propertyName, (Object) value);
+            }
+        }
+        
+        return map;
     }
 }

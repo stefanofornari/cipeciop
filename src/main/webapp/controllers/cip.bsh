@@ -61,14 +61,17 @@ if ((from = getUserName()) != null) {
     addCipCiop(ts);
   }
 
+  cipciops = new ArrayList();
+  cipciops.addAll(ccm.getCips());
+  cipciops.addAll(ciop = ccm.getCiops());
+
+  Collections.sort(cipciops);
+
   cips = new ArrayList();
-  cips.addAll(ccm.getCips());
-  cips.addAll(ciop = ccm.getCiops());
-
-  Collections.sort(cips);
-
-  for(c: cips) {
-    c.text = Utils.htmlize(c.text);
+  for(c: cipciops) {
+    cmap = Utils.convertToMap(c);
+    cmap.put("text", Utils.htmlize(c.text));
+    cips.add(cmap);
   }
 
   request.setAttribute("cips", cips);
