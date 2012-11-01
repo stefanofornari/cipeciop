@@ -60,6 +60,7 @@ import ste.cipeciop.Constants;
 public class OAuthServlet extends HttpServlet implements Constants {
     
     public static final String PARAM_IS_RETURN = "is_return";
+    public static final String PARAM_LOGOUT    = "logout";
 
     private static final Logger log = Logger.getLogger("ste.cipeciop.web");
     private ConsumerManager consumerManager;
@@ -135,6 +136,12 @@ public class OAuthServlet extends HttpServlet implements Constants {
         response.setContentType("text/html;charset=UTF-8");
         if ("true".equals(request.getParameter(PARAM_IS_RETURN))) {
             processReturn(request, response);
+        } else if (request.getParameter(PARAM_LOGOUT) != null) {
+            try {
+                createConsumerManager();
+            } catch (ConsumerException e) {
+                throw new ServletException("Unable to create the consumer: " + e.getMessage(), e);
+            }
         } else {
             String identifier = request.getParameter("openid");
             if (identifier != null) {
@@ -151,11 +158,10 @@ public class OAuthServlet extends HttpServlet implements Constants {
             throws ServletException, IOException {
         Identifier identifier = verifyResponse(request);
         if (identifier == null) {
-            request.getSession().setAttribute(ATTRIBUTE_IDENTIFIER, null);
-            getServletContext().getRequestDispatcher("/index.bsh").forward(request, response);
-        } else {
-            getServletContext().getRequestDispatcher("/cip.bsh").forward(request, response);
+            request.getSession().setAttribute(ATTRIBUTE_IDENTIFIER, null);            
         }
+        
+        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
     private String authRequest(String userSuppliedString,

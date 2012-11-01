@@ -29,6 +29,8 @@
         <script lang="JavaScript">
             var i = document.createElement("img");
             i.src = "https://login.yahoo.com/config/login?logout=1";
+            var i = document.createElement("img");
+            i.src="auth?logout"
         </script>
         <meta HTTP-EQUIV="REFRESH" content="2; url=cip.bsh">
     </head>

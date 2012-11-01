@@ -22,26 +22,12 @@
  */
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>   
 <html lang="en">   
     <head>   
-        <title>Cip&AMP;Ciop</title>     
-        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>  
+        <title>Cip&AMP;Ciop</title>
+        <meta HTTP-EQUIV="REFRESH" content="0; url=cip.bsh">
+    </head>
     <body>
-        <div style="display: table; height: 400px; width: 300px; margin: auto;">
-            <div style="display: table-cell; vertical-align: middle;">
-                <div id="main" style="">
-                    <form class="well form-inline" action="cip.bsh">
-                        <div class="controls"><div class="input-append">
-                        <input name="cip" type="text" class="span3" placeholder="Type your cip..."><span class="add-on"><i class="icon-user"></i></span>
-                        </div></div>
-                        <button type="submit" class="btn btn-primary btn-small">Cip</button>
-                        <button type="submit" class="btn btn-success btn-small">Ciop</button> 
-                    </form>
-                </div>
-            </div>
-        </div>
-    </body>  
+      Logging in...
+    </body>
 </html> 
