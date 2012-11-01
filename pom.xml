@@ -4,7 +4,7 @@
 
     <groupId>ste.cipeciop</groupId>
     <artifactId>cipeciop</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
 
     <name>Cip&amp;Ciop</name>
@@ -182,7 +182,7 @@
     </build>
 
     <scm>
-        <connection>scm:git:git://github.com/stefanofornari/cipeciop</connection>
+        <connection>scm:git:git@github.com:stefanofornari/cipeciop.git</connection>
         <url>http://github.com/stefanofornari/cipeciop/tree/master</url>
     </scm>
 
