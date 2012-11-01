@@ -182,8 +182,8 @@
     </build>
 
     <scm>
-        <connection>scm:git:git@github.com:stefanofornari/cipeciop.git</connection>
-        <url>git@github.com:stefanofornari/cipeciop.git</url>
+        <connection>scm:git:git@github.com:stefanofornari/cipeciop2.git</connection>
+        <url>git@github.com:stefanofornari/cipeciop2.git</url>
     </scm>
 
     <distributionManagement>
