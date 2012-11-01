@@ -183,7 +183,7 @@
 
     <scm>
         <connection>scm:git:git@github.com:stefanofornari/cipeciop.git</connection>
-        <url>http://github.com/stefanofornari/cipeciop/tree/master</url>
+        <url>git@github.com:stefanofornari/cipeciop.git</url>
     </scm>
 
     <distributionManagement>
