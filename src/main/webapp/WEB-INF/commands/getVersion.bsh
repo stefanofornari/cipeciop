@@ -1,0 +1,10 @@
+getVersion() {
+  verprops = new Properties();
+  in = this.getClass().getResourceAsStream("/version.properties");
+
+  if (in != null) {
+    verprops.load(in);
+  }
+
+  return verprops;
+}

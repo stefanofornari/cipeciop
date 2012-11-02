@@ -1,0 +1,7 @@
+
+version = session.getAttribute(ste.cipeciop.Constants.ATTRIBUTE_VERSION);
+if (version == null) {
+  session.setAttribute(ste.cipeciop.Constants.ATTRIBUTE_VERSION, getVersion());
+}
+
+view = "version.jsp";

@@ -1,3 +1,4 @@
+<%--
 /*
  * Cip&Ciop
  * Copyright (C) 2012 Stefano Fornari
@@ -19,32 +20,9 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301 USA.
  */
-package ste.cipeciop;
-
-/**
- *
- * @author ste
- */
-public interface Constants {
-    
-    public final static String PARAM_CIP_TEXT = "cip";
-    
-    public final static String ATTRIBUTE_FRIENDS    = "friends"    ;
-    public final static String ATTRIBUTE_IDENTIFIER = "openid_user";
-    public final static String ATTRIBUTE_VERSION    = "version"    ;
-    
-    public final static String KEY_NAME    = "application.name";
-    public final static String KEY_VERSION = "application.version";
-    
-    public final static String ALIAS_EMAIL   = "email";
-    public final static String ALIAS_USER_ID = "userid";
-    
-    public final static String AJAX_ACTION = "action";
-    public final static String AJAX_ACTION_DELETE = "delete";
-    public final static String AJAX_PARAM_ID = "id";
-    public final static String AJAX_PARAM_TYPE = "type";
-    
-    public final static String DB_ENTITY_CIP  = "Cip" ;
-    public final static String DB_ENTITY_CIOP = "Ciop";
-
-}
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<pre>
+version: <c:out value="${version['application.version']}" />
+</pre>
