@@ -46,7 +46,7 @@ import tests.ste.cipeciop.CipCiopTestUtil;
  */
 public class CipCiopFilterTest {
     
-    public static final String TEST_AUTH_URL = "auth?openid=https%3A%2F%2Fme.yahoo.com"; 
+    public static final String TEST_AUTH_URL = "/auth?openid=https%3A%2F%2Fme.yahoo.com"; 
     
     private CipCiopFilter filter;
     private ServletContextMock servletContext;
@@ -66,8 +66,6 @@ public class CipCiopFilterTest {
     public void setUp() {
         filter = new CipCiopFilter();
         servletContext = new ServletContextMock();
-        
-        servletContext.requestURI = "/test";
     }
     
     @After
@@ -78,33 +76,30 @@ public class CipCiopFilterTest {
     public void testForceLogin() throws Exception {
         HttpServletRequestMock r = new HttpServletRequestMock(servletContext);
         
+        r.servletPath = "/authorize";
+        filter.doFilter(r, null, new FilterChainMock());
+        assertEquals(TEST_AUTH_URL, r.dispatcher.forwardedPath);
+        
+        r.servletPath = "/ajax/cip.bsh";
         filter.doFilter(r, null, new FilterChainMock());
         assertEquals(TEST_AUTH_URL, r.dispatcher.forwardedPath);
     }
     
     @Test
-    public void testAuthPassThrough() throws Exception {
+    /**
+     * The urls /auth and /free should not be redirected to the authentication
+     * url
+     */
+    public void testPassThroughURLs() throws Exception {
         HttpServletRequestMock r = new HttpServletRequestMock(servletContext);
         
         r.servletPath = "/auth";
         filter.doFilter(r, null, new FilterChainMock());
         assertNull(r.dispatcher);
         
-        r.servletPath = "/authorize";
+        r.servletPath = "/ajax/free.bsh";
         filter.doFilter(r, null, new FilterChainMock());
-        assertEquals(TEST_AUTH_URL, r.dispatcher.forwardedPath);
-    }
-
-    /**
-     * Test of destroy method, of class CayenneFilter.
-     */
-    @Test
-    public void testDestroy() {
-        System.out.println("destroy");
-        CipCiopFilter instance = new CipCiopFilter();
-        instance.destroy();
-        // TODO review the generated test code and remove the default call to fail.
-        // fail("The test case is a prototype.");
+        assertNull(r.dispatcher);
     }
     
     // --------------------------------------------------------- Private methods

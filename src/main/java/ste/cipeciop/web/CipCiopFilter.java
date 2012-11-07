@@ -60,11 +60,12 @@ public final class CipCiopFilter implements Filter, Constants {
         HttpServletRequest  request  = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
         
-        if (!request.getServletPath().equals("/auth")) {
+        if (!request.getServletPath().equals("/auth") &&
+            !request.getServletPath().equals("/ajax/free.bsh")) {
             Map openId = (Map)request.getSession().getAttribute(ATTRIBUTE_IDENTIFIER);
 
             if (openId == null) {
-                String url = "auth?openid="
+                String url = "/auth?openid="
                            + URLEncoder.encode("https://me.yahoo.com", "UTF-8");
                 request.getRequestDispatcher(url).forward(request, response);
                 return;
