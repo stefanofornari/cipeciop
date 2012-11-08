@@ -35,6 +35,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
+import ste.cipeciop.dao.Status;
 
 /**
  * This class manage a collection of cips and ciops
@@ -193,7 +194,7 @@ public class CipCiopManager {
      * 
      * @param timestamp the seen timestamp
      */
-    public void setSeen(Date timestamp) {
+    public void setSeen(final Date timestamp) {
         List<Ciop> ciops = getCiops();
         
         String from = null;
@@ -209,6 +210,30 @@ public class CipCiopManager {
         if (friends.size() > 0) {
             setSeen(friends, timestamp);
         }
+    }
+    
+    public void setLastVisit(final Date timestamp) {
+        getStatus(true).setLastVisit(timestamp);
+        
+        context.commitChanges();
+    }
+    
+    public Date getLastVisit() {
+        Status s = getStatus();
+        
+        return (s != null) ? s.getLastVisit() : null;
+    }
+    
+    public void setLastChange(final Date timestamp) {
+        getStatus(true).setLastChange(timestamp);
+        
+        context.commitChanges();
+    }
+    
+    public Date getLastChange() {
+        Status s = getStatus();
+        
+        return (s != null) ? s.getLastChange() : null;
     }
 
     // --------------------------------------------------------- Private methods
@@ -234,6 +259,12 @@ public class CipCiopManager {
         return false;
     }
     
+    /**
+     * Sets the Seen flag for all the given friends to a given timestamp
+     * 
+     * @param friends the list of friends whose cips must be set as seen
+     * @param timestamp the seen timestamp
+     */
     private void setSeen(Set<String> friends, Date timestamp) {
         for (String to: friends) {
             EJBQLQuery query = new EJBQLQuery(
@@ -248,6 +279,35 @@ public class CipCiopManager {
             context.performGenericQuery(query);
             context.commitChanges();
         }
+    }
+
+    /**
+     * Returns the Status object of the user associated to this' userId.
+     * 
+     * @return the corresponding Status object if found, null otherwise
+     */
+    private Status getStatus() {
+        return getStatus(false);
+    }
+    
+    /**
+     * Returns the Status object of the user associated to this' userId. A new 
+     * Status object is created if not existing.
+     * 
+     * @return the corresponding Status object if found, null otherwise
+     */
+    private Status getStatus(boolean create) {
+        ObjectIdQuery q = new ObjectIdQuery(
+                              new ObjectId(Constants.DB_ENTITY_STATUS, Status.USERID_PK_COLUMN, userId)
+                          );
+        Status s = (Status)DataObjectUtils.objectForQuery(context, q);
+        
+        if ((s == null) && create) {
+            s = context.newObject(Status.class);
+            s.setUserid(userId);
+        }
+        
+        return s;
     }
 
 

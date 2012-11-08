@@ -270,4 +270,32 @@ public class CipCiopManagerTest {
         assertTrue(cips.get(0).isSeen());
         assertFalse(cips.get(2).isSeen());
     }
+    
+    @Test
+    public void setLastVisit() throws Exception {
+        Date timestamp = new Date();
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
+        
+        ccm.setLastVisit(timestamp);
+        assertEquals(timestamp, ccm.getLastVisit());
+        
+        Thread.sleep(5);
+        timestamp = new Date();
+        ccm.setLastVisit(timestamp);
+        assertEquals(timestamp, ccm.getLastVisit());
+    }
+    
+    @Test
+    public void setLastChange() throws Exception {
+        Date timestamp = new Date();
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
+        
+        ccm.setLastChange(timestamp);
+        assertEquals(timestamp, ccm.getLastChange());
+        
+        Thread.sleep(5);
+        timestamp = new Date();
+        ccm.setLastChange(timestamp);
+        assertEquals(timestamp, ccm.getLastChange());
+    }
 }

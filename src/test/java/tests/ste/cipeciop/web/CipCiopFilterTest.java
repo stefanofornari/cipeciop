@@ -97,7 +97,7 @@ public class CipCiopFilterTest {
         filter.doFilter(r, null, new FilterChainMock());
         assertNull(r.dispatcher);
         
-        r.servletPath = "/ajax/free.bsh";
+        r.servletPath = "/ajax/public.bsh";
         filter.doFilter(r, null, new FilterChainMock());
         assertNull(r.dispatcher);
     }

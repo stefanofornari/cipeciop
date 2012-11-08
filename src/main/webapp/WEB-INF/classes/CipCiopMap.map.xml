@@ -21,6 +21,11 @@
 		<db-attribute name="sender" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="text" type="VARCHAR" isMandatory="true" length="1000"/>
 	</db-entity>
+	<db-entity name="status">
+		<db-attribute name="lastchange" type="TIMESTAMP"/>
+		<db-attribute name="lastvisit" type="TIMESTAMP"/>
+		<db-attribute name="userid" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="100"/>
+	</db-entity>
 	<obj-entity name="Ciop" className="ste.cipeciop.Ciop" dbEntityName="ciops">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="from" type="java.lang.String" db-attribute-path="sender"/>
@@ -37,5 +42,10 @@
 		<obj-attribute name="seen" type="java.util.Date" db-attribute-path="seen"/>
 		<obj-attribute name="text" type="java.lang.String" db-attribute-path="text"/>
 		<obj-attribute name="to" type="java.lang.String" db-attribute-path="recipient"/>
+	</obj-entity>
+	<obj-entity name="Status" className="ste.cipeciop.dao.Status" dbEntityName="status">
+		<obj-attribute name="lastChange" type="java.util.Date" db-attribute-path="lastchange"/>
+		<obj-attribute name="lastVisit" type="java.util.Date" db-attribute-path="lastvisit"/>
+		<obj-attribute name="userid" type="java.lang.String" db-attribute-path="userid"/>
 	</obj-entity>
 </data-map>
