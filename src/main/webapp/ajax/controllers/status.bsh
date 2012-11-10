@@ -26,10 +26,15 @@ if ((action == void) || !Constants.AJAX_ACTION_CHECK.equals(action)) {
   return;
 }
 
+print("CHECK!!!");
+
 ret = "no";
 if (Constants.AJAX_ACTION_CHECK.equals(action)) {
   if (id != void) {
     ccm = new CipCiopManager(id);
+    print("cips: " + ccm.cips);
+    print("lastVisit: " + ccm.lastVisit);
+    print("lastChange: " + ccm.lastChange);
     lastChange = ccm.lastChange;
     if (lastChange != null) {
       lastVisit = ccm.lastVisit;
