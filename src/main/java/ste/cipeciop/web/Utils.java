@@ -30,12 +30,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import ste.cipeciop.Constants;
 
 /**
  *
  * @author ste
  */
-public class Utils {
+public class Utils implements Constants {
 
     public static final String REGEX_URL = 
         "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
@@ -192,5 +193,9 @@ public class Utils {
         }
         
         return map;
+    }
+    
+    public static final String userToString(Map<String,String> u) {
+        return '<' + u.get(KEY_USER_NAME) + '>' + u.get(KEY_USER_ID);
     }
 }

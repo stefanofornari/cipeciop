@@ -48,8 +48,8 @@
                             <%@ include file="/views/friends.jsp" %>
                             <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea>
                         </div></div>
-                        <input type="hidden" name="to"/>
-                        <button type="submit" class="btn btn-primary btn-small" onclick="$('input[name=to]').val($(tovalue).text());">Cip</button>
+                        <input type="hidden" name="to" value="<c:out value="${friends[0]['id']}"/>"/>
+                        <button type="submit" class="btn btn-primary btn-small">Cip</button>
                         <%--<button type="submit" class="btn btn-success btn-small">Ciop</button>--%>
                     </form>
                 </div>

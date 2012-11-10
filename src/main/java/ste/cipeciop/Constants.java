@@ -34,8 +34,10 @@ public interface Constants {
     public final static String ATTRIBUTE_VERSION    = "version"    ;
     public final static String ATTRIBUTE_RESULT     = "result"     ;
     
-    public final static String KEY_NAME    = "application.name"   ;
-    public final static String KEY_VERSION = "application.version";
+    public final static String KEY_APPLICATION_NAME    = "application.name"   ;
+    public final static String KEY_APPLICATION_VERSION = "application.version";
+    public final static String KEY_USER_NAME           = "name";
+    public final static String KEY_USER_ID             = "id";
     
     public final static String ALIAS_EMAIL   = "email";
     public final static String ALIAS_USER_ID = "userid";

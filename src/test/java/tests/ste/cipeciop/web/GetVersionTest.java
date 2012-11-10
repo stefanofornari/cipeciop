@@ -36,6 +36,6 @@ public class GetVersionTest extends BeanShellTest implements Constants {
     public void getVersion() throws Throwable {
         Properties p = (Properties)exec("getVersion");
         assertNotNull(p);
-        assertEquals(TEST_VERSION, p.get(KEY_VERSION));
+        assertEquals(TEST_VERSION, p.get(KEY_APPLICATION_VERSION));
     }
 }

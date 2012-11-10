@@ -23,6 +23,7 @@ package tests.ste.cipeciop.web;
 
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -169,5 +170,13 @@ public class UtilsTest implements Constants {
         assertEquals(Boolean.TRUE, ret.get("mobile"));
         assertEquals(TEST_NOW, ret.get("seen"));
         assertEquals(TEST_TO, ret.get("to"));
+    }
+    
+    @Test
+    public void userToString() {
+        final HashMap<String,String> u = new HashMap<String,String>();
+        u.put(KEY_USER_ID, "user@yahoo.com"); u.put(KEY_USER_NAME, "some one");
+        
+        assertEquals("<some one>user@yahoo.com", Utils.userToString(u));
     }
 }

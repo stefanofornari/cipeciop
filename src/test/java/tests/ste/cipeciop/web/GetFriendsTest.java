@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import ste.cipeciop.test.web.mock.HttpServletRequestMock;
 import ste.cipeciop.test.web.mock.ServletContextMock;
+import ste.cipeciop.web.Utils;
 
 /**
  *
@@ -58,10 +59,10 @@ public class GetFriendsTest extends BeanShellTest implements Constants {
         //
         // get the friends the first time (i.e. from there persisted list)
         //
-        String[] friends = (String[])exec("getFriends");
+        HashMap<String,String>[] friends = (HashMap[])exec("getFriends");
         assertNotNull(friends);
         assertEquals(2, friends.length);
-        assertEquals(one.get("friends"), StringUtils.join(friends, ','));
+        assertEquals(one.get("friends"), join(friends));
         
         id = new HashMap();
         id.put("userid", "user2@yahoo.com");
@@ -70,7 +71,7 @@ public class GetFriendsTest extends BeanShellTest implements Constants {
         assertNotNull(((HttpSession)beanshell.get("session")).getAttribute(ATTRIBUTE_FRIENDS));
 
     }
-    
+
     @Test
     public void getFriendsForTwo() throws Throwable {
         HttpSession s = (HttpSession)beanshell.get("session");
@@ -79,10 +80,10 @@ public class GetFriendsTest extends BeanShellTest implements Constants {
         id.put("userid", "user2@yahoo.com");
         s.setAttribute(ATTRIBUTE_IDENTIFIER, id);
 
-        String[] friends = (String[])exec("getFriends");
+        HashMap<String,String>[] friends = (HashMap[])exec("getFriends");
         assertNotNull(friends);
         assertEquals(1, friends.length);
-        assertEquals(two.get("friends"), friends[0]);
+        assertEquals(two.get("friends"), join(friends));
     }
     
     
@@ -94,9 +95,20 @@ public class GetFriendsTest extends BeanShellTest implements Constants {
         id.put("userid", "none@yahoo.com");
         s.setAttribute(ATTRIBUTE_IDENTIFIER, id);
 
-        String[] friends = (String[])exec("getFriends");
+        HashMap<String,String>[] friends = (HashMap[])exec("getFriends");
         assertNotNull(friends);
         assertEquals(0, friends.length);
+    }
+
+    private String join(final HashMap<String, String>[] friends) {
+        String[] friendnames = new String[friends.length];
+        int i = 0;
+        for (HashMap<String, String> f: friends) {
+            friendnames[i++] = Utils.userToString(f);
+        }
+        
+        return StringUtils.join(friendnames, ',');
+        
     }
 
 }
