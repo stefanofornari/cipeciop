@@ -1,0 +1,30 @@
+import java.util.HashMap;
+import ste.cipeciop.Constants;
+
+getUser(username) {
+  user = null;
+
+  if (!empty(username)) {
+    user = new HashMap();
+    i = username.indexOf('>');
+    
+    if (i >= 0) {
+      //
+      // here we have at least the display name
+      //
+      if (i<username.length()-1) {
+        //
+        // here we have the id too
+        //
+        user{Constants.KEY_USER_ID} = username.substring(i+1);
+      }
+      start = (username.charAt(0) == '<') ? 1 : 0;
+      //user.put(Constants.KEY_USER_NAME, username.substring(start, i);
+      user{Constants.KEY_USER_NAME} = username.substring(start, i);
+    } else {
+      user{Constants.KEY_USER_ID} = username;
+    }
+  }
+
+  return user;
+}
