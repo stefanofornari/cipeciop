@@ -21,6 +21,8 @@
 * MA 02110-1301 USA.
 */
 --%>
-<%@page contentType="text/plain" pageEncoding="UTF-8"%>
+<%@page contentType="application/json" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:out value="${result}"/>
+{
+  "updates": "<c:out value="${result}"/>"
+}
