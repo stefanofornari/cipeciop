@@ -52,7 +52,7 @@ public class CipCiopManagerTest {
     
     @Before
     public void setUp() {
-        CipCiopTestUtil.deleteAllCipCiop();
+        CipCiopTestUtil.resetEnvironment();
         CipCiopTestUtil.prepareEnvironment();
     }
     

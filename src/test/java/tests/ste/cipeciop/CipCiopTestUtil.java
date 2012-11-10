@@ -61,10 +61,11 @@ public class CipCiopTestUtil {
         ";) some text http://www.yahoo.com/pippo :D some othertest " +
         "http://thecampanileproject.org/campanile?param1=1&param2=xxx%32yy gfjkhf";
     
-    public static void deleteAllCipCiop() {
+    public static void resetEnvironment() {
         ObjectContext cayenne = DataContext.createDataContext();
         cayenne.performQuery(new SQLTemplate(Constants.DB_ENTITY_CIP, "delete from cips"));
         cayenne.performQuery(new SQLTemplate(Constants.DB_ENTITY_CIOP, "delete from ciops"));
+        cayenne.performQuery(new SQLTemplate(Constants.DB_ENTITY_STATUS, "delete from status"));
         cayenne.commitChanges();
     }
     

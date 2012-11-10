@@ -48,7 +48,7 @@ public class VersionTest extends BeanShellTest
     
     @Override
     protected void beanshellSetup() throws Exception {
-        CipCiopTestUtil.deleteAllCipCiop();
+        CipCiopTestUtil.resetEnvironment();
         
         HttpServletRequestMock r = new HttpServletRequestMock(new ServletContextMock());
         

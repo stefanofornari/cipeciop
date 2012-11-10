@@ -47,6 +47,8 @@ void addCipCiop(timestamp) {
   c.created = timestamp;
   c.mobile = fromMobile;
   ccmTo.addCiop(c);
+
+  ccmTo.setLastChange(ts);
 }
 
 // ------------------------------------------------------------------------ Main
@@ -78,9 +80,10 @@ if ((from = getUserName()) != null) {
   request.setAttribute("cips", cips);
 
   //
-  // we now update the seen timestamp
+  // we now update the seen and lastVisit timestamp
   //
   ccm.setSeen(ts);
+  ccm.setLastVisit(ts);
 }
 
 //httpdump();

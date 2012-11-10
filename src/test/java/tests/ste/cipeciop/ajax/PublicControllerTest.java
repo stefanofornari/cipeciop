@@ -49,7 +49,7 @@ public class PublicControllerTest extends BeanShellTest implements Constants {
     
     public PublicControllerTest() throws Exception {
         setCommandsDirectory("src/main/webapp/WEB-INF/commands");
-        setBshFileName("src/main/webapp/ajax/controllers/public.bsh");
+        setBshFileName("src/main/webapp/ajax/controllers/status.bsh");
     }
     
     @Override

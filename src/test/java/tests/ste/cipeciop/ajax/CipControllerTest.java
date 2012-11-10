@@ -53,7 +53,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     
     @Override
     protected void beanshellSetup() throws Exception {
-        CipCiopTestUtil.deleteAllCipCiop();
+        CipCiopTestUtil.resetEnvironment();
         CipCiopTestUtil.prepareEnvironment();
         
         ServletContextMock context = new ServletContextMock();

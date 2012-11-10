@@ -55,7 +55,7 @@ public class CipControllerTest extends BeanShellTest
     
     @Override
     protected void beanshellSetup() throws Exception {
-        CipCiopTestUtil.deleteAllCipCiop();
+        CipCiopTestUtil.resetEnvironment();
         
         HttpServletRequestMock r = new HttpServletRequestMock(new ServletContextMock());
         
@@ -195,21 +195,44 @@ public class CipControllerTest extends BeanShellTest
         assertTrue(ciops.get(2).isFromMobile());
     }
     
-    //@Test
+    @Test
     public void seen() throws Throwable {
-        //
-        // Once seen all ciops shall be flagged as seen
-        //
         CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER2);
         List<Cip> cips = ccm.getCips();
-        assertFalse(cips.get(0).isSeen());
-        assertFalse(cips.get(1).isSeen());
-        
-        exec();
-
-        cips = ccm.getCips();
-
         assertTrue(cips.get(0).isSeen());
         assertFalse(cips.get(1).isSeen());
+    }
+    
+    @Test
+    public void lastVisit() {
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
+        Date ts = ccm.getLastVisit();
+        assertNotNull(ts);
+        assertTrue(ts.after(new Date(ts.getTime()-1000*60))); // let's assume 
+                                                              // the test takes
+                                                              // less than one
+                                                              // minute
+    }
+    
+    @Test
+    public void lastChange() throws Exception {
+        CipCiopManager ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER1);
+        Date ts1 = ccm.getLastChange();
+        assertNull(ts1);
+        
+        ts1 = ccm.getLastVisit();
+        
+        //
+        // Not from mobile
+        //
+        beanshell.set("to", CipCiopTestUtil.TEST_USER2);
+        beanshell.set("cip", CipCiopTestUtil.TEST_TEXT_WITH_ICONS_AND_URLS);
+        
+        exec();
+        
+        ccm = new CipCiopManager(CipCiopTestUtil.TEST_USER2);
+        Date ts2 = ccm.getLastChange();
+        assertNotNull(ts2);
+        assertTrue(ts2.after(ts1));
     }
 }

@@ -61,7 +61,7 @@ public final class CipCiopFilter implements Filter, Constants {
         HttpServletResponse response = (HttpServletResponse)res;
         
         if (!request.getServletPath().equals("/auth") &&
-            !request.getServletPath().equals("/ajax/public.bsh")) {
+            !request.getServletPath().equals("/ajax/status.bsh")) {
             Map openId = (Map)request.getSession().getAttribute(ATTRIBUTE_IDENTIFIER);
 
             if (openId == null) {
