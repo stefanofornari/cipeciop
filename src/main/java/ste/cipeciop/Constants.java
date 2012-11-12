@@ -33,6 +33,7 @@ public interface Constants {
     public final static String ATTRIBUTE_IDENTIFIER = "openid_user";
     public final static String ATTRIBUTE_VERSION    = "version"    ;
     public final static String ATTRIBUTE_RESULT     = "result"     ;
+    public final static String ATTRIBUTE_ERROR      = "error"      ;
     
     public final static String KEY_APPLICATION_NAME    = "application.name"   ;
     public final static String KEY_APPLICATION_VERSION = "application.version";
@@ -52,5 +53,7 @@ public interface Constants {
     public final static String DB_ENTITY_CIP    = "Cip"   ;
     public final static String DB_ENTITY_CIOP   = "Ciop"  ;
     public final static String DB_ENTITY_STATUS = "Status";
+    
+    public final static int MAX_CIP_LENGTH = 950;
 
 }

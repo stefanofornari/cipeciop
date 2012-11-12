@@ -1,0 +1,2 @@
+20121112
+- added limit to the cip length to 950 characters

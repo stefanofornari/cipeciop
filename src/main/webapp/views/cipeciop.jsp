@@ -46,7 +46,7 @@
                     <form class="well form-inline" action="cip.bsh" method="POST">
                         <div class="controls"><div class="input-append">
                             <%@ include file="/views/friends.jsp" %>
-                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;"></textarea>
+                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;" maxlength="950"></textarea>
                         </div></div>
                         <input type="hidden" name="to" value="<c:out value="${friends[0]['id']}"/>"/>
                         <button type="submit" class="btn btn-primary btn-small">Cip</button>
@@ -71,9 +71,9 @@
 
     <script lang="JavaScript">
         $(document).ready(function(){
-            $('textarea').autosize();
+          $('textarea').autosize();
         });
-        
+
         function deleteCipCiop(id, type) {
           $.getJSON(
           '/cipeciop/ajax/cip.bsh?action=delete&id='+id+'&type='+type,

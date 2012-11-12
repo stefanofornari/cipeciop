@@ -222,9 +222,6 @@ public class CipControllerTest extends BeanShellTest
         
         ts1 = ccm.getLastVisit();
         
-        //
-        // Not from mobile
-        //
         beanshell.set("to", CipCiopTestUtil.TEST_USER2);
         beanshell.set("cip", CipCiopTestUtil.TEST_TEXT_WITH_ICONS_AND_URLS);
         
@@ -234,5 +231,25 @@ public class CipControllerTest extends BeanShellTest
         Date ts2 = ccm.getLastChange();
         assertNotNull(ts2);
         assertTrue(ts2.after(ts1));
+    }
+    
+    @Test
+    public void cipLongerThanMaxLength() throws Throwable {
+        final String[] words = new String[] {"one", "two", "three"};
+        
+        int i = 0;
+        StringBuilder cip = new StringBuilder();
+        while (cip.length() <= MAX_CIP_LENGTH) {
+            cip.append(words[++i%3]).append(' ');
+        }
+        
+        beanshell.set("to", CipCiopTestUtil.TEST_USER2);
+        beanshell.set("cip", cip.toString());
+        
+        exec();
+        
+        List<Map> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
+        assertEquals(5, cips.size());
+        assertNotNull(beanshell.eval("request.getAttribute(Constants.ATTRIBUTE_ERROR)"));
     }
 }

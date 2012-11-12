@@ -60,7 +60,14 @@ if ((from = getUserName()) != null) {
   friends = getFriends();
 
   if ((cip != void) && !empty(cip)) {
-    addCipCiop(ts);
+    if (cip.length() <= Constants.MAX_CIP_LENGTH) {
+      addCipCiop(ts);
+    } else {
+      request.setAttribute(
+        Constants.ATTRIBUTE_ERROR, 
+        "cip length greater than the allowed max length(" + Constants.MAX_CIP_LENGTH + ")"
+      );
+    }
   }
 
   cipciops = new ArrayList();
