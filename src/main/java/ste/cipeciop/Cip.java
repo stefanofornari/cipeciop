@@ -101,7 +101,7 @@ public class Cip extends _Cip implements CipCiop {
         }
         final Cip other = (Cip) obj;
         return getText().equals(other.getText())
-            && getFrom().contains(other.getFrom())
+            && getFrom().equals(other.getFrom())
             && getTo().equals(other.getTo());
     }
 

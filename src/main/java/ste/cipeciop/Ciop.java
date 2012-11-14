@@ -100,7 +100,7 @@ public class Ciop extends _Ciop implements CipCiop {
         }
         final Ciop other = (Ciop) obj;
         return getText().equals(other.getText())
-            && getFrom().contains(other.getFrom())
+            && getFrom().equals(other.getFrom())
             && getTo().equals(other.getTo());
     }
 

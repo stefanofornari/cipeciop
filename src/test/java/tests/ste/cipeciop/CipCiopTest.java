@@ -114,6 +114,44 @@ public class CipCiopTest {
         
         c.setSeen(new Date()); assertTrue(c.isSeen());
     }
+    
+    @Test
+    public void testHashCode() {
+        int h = TEST_NEW_CHIP_TXT.hashCode();
+        assertEquals(h, (new Cip(TEST_NEW_CHIP_TXT)).hashCode());
+        assertEquals(h, (new Ciop(TEST_NEW_CHIP_TXT)).hashCode());
+    }
+    
+    @Test
+    public void testEquals() {
+        Cip cip1 = new Cip(TEST_NEW_CHIP_TXT), cip2 = new Cip(TEST_NEW_CHIP_TXT);
+        cip1.setFrom(TEST_FROM1); cip1.setTo(TEST_TO1);
+        cip2.setFrom(TEST_FROM1); cip2.setTo(TEST_TO1);
+        Ciop ciop1 = new Ciop(TEST_NEW_CHIP_TXT), ciop2 = new Ciop(TEST_NEW_CHIP_TXT);
+        ciop1.setFrom(TEST_FROM1); ciop1.setTo(TEST_TO1);
+        ciop2.setFrom(TEST_FROM1); ciop2.setTo(TEST_TO1);
+        
+        assertFalse(cip1.equals(null)); assertFalse(ciop1.equals(null));
+        assertFalse(cip1.equals(new String())); assertFalse(ciop1.equals(new String()));
+        assertEquals(cip1, cip2); assertEquals(ciop1, ciop2);
+        assertEquals(cip1, cip1); assertEquals(ciop1, ciop1);
+        
+        cip2.setFrom("user");
+        assertFalse(cip1.equals(cip2));
+        cip2.setFrom(cip1.getFrom()); cip2.setTo("some");
+        assertFalse(cip1.equals(cip2));
+        
+        ciop2.setFrom("user");
+        assertFalse(ciop1.equals(ciop2));
+        cip2.setFrom(ciop1.getFrom()); ciop2.setTo("some");
+        assertFalse(ciop1.equals(ciop2));
+        
+        cip2.setTo(cip1.getTo()); cip2.setText("new chip");
+        assertFalse(cip1.equals(cip2));
+        
+        ciop2.setTo(ciop1.getTo()); ciop2.setText("new chip");
+        assertFalse(ciop1.equals(ciop2));
+    }
         
     // --------------------------------------------------------- Private methods
 
