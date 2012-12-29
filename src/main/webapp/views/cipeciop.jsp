@@ -28,16 +28,16 @@
     <head>
         <title>Cip&AMP;Ciop</title>
         <link href="images/favicon.gif" rel="icon" type="image/gif">
-        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script src="autosize/jquery.autosize-min.js"></script>
         <meta name="userid" content="<c:out value="${openid_user['userid']}"/>"/>
         <meta charset="UTF-8">
     </head>
-    <body>
-        <div style="display: table; height: 400px; width: 280px; margin: auto;">
+    <body style="font-size: 75%">
+        <div style="display: table; height: 400px; width: auto; margin: auto;">
             <div style="display: table-cell; vertical-align: middle;">
                 <div id="main" class="pagination-right">
                     <c:if test="${empty openid_user}"><a href="auth?openid=https%3A%2F%2Fme.yahoo.com">login</a></c:if>
@@ -45,8 +45,8 @@
 
                     <form class="well form-inline" action="cip.bsh" method="POST">
                         <div class="controls"><div class="input-append">
-                            <%@ include file="/views/friends.jsp" %>
-                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px;" maxlength="950"></textarea>
+                            <%@ include file="/views/friends.jsp" %><br/>
+                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px; width: 230px" maxlength="950"></textarea>
                         </div></div>
                         <input type="hidden" name="to" value="<c:out value="${friends[0]['id']}"/>"/>
                         <button type="submit" class="btn btn-primary btn-small">Cip</button>
@@ -83,5 +83,5 @@
           });
         }  
     </script>
-    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
 </html> 

@@ -1,2 +1,7 @@
+20121229
+- fixed issue with the size of the cip entry field
+- reduced the font size for better display on small screens
+- updated bootstrap to v. 2.2.2
+
 20121112
 - added limit to the cip length to 950 characters
