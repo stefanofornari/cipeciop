@@ -1,2 +1,3 @@
 - improve logout (do not show url, use post instead of get?)
 - optimize seen flag management so that only ciops not yet seen are updated
+- make the size of the text/view areas dpending on the screen width
