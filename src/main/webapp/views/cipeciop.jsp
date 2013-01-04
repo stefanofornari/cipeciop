@@ -37,34 +37,34 @@
         <meta charset="UTF-8">
     </head>
     <body style="font-size: 75%">
-        <div style="display: table; height: 400px; width: 240px; margin: auto;">
-            <div style="display: table-cell; vertical-align: middle;">
-                <div id="main" class="pagination-right">
-                    <c:if test="${empty openid_user}"><a href="auth?openid=https%3A%2F%2Fme.yahoo.com">login</a></c:if>
-                    <c:if test="${not empty openid_user}"><a href="logout.bsh">logout</a></c:if>
-
-                    <form class="well form-inline" action="cip.bsh" method="POST">
-                        <div class="controls"><div class="input-append">
-                            <%@ include file="/views/friends.jsp" %><br/>
-                            <textarea name="cip" class="span3" placeholder="Type your cip..." style="height: 16px; width: 230px" maxlength="950"></textarea>
-                        </div></div>
-                        <input type="hidden" name="to" value="<c:out value="${friends[0]['id']}"/>"/>
-                        <button type="submit" class="btn btn-primary btn-small">Cip</button>
-                        <%--<button type="submit" class="btn btn-success btn-small">Ciop</button>--%>
-                    </form>
+        <!--div style="max-width: 400px; margin: 0 auto;"-->
+        <div style="margin: 0 auto;">
+            <div id="main">
+                <div class="pagination-right">
+                <c:if test="${empty openid_user}"><a href="auth?openid=https%3A%2F%2Fme.yahoo.com">login</a></c:if>
+                <c:if test="${not empty openid_user}"><a href="logout.bsh">logout</a></c:if>
                 </div>
-                <div id="cipsciops">
-                    <c:forEach items="${cips}" var="cip">
-                        <div id="cip<c:out value='${cip.id}'/>" class="well">
-                            <button onclick="deleteCipCiop(<c:out value='${cip.id}'/>, '<c:out value='${cip.objectid.entityName}'/>');" class="close">&times;</button>
-                            <i class="icon-user"></i> <strong><c:out value="${cip.from}"/></strong>
-                            <div id="cipciop"><c:out value="${cip.text}" escapeXml="false"/></div>
-                            <small class="muted" style="font-size:75%"><c:out value="${cip.created}"/></small>
-                            <c:if test="${cip.mobile}"><img class="pull-right" src="images/phone-8x16.png" style="margin-left: 3px"/></c:if>
-                            <c:if test="${not (cip.seen eq null)}"><i class="icon-check pull-right"></i></c:if>
-                        </div>
-                    </c:forEach>
-                </div>
+                <form class="well well-small form-inline" action="cip.bsh" method="POST">
+                    <div class="container-fluid pagination-right">
+                    <%@ include file="/views/friends.jsp" %> <button type="submit" class="btn btn-primary">Cip</button>
+                    </div>
+                    <div class="row-fluid pagination-centered" style="padding-top: 3px;">
+                        <textarea name="cip" class="span12" placeholder="Type your cip..." maxlength="950"></textarea>
+                    </div>
+                    <input type="hidden" name="to" value="<c:out value="${friends[0]['id']}"/>"/>
+                </form>
+            </div>
+            <div id="cipsciops">
+                <c:forEach items="${cips}" var="cip">
+                    <div id="cip<c:out value='${cip.id}'/>" class="well">
+                        <button onclick="deleteCipCiop(<c:out value='${cip.id}'/>, '<c:out value='${cip.objectid.entityName}'/>');" class="close">&times;</button>
+                        <i class="icon-user"></i> <strong><c:out value="${cip.from}"/></strong>
+                        <div id="cipciop"><c:out value="${cip.text}" escapeXml="false"/></div>
+                        <small class="muted" style="font-size:75%"><c:out value="${cip.created}"/></small>
+                        <c:if test="${cip.mobile}"><img class="pull-right" src="images/phone-8x16.png" style="margin-left: 3px"/></c:if>
+                        <c:if test="${not (cip.seen eq null)}"><i class="icon-check pull-right"></i></c:if>
+                    </div>
+                </c:forEach>
             </div>
         </div>
     </body>
