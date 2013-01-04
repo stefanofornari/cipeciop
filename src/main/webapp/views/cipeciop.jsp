@@ -37,8 +37,7 @@
         <meta charset="UTF-8">
     </head>
     <body style="font-size: 75%">
-        <!--div style="max-width: 400px; margin: 0 auto;"-->
-        <div style="margin: 0 auto;">
+        <div style="max-width: 400px; margin: 0 auto;">
             <div id="main">
                 <div class="pagination-right">
                 <c:if test="${empty openid_user}"><a href="auth?openid=https%3A%2F%2Fme.yahoo.com">login</a></c:if>

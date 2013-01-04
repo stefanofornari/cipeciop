@@ -1,6 +1,6 @@
 20130105
 - fixed layout/ui issues
-- released 1.0.4
+- released 1.0.5
 
 20121229
 - fixed issue with the size of the cip entry field
