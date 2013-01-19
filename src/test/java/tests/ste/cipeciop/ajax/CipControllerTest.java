@@ -71,7 +71,7 @@ public class CipControllerTest extends BeanShellTest implements Constants {
     @Test
     public void deleteCip() throws Exception {
         //
-        // No id given, no cips deleted
+        // No id given, no cips deleted, view shall be cip.jsp
         //
         beanshell.set(AJAX_ACTION, AJAX_ACTION_DELETE);
         
@@ -81,7 +81,8 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         List<Cip> cips = ccm.getCips();
         List<Ciop> ciops = ccm.getCiops();
         
-        assertEquals(3, ccm.getCips().size()); assertEquals(2, ccm.getCiops().size());;
+        assertEquals(3, ccm.getCips().size()); assertEquals(2, ccm.getCiops().size());
+        assertEquals("cip.jsp", beanshell.get("view"));
         
         //
         // If type is missing, nothing gets deleted
@@ -91,9 +92,10 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         exec();
         
         assertEquals(3, ccm.getCips().size()); assertEquals(2, ccm.getCiops().size());
+        assertEquals("cip.jsp", beanshell.get("view"));
         
         //
-        // now we delete one cip, the change should be reflected by ccm
+        // now we delete one cip, the change shall be reflected by ccm
         //
         beanshell.set(AJAX_PARAM_TYPE, DB_ENTITY_CIP);
         
@@ -101,14 +103,16 @@ public class CipControllerTest extends BeanShellTest implements Constants {
         
         assertEquals(2, ccm.getCips().size()); assertEquals(2, ccm.getCiops().size());
         assertFalse(cips.get(0).getId() == ccm.getCips().get(0).getId());
+        assertEquals("cip.jsp", beanshell.get("view"));
         
         //
-        // now we delete one ciop, the change
+        // now we delete one ciop, the change shall be reflected by ccm
         //
         beanshell.set(AJAX_PARAM_ID, String.valueOf(ciops.get(0).getId()));
         beanshell.set(AJAX_PARAM_TYPE, DB_ENTITY_CIOP);
         
         exec();
         assertEquals(1, ccm.getCiops().size());
+        assertEquals("cip.jsp", beanshell.get("view"));
     }
 }

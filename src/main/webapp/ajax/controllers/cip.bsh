@@ -42,3 +42,5 @@ if (Constants.AJAX_ACTION_DELETE.equals(action)) {
     delete(id, type);
   }
 }
+
+view = "cip.jsp";

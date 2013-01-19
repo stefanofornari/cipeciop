@@ -1,0 +1,17 @@
+----------------------------------------------------------------
+Sat Jan 19 23:54:02 CET 2013:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-013c-5504-c5f9-000001c62f20 
+on database directory memory:/home/ste/Projects/cipeciop/src/main/webapp/ajax/controllers/cipeciop  with class loader WebappClassLoader
+  context: /cipeciop
+  delegate: false
+  repositories:
+    /WEB-INF/classes/
+----------> Parent Classloader:
+org.apache.catalina.loader.StandardClassLoader@72beaa01
+ 
+Loaded from file:/home/ste/Projects/cipeciop/src/main/webapp/WEB-INF/lib/derby-10.9.1.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_07-b10
+user.dir=/home/ste/Projects/cipeciop/src/main/webapp/ajax/controllers
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
