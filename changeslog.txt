@@ -1,3 +1,6 @@
+20130330
+- added images/emoticons/angry.gif
+
 20130105
 - fixed layout/ui issues
 - released 1.0.5
