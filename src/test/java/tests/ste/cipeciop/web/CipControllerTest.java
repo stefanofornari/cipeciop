@@ -144,6 +144,7 @@ public class CipControllerTest extends BeanShellTest
         
         List<Map> cips = (List)beanshell.eval("request.getAttribute(\"cips\")");
         assertEquals(6, cips.size());
+        
         //
         // here we want just to make sure the text has been translated. See 
         // htmlize() for all cases
